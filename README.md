@@ -144,10 +144,9 @@ Add your real project screenshots inside a `screenshots/` folder.
 
 Example:
 
-```markdown
 ## Screenshots
 
-Home Page
+###Home Page
 ![Home Page](screenshots/home.png)
 
 ### About Page
