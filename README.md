@@ -147,7 +147,7 @@ Example:
 ```markdown
 ## Screenshots
 
-### Home Page
+Home Page
 ![Home Page](screenshots/home.png)
 
 ### About Page
