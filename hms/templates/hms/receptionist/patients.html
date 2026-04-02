@@ -1,0 +1,546 @@
+{% extends 'hms/base.html' %}
+{% block title %}Receptionist Patients{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #0f172a;
+        --secondary: #1d4ed8;
+        --accent: #38bdf8;
+        --muted: #64748b;
+        --border: #e6edf5;
+        --soft: #f8fbff;
+        --white: #ffffff;
+        --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.05);
+        --shadow-md: 0 16px 34px rgba(15, 23, 42, 0.08);
+        --shadow-lg: 0 24px 50px rgba(15, 23, 42, 0.12);
+        --transition: all 0.35s ease;
+    }
+
+    .directory-page {
+        position: relative;
+        overflow: hidden;
+        padding: 28px 0 56px;
+        background:
+            radial-gradient(circle at top left, rgba(29, 78, 216, 0.05), transparent 24%),
+            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.05), transparent 24%),
+            #f8fbff;
+    }
+
+    .directory-page::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.24), rgba(255,255,255,0));
+        pointer-events: none;
+    }
+
+    .directory-shell {
+        background: #ffffff;
+        border: 1px solid #e9eef5;
+        border-radius: 28px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .directory-top {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        background:
+            linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 64, 175, 0.86) 55%, rgba(56, 189, 248, 0.76) 100%),
+            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        color: #ffffff;
+        padding: 42px 36px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .directory-top::before,
+    .directory-top::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        z-index: 0;
+    }
+
+    .directory-top::before {
+        width: 220px;
+        height: 220px;
+        top: -70px;
+        right: -60px;
+    }
+
+    .directory-top::after {
+        width: 150px;
+        height: 150px;
+        bottom: -45px;
+        left: -25px;
+    }
+
+    .directory-top > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .directory-badge-top {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.16);
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        backdrop-filter: blur(10px);
+    }
+
+    .directory-top h2 {
+        margin: 0 0 8px;
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.4px;
+        line-height: 1.08;
+        text-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    }
+
+    .directory-top p {
+        margin: 0;
+        color: rgba(255,255,255,0.94);
+        line-height: 1.8;
+        max-width: 780px;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.14);
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.14);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        backdrop-filter: blur(6px);
+    }
+
+    .directory-body {
+        padding: 24px;
+        background: linear-gradient(to bottom right, #ffffff, #fbfdff);
+    }
+
+    .search-shell,
+    .person-card,
+    .empty-state-card {
+        background: #ffffff;
+        border: 1px solid #e8eef7;
+        border-radius: 20px;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+    }
+
+    .search-shell,
+    .empty-state-card {
+        padding: 20px;
+    }
+
+    .search-shell:hover,
+    .person-card:hover,
+    .empty-state-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .search-title {
+        font-size: 1.08rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: -0.2px;
+    }
+
+    .title-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+        color: #1d4ed8;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .search-subtitle {
+        color: #64748b;
+        margin-bottom: 18px;
+        line-height: 1.75;
+        font-size: 0.95rem;
+    }
+
+    .search-shell .form-control {
+        min-height: 50px;
+        border-radius: 12px;
+        background: #fbfdff;
+        border: 1px solid #dbe3ee;
+        box-shadow: none;
+        padding: 11px 13px;
+    }
+
+    .search-shell .form-control:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    }
+
+    .btn-search-modern {
+        min-height: 48px;
+        border-radius: 12px;
+        border: none;
+        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        color: #ffffff;
+        font-weight: 700;
+        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+        transition: var(--transition);
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-search-modern:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    .person-card {
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .person-image-wrap {
+        position: relative;
+        overflow: hidden;
+        background: #e2e8f0;
+        border-bottom: 1px solid #e8eef7;
+    }
+
+    .person-image {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        background: #e2e8f0;
+        transition: var(--transition);
+    }
+
+    .person-card:hover .person-image {
+        transform: scale(1.04);
+    }
+
+    .person-placeholder {
+        width: 100%;
+        height: 240px;
+        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 2.5rem;
+        font-weight: 800;
+    }
+
+    .person-top-badge {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: rgba(15, 23, 42, 0.82);
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 7px 12px;
+        border-radius: 999px;
+        backdrop-filter: blur(8px);
+    }
+
+    .person-content {
+        padding: 20px;
+    }
+
+    .person-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .person-name {
+        font-size: 1.18rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 14px;
+        letter-spacing: -0.2px;
+    }
+
+    .person-meta-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .person-meta {
+        background: #f8fbff;
+        border: 1px solid #e8eef7;
+        border-radius: 14px;
+        padding: 12px 14px;
+        color: #475569;
+        line-height: 1.7;
+        transition: var(--transition);
+        font-size: 0.94rem;
+    }
+
+    .person-meta:hover {
+        background: #ffffff;
+        transform: translateX(2px);
+    }
+
+    .person-meta strong {
+        color: #0f172a;
+    }
+
+    .person-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid #eef2f7;
+    }
+
+    .person-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .empty-state-card {
+        padding: 46px 24px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 74px;
+        height: 74px;
+        border-radius: 20px;
+        margin: 0 auto 16px;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+    }
+
+    .empty-state-card h4 {
+        color: #0f172a;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .empty-state-card p {
+        color: #64748b;
+        margin-bottom: 0;
+        line-height: 1.75;
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s ease;
+    }
+
+    .reveal-up {
+        transform: translateY(35px);
+    }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+
+    @media (max-width: 991px) {
+        .directory-top,
+        .directory-body {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .directory-top h2 {
+            font-size: 1.85rem;
+        }
+
+        .person-image,
+        .person-placeholder {
+            height: 220px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="directory-page">
+    <div class="container">
+        <div class="directory-shell">
+
+            <div class="directory-top reveal reveal-up show">
+                <span class="directory-badge-top">
+                    <i class="bi bi-headset"></i>
+                    SmartCare HMS • Receptionist Directory
+                </span>
+                <h2>Patients Directory</h2>
+                <p>
+                    View and manage patients connected to {{ receptionist.organization_name }} through a clean, modern, and professionally structured front-desk interface.
+                </p>
+
+                <div class="hero-pills">
+                    <span class="hero-pill"><i class="bi bi-people"></i> Patient Records</span>
+                    <span class="hero-pill"><i class="bi bi-search"></i> Quick Search</span>
+                    <span class="hero-pill"><i class="bi bi-building"></i> Organization View</span>
+                    <span class="hero-pill"><i class="bi bi-person-vcard"></i> Patient Profiles</span>
+                </div>
+            </div>
+
+            <div class="directory-body">
+                <div class="search-shell reveal reveal-up mb-4">
+                    <h5 class="search-title">
+                        <span class="title-icon"><i class="bi bi-search"></i></span>
+                        Search Patients
+                    </h5>
+                    <p class="search-subtitle">
+                        Search patients by name, contact number, or email address and quickly review their information from the receptionist directory.
+                    </p>
+
+                    <form method="get" class="row g-3">
+                        <div class="col-md-10">
+                            <input
+                                type="text"
+                                name="q"
+                                value="{{ query }}"
+                                class="form-control"
+                                placeholder="Search by patient name, contact, or email"
+                            >
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn-search-modern" type="submit">
+                                <i class="bi bi-search"></i>
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row g-4">
+                    {% for p in patients %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="person-card reveal reveal-up">
+                            <div class="person-image-wrap">
+                                {% if p.photo %}
+                                    <img src="{{ p.photo.url }}" alt="{{ p.first_name }}" class="person-image">
+                                {% else %}
+                                    <div class="person-placeholder">
+                                        {{ p.first_name|slice:":1" }}
+                                    </div>
+                                {% endif %}
+                                <span class="person-top-badge">Patient Profile</span>
+                            </div>
+
+                            <div class="person-content">
+                                <span class="person-chip">
+                                    <i class="bi bi-person-vcard"></i>
+                                    Patient Record
+                                </span>
+                                <h4 class="person-name">{{ p.first_name }} {{ p.last_name }}</h4>
+
+                                <div class="person-meta-list">
+                                    <div class="person-meta"><strong>Email:</strong> {{ p.user.email|default:"Not available" }}</div>
+                                    <div class="person-meta"><strong>Contact:</strong> {{ p.contact|default:"Not available" }}</div>
+                                    <div class="person-meta"><strong>Gender:</strong> {{ p.gender|default:"Not provided" }}</div>
+                                    <div class="person-meta"><strong>Organization:</strong> {{ receptionist.organization_name }}</div>
+                                </div>
+
+                                <div class="person-footer">
+                                    <span class="person-tag">
+                                        <i class="bi bi-heart-pulse"></i>
+                                        Active Patient
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="empty-state-card reveal reveal-up">
+                            <div class="empty-icon">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <h4>No Patients Found</h4>
+                            <p>No patient matched your current search under {{ receptionist.organization_name }}.</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const patientReveal = document.querySelectorAll('.reveal');
+
+    function patientRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.88;
+        patientReveal.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+            if (top < triggerBottom) {
+                setTimeout(() => {
+                    el.classList.add('show');
+                }, index * 50);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', patientRevealOnScroll);
+    window.addEventListener('load', patientRevealOnScroll);
+</script>
+{% endblock %}

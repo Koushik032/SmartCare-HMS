@@ -1,0 +1,664 @@
+{% extends 'hms/base.html' %}
+{% block title %}Add Receptionist{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #0f172a;
+        --secondary: #1d4ed8;
+        --accent: #38bdf8;
+        --accent-soft: #e0f2fe;
+        --muted: #64748b;
+        --border: #e6edf5;
+        --soft: #f8fbff;
+        --white: #ffffff;
+        --success: #16a34a;
+        --danger: #dc2626;
+        --shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
+        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
+        --shadow-lg: 0 28px 64px rgba(15, 23, 42, 0.14);
+        --transition: all 0.35s ease;
+    }
+
+    body {
+        background:
+            radial-gradient(circle at top left, rgba(56, 189, 248, 0.06), transparent 28%),
+            radial-gradient(circle at bottom right, rgba(29, 78, 216, 0.05), transparent 24%),
+            #f8fbff;
+    }
+
+    .admin-form-page {
+        position: relative;
+        overflow: hidden;
+        padding: 40px 0 78px;
+        background:
+            linear-gradient(rgba(248, 251, 255, 0.90), rgba(248, 251, 255, 0.94)),
+            url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat fixed;
+    }
+
+    .admin-form-page::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at top left, rgba(29, 78, 216, 0.08), transparent 24%),
+            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.09), transparent 22%);
+        pointer-events: none;
+    }
+
+    .admin-form-shell {
+        position: relative;
+        background: rgba(255,255,255,0.92);
+        border: 1px solid rgba(230, 237, 245, 0.9);
+        border-radius: 32px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .admin-form-top {
+        position: relative;
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(29, 78, 216, 0.88) 56%, rgba(56, 189, 248, 0.78) 100%),
+            url('https://images.unsplash.com/photo-1580281657527-47cfaae0af34?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        color: #ffffff;
+        padding: 52px 42px;
+        isolation: isolate;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .admin-form-top::before,
+    .admin-form-top::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        z-index: -1;
+    }
+
+    .admin-form-top::before {
+        width: 250px;
+        height: 250px;
+        top: -80px;
+        right: -70px;
+    }
+
+    .admin-form-top::after {
+        width: 180px;
+        height: 180px;
+        bottom: -55px;
+        left: -35px;
+    }
+
+    .admin-form-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 15px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.16);
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        backdrop-filter: blur(10px);
+    }
+
+    .admin-form-top h2 {
+        margin: 0 0 10px;
+        font-size: 2.25rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.08;
+    }
+
+    .admin-form-top p {
+        margin: 0;
+        color: rgba(255,255,255,0.92);
+        line-height: 1.9;
+        max-width: 780px;
+        font-size: 1rem;
+    }
+
+    .top-highlight-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    .top-highlight-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.14);
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .admin-form-body {
+        padding: 34px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+    }
+
+    .form-card,
+    .side-info-card {
+        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(251,253,255,0.95));
+        border: 1px solid #e8eef7;
+        border-radius: 26px;
+        padding: 26px;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        height: 100%;
+        backdrop-filter: blur(6px);
+    }
+
+    .form-card:hover,
+    .side-info-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .section-mini-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.18rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 18px;
+        letter-spacing: -0.2px;
+    }
+
+    .title-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+        color: #1d4ed8;
+        font-size: 18px;
+        box-shadow: var(--shadow-sm);
+        flex-shrink: 0;
+    }
+
+    .section-description {
+        color: var(--muted);
+        line-height: 1.8;
+        margin-bottom: 22px;
+    }
+
+    .field-shell {
+        position: relative;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .admin-form-body .form-control,
+    .admin-form-body input,
+    .admin-form-body select,
+    .admin-form-body textarea {
+        min-height: 54px;
+        border-radius: 15px;
+        border: 1px solid #dbe3ee;
+        background: rgba(251, 253, 255, 0.95);
+        box-shadow: none;
+        width: 100%;
+        padding: 12px 14px;
+        transition: var(--transition);
+        font-size: 0.98rem;
+    }
+
+    .admin-form-body textarea {
+        min-height: 120px;
+    }
+
+    .admin-form-body .form-control:focus,
+    .admin-form-body input:focus,
+    .admin-form-body select:focus,
+    .admin-form-body textarea:focus {
+        background: #ffffff;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+        outline: none;
+        transform: translateY(-1px);
+    }
+
+    .field-error {
+        color: var(--danger);
+        margin-top: 6px;
+        display: block;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .form-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+        padding-top: 22px;
+        border-top: 1px solid #edf2f7;
+    }
+
+    .footer-note {
+        color: var(--muted);
+        line-height: 1.75;
+        margin: 0;
+        max-width: 520px;
+        font-size: 0.95rem;
+    }
+
+    .btn-admin-main {
+        min-height: 54px;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        color: #ffffff;
+        font-weight: 700;
+        transition: var(--transition);
+        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-admin-main:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 16px 30px rgba(29, 78, 216, 0.24);
+    }
+
+    .alert-danger {
+        border-radius: 14px;
+        border: none;
+        background: #fef2f2;
+        color: #b91c1c;
+        font-weight: 600;
+        padding: 14px 16px;
+    }
+
+    .side-info-card {
+        position: relative;
+        overflow: hidden;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.94), rgba(251,253,255,0.95)),
+            url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
+        background-blend-mode: lighten;
+    }
+
+    .side-info-card::before {
+        content: "";
+        position: absolute;
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        top: -34px;
+        right: -30px;
+        background: rgba(59, 130, 246, 0.06);
+    }
+
+    .info-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 14px;
+        box-shadow: inset 0 0 0 1px #dbeafe;
+    }
+
+    .side-info-card h4 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 12px;
+        letter-spacing: -0.2px;
+    }
+
+    .side-info-card p {
+        color: var(--muted);
+        line-height: 1.85;
+        margin-bottom: 18px;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #edf2f7;
+        color: #475569;
+        line-height: 1.75;
+    }
+
+    .info-list li:last-child {
+        border-bottom: none;
+    }
+
+    .info-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #eff6ff;
+        color: #1d4ed8;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .security-box {
+        margin-top: 20px;
+        padding: 18px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #eff6ff, #f8fbff);
+        border: 1px solid #dbeafe;
+    }
+
+    .security-box h5 {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 8px;
+    }
+
+    .security-box p {
+        margin: 0;
+        font-size: 0.94rem;
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s ease;
+    }
+
+    .reveal-left { transform: translateX(-60px); }
+    .reveal-right { transform: translateX(60px); }
+    .reveal-up { transform: translateY(50px); }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0,0);
+    }
+
+    @media (max-width: 1199px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 991px) {
+        .admin-form-top,
+        .admin-form-body {
+            padding-left: 22px;
+            padding-right: 22px;
+        }
+
+        .admin-form-top h2 {
+            font-size: 1.95rem;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .admin-form-page {
+            padding: 26px 0 50px;
+            background-attachment: scroll;
+        }
+
+        .admin-form-top {
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .form-card,
+        .side-info-card {
+            padding: 20px;
+        }
+
+        .form-footer {
+            align-items: stretch;
+        }
+
+        .btn-admin-main {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="admin-form-page">
+    <div class="container">
+        <div class="admin-form-shell">
+
+            <div class="admin-form-top reveal reveal-up show">
+                <span class="admin-form-badge">
+                    <i class="bi bi-person-plus"></i>
+                    SmartCare HMS • Admin Action
+                </span>
+                <h2>Add Receptionist Account</h2>
+                <p>
+                    Create a new receptionist profile and connect it with a hospital organization so that
+                    front-desk appointment handling, patient coordination, and service support can be managed
+                    professionally through SmartCare HMS.
+                </p>
+
+                <div class="top-highlight-row">
+                    <span class="top-highlight-pill"><i class="bi bi-building"></i> Organization Linked</span>
+                    <span class="top-highlight-pill"><i class="bi bi-shield-check"></i> Secure Account Setup</span>
+                    <span class="top-highlight-pill"><i class="bi bi-calendar2-check"></i> Front Desk Ready</span>
+                </div>
+            </div>
+
+            <div class="admin-form-body">
+                <div class="form-grid">
+
+                    <div class="form-card reveal reveal-left">
+                        <h3 class="section-mini-title">
+                            <span class="title-icon"><i class="bi bi-headset"></i></span>
+                            Receptionist Information
+                        </h3>
+                        <p class="section-description">
+                            Fill in the organization, contact, and account credentials carefully.
+                            This information will be used to create a receptionist profile with access
+                            to front-desk operations, appointment flow, and patient support tools.
+                        </p>
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="field-shell">
+                                        <label class="form-label">{{ form.organization_name.label }}</label>
+                                        {{ form.organization_name }}
+                                        {% if form.organization_name.errors %}
+                                            <small class="field-error">{{ form.organization_name.errors|striptags }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="field-shell">
+                                        <label class="form-label">{{ form.contact.label }}</label>
+                                        {{ form.contact }}
+                                        {% if form.contact.errors %}
+                                            <small class="field-error">{{ form.contact.errors|striptags }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="field-shell">
+                                        <label class="form-label">{{ form.branch_address.label }}</label>
+                                        {{ form.branch_address }}
+                                        {% if form.branch_address.errors %}
+                                            <small class="field-error">{{ form.branch_address.errors|striptags }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="field-shell">
+                                        <label class="form-label">{{ form.username.label }}</label>
+                                        {{ form.username }}
+                                        {% if form.username.errors %}
+                                            <small class="field-error">{{ form.username.errors|striptags }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="field-shell">
+                                        <label class="form-label">{{ form.email.label }}</label>
+                                        {{ form.email }}
+                                        {% if form.email.errors %}
+                                            <small class="field-error">{{ form.email.errors|striptags }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="field-shell">
+                                        <label class="form-label">{{ form.password.label }}</label>
+                                        {{ form.password }}
+                                        {% if form.password.errors %}
+                                            <small class="field-error">{{ form.password.errors|striptags }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="field-shell">
+                                        <label class="form-label">{{ form.confirm_password.label }}</label>
+                                        {{ form.confirm_password }}
+                                        {% if form.confirm_password.errors %}
+                                            <small class="field-error">{{ form.confirm_password.errors|striptags }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger mt-3">
+                                    {{ form.non_field_errors|striptags }}
+                                </div>
+                            {% endif %}
+
+                            <div class="form-footer">
+                                <p class="footer-note">
+                                    After submission, the receptionist account will be ready to support
+                                    hospital front-desk coordination, appointment handling, and patient service activities.
+                                </p>
+
+                                <button type="submit" class="btn-admin-main">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Create Receptionist
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="side-info-card reveal reveal-right">
+                        <span class="info-chip">
+                            <i class="bi bi-info-circle"></i>
+                            Setup Guidance
+                        </span>
+
+                        <h4>Why this information matters</h4>
+                        <p>
+                            A receptionist account is responsible for managing appointment flow,
+                            patient queue visibility, front-desk support, and organization-based coordination.
+                            Accurate setup ensures cleaner healthcare operations inside SmartCare HMS.
+                        </p>
+
+                        <ul class="info-list">
+                            <li>
+                                <span class="info-dot"><i class="bi bi-building"></i></span>
+                                <span><strong>Organization Name</strong> links the receptionist with the correct hospital or service branch.</span>
+                            </li>
+                            <li>
+                                <span class="info-dot"><i class="bi bi-telephone"></i></span>
+                                <span><strong>Contact Details</strong> help maintain professional communication and support access.</span>
+                            </li>
+                            <li>
+                                <span class="info-dot"><i class="bi bi-person-badge"></i></span>
+                                <span><strong>Username & Email</strong> create a unique digital identity for secure login and account recovery.</span>
+                            </li>
+                            <li>
+                                <span class="info-dot"><i class="bi bi-shield-lock"></i></span>
+                                <span><strong>Password Setup</strong> should remain strong and confidential to protect operational access.</span>
+                            </li>
+                        </ul>
+
+                        <div class="security-box">
+                            <h5><i class="bi bi-shield-check me-1"></i>Professional Recommendation</h5>
+                            <p>
+                                Use a clear organization name, valid email address, and a strong password so the receptionist
+                                can securely manage appointments, patients, and front-desk workflow without access issues.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const addReceptionReveal = document.querySelectorAll('.reveal');
+
+    function addReceptionRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.9;
+        addReceptionReveal.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+            if (top < triggerBottom) {
+                setTimeout(() => el.classList.add('show'), index * 80);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', addReceptionRevealOnScroll);
+    window.addEventListener('load', addReceptionRevealOnScroll);
+</script>
+{% endblock %}

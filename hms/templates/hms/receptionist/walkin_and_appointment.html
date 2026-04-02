@@ -1,0 +1,799 @@
+{% extends 'hms/base.html' %}
+{% block title %}Walk-in Patient + Appointment{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #0f172a;
+        --secondary: #1d4ed8;
+        --accent: #38bdf8;
+        --muted: #64748b;
+        --border: #e6edf5;
+        --soft: #f8fbff;
+        --white: #ffffff;
+        --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.05);
+        --shadow-md: 0 16px 34px rgba(15, 23, 42, 0.08);
+        --shadow-lg: 0 24px 50px rgba(15, 23, 42, 0.12);
+        --transition: all 0.35s ease;
+    }
+
+    .combined-page {
+        position: relative;
+        overflow: hidden;
+        padding: 28px 0 56px;
+        background:
+            radial-gradient(circle at top left, rgba(29, 78, 216, 0.05), transparent 24%),
+            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.05), transparent 24%),
+            #f8fbff;
+    }
+
+    .combined-page::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.24), rgba(255,255,255,0));
+        pointer-events: none;
+    }
+
+    .combined-shell {
+        background: #ffffff;
+        border: 1px solid #e9eef5;
+        border-radius: 28px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .combined-top {
+        background:
+            linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 64, 175, 0.86) 55%, rgba(56, 189, 248, 0.76) 100%),
+            url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        color: #ffffff;
+        padding: 42px 36px;
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .combined-top::before,
+    .combined-top::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        z-index: 0;
+    }
+
+    .combined-top::before {
+        width: 220px;
+        height: 220px;
+        top: -70px;
+        right: -60px;
+    }
+
+    .combined-top::after {
+        width: 150px;
+        height: 150px;
+        bottom: -45px;
+        left: -25px;
+    }
+
+    .combined-top > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .combined-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.16);
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        backdrop-filter: blur(10px);
+    }
+
+    .combined-top h2 {
+        margin: 0 0 8px;
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.4px;
+        line-height: 1.08;
+        text-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    }
+
+    .combined-top p {
+        margin: 0;
+        color: rgba(255,255,255,0.94);
+        line-height: 1.8;
+        max-width: 840px;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.14);
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.14);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        backdrop-filter: blur(6px);
+    }
+
+    .combined-body {
+        padding: 24px;
+        background: linear-gradient(to bottom right, #ffffff, #fbfdff);
+    }
+
+    .section-label {
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: #2563eb;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 7px;
+        font-size: 0.94rem;
+    }
+
+    .combined-body .form-control,
+    .combined-body .form-select,
+    .combined-body input,
+    .combined-body select,
+    .combined-body textarea {
+        min-height: 50px;
+        border-radius: 12px;
+        border: 1px solid #dbe3ee;
+        background: #fbfdff;
+        box-shadow: none;
+        padding: 11px 13px;
+        width: 100%;
+        transition: var(--transition);
+    }
+
+    .combined-body textarea.form-control,
+    .combined-body textarea {
+        min-height: 120px;
+        padding-top: 12px;
+    }
+
+    .combined-body .form-control:focus,
+    .combined-body .form-select:focus,
+    .combined-body input:focus,
+    .combined-body select:focus,
+    .combined-body textarea:focus {
+        background: #ffffff;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+        outline: none;
+    }
+
+    .summary-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .summary-box,
+    .pricing-panel,
+    .radio-box,
+    .info-panel {
+        background: #ffffff;
+        border: 1px solid #e8eef7;
+        border-radius: 20px;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .summary-box,
+    .pricing-panel,
+    .radio-box,
+    .info-panel {
+        padding: 20px;
+    }
+
+    .summary-box:hover,
+    .pricing-panel:hover,
+    .radio-box:hover,
+    .info-panel:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .summary-icon,
+    .pricing-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .summary-icon {
+        margin-bottom: 14px;
+    }
+
+    .summary-box h5 {
+        margin: 0 0 6px;
+        font-size: 1rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .summary-box p {
+        margin: 0;
+        color: #64748b;
+        font-size: 0.94rem;
+        line-height: 1.7;
+    }
+
+    .pricing-panel {
+        margin-bottom: 24px;
+        background: linear-gradient(180deg, #ffffff, #f8fbff);
+    }
+
+    .pricing-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .pricing-header h5 {
+        margin: 0;
+        font-size: 1.08rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+    }
+
+    .price-box {
+        background: #f8fbff;
+        border: 1px solid #e7edf5;
+        border-radius: 16px;
+        padding: 18px;
+        transition: var(--transition);
+    }
+
+    .price-box:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    .price-box h6 {
+        margin: 0 0 6px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #475569;
+    }
+
+    .price-box p {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .price-highlight p {
+        color: #1d4ed8;
+    }
+
+    .radio-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .radio-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #334155;
+        font-weight: 600;
+        background: #f8fbff;
+        border: 1px solid #e8eef7;
+        padding: 9px 12px;
+        border-radius: 12px;
+        font-size: 0.94rem;
+    }
+
+    .radio-item input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #2563eb;
+        cursor: pointer;
+    }
+
+    .radio-item label {
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .info-panel h5 {
+        margin: 0 0 10px;
+        font-size: 1rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .info-panel p {
+        margin: 0 0 8px;
+        color: #64748b;
+        line-height: 1.7;
+        font-size: 0.94rem;
+    }
+
+    .info-panel p:last-child {
+        margin-bottom: 0;
+    }
+
+    .btn-combined-submit {
+        min-height: 48px;
+        padding: 11px 24px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        color: #ffffff;
+        font-weight: 800;
+        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+        transition: 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-combined-submit:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 18px 34px rgba(29, 78, 216, 0.22);
+    }
+
+    .required-note {
+        color: #dc2626;
+        font-size: 0.88rem;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+
+    .text-danger {
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s ease;
+    }
+
+    .reveal-up {
+        transform: translateY(35px);
+    }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @media (max-width: 991px) {
+        .summary-strip,
+        .pricing-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .combined-top,
+        .combined-body {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .combined-top h2 {
+            font-size: 1.85rem;
+        }
+
+        .radio-list {
+            flex-direction: column;
+            gap: 12px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{{ doctor_data|json_script:"doctor-data-json" }}
+
+<section class="combined-page">
+    <div class="container">
+        <div class="combined-shell">
+
+            <div class="combined-top reveal reveal-up show">
+                <span class="combined-badge">
+                    <i class="bi bi-person-plus"></i>
+                    SmartCare HMS • Receptionist Smart Intake
+                </span>
+                <h2>Walk-in Patient + Instant Appointment</h2>
+                <p>
+                    Register a walk-in patient and create a consultation appointment through one clean, efficient, and modern front-desk workflow.
+                </p>
+
+                <div class="hero-pills">
+                    <span class="hero-pill"><i class="bi bi-person-vcard"></i> Patient Registration</span>
+                    <span class="hero-pill"><i class="bi bi-person-badge"></i> Doctor Assignment</span>
+                    <span class="hero-pill"><i class="bi bi-cash-stack"></i> Fee Summary</span>
+                    <span class="hero-pill"><i class="bi bi-calendar2-check"></i> Instant Booking</span>
+                </div>
+            </div>
+
+            <div class="combined-body">
+
+                <div class="summary-strip">
+                    <div class="summary-box reveal reveal-up">
+                        <div class="summary-icon"><i class="bi bi-person-vcard"></i></div>
+                        <h5>Register Patient</h5>
+                        <p>Create a secure patient profile instantly from the reception desk.</p>
+                    </div>
+                    <div class="summary-box reveal reveal-up">
+                        <div class="summary-icon"><i class="bi bi-person-badge"></i></div>
+                        <h5>Assign Doctor</h5>
+                        <p>Select the appropriate doctor from your approved organization list.</p>
+                    </div>
+                    <div class="summary-box reveal reveal-up">
+                        <div class="summary-icon"><i class="bi bi-calendar2-check"></i></div>
+                        <h5>Confirm Visit</h5>
+                        <p>Complete patient intake and appointment booking in one smooth process.</p>
+                    </div>
+                </div>
+
+                <div class="pricing-panel reveal reveal-up">
+                    <div class="pricing-header">
+                        <div class="pricing-icon"><i class="bi bi-cash-stack"></i></div>
+                        <h5>Consultation Fee Summary</h5>
+                    </div>
+
+                    <div class="pricing-grid">
+                        <div class="price-box">
+                            <h6>Doctor Fee</h6>
+                            <p id="doctor-fee">0.00</p>
+                        </div>
+                        <div class="price-box">
+                            <h6>Discount</h6>
+                            <p id="discount-percent">0%</p>
+                        </div>
+                        <div class="price-box">
+                            <h6>You Save</h6>
+                            <p id="discount-amount">0.00</p>
+                        </div>
+                        <div class="price-box price-highlight">
+                            <h6>Final Payable</h6>
+                            <p id="final-fee">0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="section-label">Patient Information</div>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.first_name.label }}</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <small class="text-danger">{{ form.first_name.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.last_name.label }}</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <small class="text-danger">{{ form.last_name.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.username.label }}</label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <small class="text-danger">{{ form.username.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.email.label }}</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <small class="text-danger">{{ form.email.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.contact.label }}</label>
+                            {{ form.contact }}
+                            {% if form.contact.errors %}
+                                <small class="text-danger">{{ form.contact.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="radio-box">
+                                <label class="form-label d-block">{{ form.gender.label }}</label>
+                                <div class="radio-list">
+                                    {% for choice in form.gender %}
+                                        <div class="radio-item">
+                                            {{ choice.tag }}
+                                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if form.gender.errors %}
+                                    <small class="text-danger">{{ form.gender.errors|striptags }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-label">Account Security</div>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.password.label }}</label>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <small class="text-danger">{{ form.password.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.confirm_password.label }}</label>
+                            {{ form.confirm_password }}
+                            {% if form.confirm_password.errors %}
+                                <small class="text-danger">{{ form.confirm_password.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="section-label">Appointment Details</div>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.doctor.label }}</label>
+                            {{ form.doctor }}
+                            {% if form.doctor.errors %}
+                                <small class="text-danger">{{ form.doctor.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ form.appointment_date.label }}</label>
+                            {{ form.appointment_date }}
+                            {% if form.appointment_date.errors %}
+                                <small class="text-danger">{{ form.appointment_date.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ form.appointment_time.label }}</label>
+                            {{ form.appointment_time }}
+                            {% if form.appointment_time.errors %}
+                                <small class="text-danger">{{ form.appointment_time.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.problem_category.label }}</label>
+                            {{ form.problem_category }}
+                            {% if form.problem_category.errors %}
+                                <small class="text-danger">{{ form.problem_category.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Consultancy Fee</label>
+                            <input type="text" id="doctor-fee-inline" class="form-control" readonly>
+                        </div>
+                    </div>
+
+                    <div class="section-label">Consultation Preferences</div>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <div class="radio-box">
+                                <label class="form-label d-block">{{ form.appointment_mode.label }}</label>
+                                <div class="radio-list">
+                                    {% for choice in form.appointment_mode %}
+                                        <div class="radio-item">
+                                            {{ choice.tag }}
+                                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if form.appointment_mode.errors %}
+                                    <small class="text-danger">{{ form.appointment_mode.errors|striptags }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="radio-box">
+                                <label class="form-label d-block">{{ form.urgency_level.label }}</label>
+                                <div class="radio-list">
+                                    {% for choice in form.urgency_level %}
+                                        <div class="radio-item">
+                                            {{ choice.tag }}
+                                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if form.urgency_level.errors %}
+                                    <small class="text-danger">{{ form.urgency_level.errors|striptags }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-label">Symptoms</div>
+                    <div class="row g-4 mb-4">
+                        <div class="col-12">
+                            <label class="form-label">{{ form.symptoms.label }}</label>
+                            {{ form.symptoms }}
+                            {% if form.symptoms.errors %}
+                                <small class="text-danger">{{ form.symptoms.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="section-label">Consultation Access</div>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6" id="meeting-link-box">
+                            <div class="info-panel">
+                                <label class="form-label">{{ form.meeting_link.label }}</label>
+                                {{ form.meeting_link }}
+                                <div class="required-note">Meeting link is required for online appointments.</div>
+                                {% if form.meeting_link.errors %}
+                                    <small class="text-danger">{{ form.meeting_link.errors|striptags }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6" id="offline-info-box">
+                            <div class="info-panel">
+                                <h5>Hospital Information</h5>
+                                <p><strong>Hospital:</strong> <span id="doctor-hospital">Select a doctor</span></p>
+                                <p><strong>Location:</strong> <span id="doctor-location">Select a doctor</span></p>
+                            </div>
+                        </div>
+
+                        <div class="col-12" id="visit-note-box">
+                            <label class="form-label">{{ form.visit_note.label }}</label>
+                            {{ form.visit_note }}
+                            {% if form.visit_note.errors %}
+                                <small class="text-danger">{{ form.visit_note.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors|striptags }}</div>
+                    {% endif %}
+
+                    <button type="submit" class="btn-combined-submit">
+                        <i class="bi bi-check2-circle"></i>
+                        Register Patient & Create Appointment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const doctorData = JSON.parse(document.getElementById('doctor-data-json').textContent);
+    const combinedReveal = document.querySelectorAll('.reveal');
+
+    function formatMoney(value) {
+        const num = parseFloat(value || 0);
+        return num.toFixed(2);
+    }
+
+    function getSelectedDoctorInfo() {
+        const doctorSelect = document.getElementById('id_doctor');
+        const selectedDoctorId = doctorSelect ? doctorSelect.value : '';
+        return doctorData.find(item => String(item.id) === String(selectedDoctorId));
+    }
+
+    function updateDoctorInfo() {
+        const doctor = getSelectedDoctorInfo();
+
+        const fee = doctor ? parseFloat(doctor.fee || 0) : 0;
+        const discountPercent = 0;
+        const discountAmount = 0;
+        const finalFee = fee;
+
+        document.getElementById('doctor-hospital').textContent = doctor ? (doctor.hospital_name || '-') : 'Select a doctor';
+        document.getElementById('doctor-location').textContent = doctor ? (doctor.location || '-') : 'Select a doctor';
+
+        document.getElementById('doctor-fee').textContent = formatMoney(fee);
+        document.getElementById('doctor-fee-inline').value = formatMoney(finalFee);
+        document.getElementById('discount-percent').textContent = `${discountPercent}%`;
+        document.getElementById('discount-amount').textContent = formatMoney(discountAmount);
+        document.getElementById('final-fee').textContent = formatMoney(finalFee);
+    }
+
+    function toggleAppointmentModeFields() {
+        const selectedMode = document.querySelector('input[name="appointment_mode"]:checked');
+        const meetingLinkBox = document.getElementById('meeting-link-box');
+        const offlineInfoBox = document.getElementById('offline-info-box');
+        const visitNoteBox = document.getElementById('visit-note-box');
+        const meetingLinkInput = document.getElementById('id_meeting_link');
+
+        if (!selectedMode) return;
+
+        if (selectedMode.value === 'Online') {
+            meetingLinkBox.style.display = 'block';
+            offlineInfoBox.style.display = 'none';
+            visitNoteBox.style.display = 'none';
+            if (meetingLinkInput) {
+                meetingLinkInput.setAttribute('required', 'required');
+            }
+        } else {
+            meetingLinkBox.style.display = 'none';
+            offlineInfoBox.style.display = 'block';
+            visitNoteBox.style.display = 'block';
+            if (meetingLinkInput) {
+                meetingLinkInput.removeAttribute('required');
+            }
+        }
+    }
+
+    function combinedRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.9;
+        combinedReveal.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+            if (top < triggerBottom) {
+                setTimeout(() => el.classList.add('show'), index * 70);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const modeInputs = document.querySelectorAll('input[name="appointment_mode"]');
+        const doctorSelect = document.getElementById('id_doctor');
+
+        modeInputs.forEach(input => {
+            input.addEventListener('change', toggleAppointmentModeFields);
+        });
+
+        if (doctorSelect) {
+            doctorSelect.addEventListener('change', updateDoctorInfo);
+        }
+
+        toggleAppointmentModeFields();
+        updateDoctorInfo();
+        combinedRevealOnScroll();
+    });
+
+    window.addEventListener('scroll', combinedRevealOnScroll);
+</script>
+{% endblock %}

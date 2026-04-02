@@ -1,0 +1,648 @@
+{% extends 'hms/base.html' %}
+{% block title %}Doctor Appointments{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --primary: #0f172a;
+        --secondary: #1d4ed8;
+        --accent: #38bdf8;
+        --success: #16a34a;
+        --warning: #f59e0b;
+        --danger: #dc2626;
+        --muted: #64748b;
+        --border: #e5edf5;
+        --soft: #f8fbff;
+        --white: #ffffff;
+        --shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
+        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
+        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
+        --transition: all 0.35s ease;
+    }
+
+    .section-space {
+        padding: 34px 0 72px;
+    }
+
+    .doctor-appointments-page {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(circle at top left, rgba(29, 78, 216, 0.06), transparent 24%),
+            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.06), transparent 24%),
+            #f8fbff;
+    }
+
+    .doctor-appointments-page::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+        pointer-events: none;
+    }
+
+    .appointment-page-hero {
+        background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #38bdf8 100%);
+        color: #ffffff;
+        border-radius: 28px;
+        padding: 55px 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .appointment-page-hero::before,
+    .appointment-page-hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+    }
+
+    .appointment-page-hero::before {
+        width: 220px;
+        height: 220px;
+        top: -70px;
+        right: -60px;
+    }
+
+    .appointment-page-hero::after {
+        width: 160px;
+        height: 160px;
+        bottom: -50px;
+        left: -30px;
+    }
+
+    .appointment-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.16);
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 18px;
+    }
+
+    .appointment-page-hero h2 {
+        font-size: 2.3rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .appointment-page-hero p {
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 0;
+        line-height: 1.8;
+        max-width: 760px;
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.16);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        backdrop-filter: blur(8px);
+    }
+
+    .summary-row .col-md-4 {
+        display: flex;
+    }
+
+    .appointment-summary-card,
+    .appointment-table-card,
+    .appointment-info-card {
+        background: rgba(255,255,255,0.98);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+        transition: var(--transition);
+    }
+
+    .appointment-summary-card:hover,
+    .appointment-table-card:hover,
+    .appointment-info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .appointment-summary-card {
+        padding: 24px;
+        height: 100%;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(180deg, #ffffff, #f8fbff);
+    }
+
+    .appointment-summary-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #1d4ed8, #38bdf8);
+    }
+
+    .appointment-summary-card::after {
+        content: "";
+        position: absolute;
+        right: -28px;
+        bottom: -28px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(56,189,248,0.10), transparent 70%);
+    }
+
+    .summary-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .summary-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        box-shadow: var(--shadow-sm);
+        flex-shrink: 0;
+    }
+
+    .appointment-summary-card h3 {
+        font-size: 1.95rem;
+        font-weight: 900;
+        color: #1d4ed8;
+        margin-bottom: 6px;
+        line-height: 1.1;
+        word-break: break-word;
+        position: relative;
+        z-index: 2;
+    }
+
+    .appointment-summary-card p {
+        color: #64748b;
+        margin-bottom: 0;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+    }
+
+    .appointment-table-card,
+    .appointment-info-card {
+        padding: 28px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+    }
+
+    .appointment-table-title {
+        font-size: 1.55rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 8px;
+        letter-spacing: -0.3px;
+    }
+
+    .appointment-table-subtitle {
+        color: #64748b;
+        margin-bottom: 24px;
+        line-height: 1.8;
+    }
+
+    .search-box-modern .form-control {
+        min-height: 52px;
+        border-radius: 14px;
+        background: #f8fafc;
+        border: 1px solid #dbe2ea;
+        box-shadow: none;
+        transition: all 0.3s ease;
+    }
+
+    .search-box-modern .form-control:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    }
+
+    .btn-search-modern,
+    .btn-print-modern {
+        min-height: 52px;
+        border-radius: 14px;
+        border: none;
+        color: #ffffff;
+        font-weight: 700;
+        transition: var(--transition);
+    }
+
+    .btn-search-modern {
+        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+    }
+
+    .btn-print-modern {
+        background: linear-gradient(135deg, #0f172a, #334155);
+    }
+
+    .btn-search-modern:hover,
+    .btn-print-modern:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    .doctor-table {
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .doctor-table thead th {
+        background: #f8fafc;
+        color: #0f172a;
+        font-weight: 800;
+        border-bottom: none;
+        padding: 14px 12px;
+        white-space: nowrap;
+        font-size: 0.95rem;
+    }
+
+    .doctor-table tbody td {
+        padding: 14px 12px;
+        color: #475569;
+        border-color: #eef2f7;
+        line-height: 1.7;
+        vertical-align: middle;
+    }
+
+    .doctor-table tbody tr:hover {
+        background: #fafcff;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .status-cancelled {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .status-completed {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status-missed {
+        background: #fef3c7;
+        color: #b45309;
+    }
+
+    .view-prescription-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 13px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #0f172a, #334155);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: var(--transition);
+        white-space: nowrap;
+    }
+
+    .view-prescription-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .mini-info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .mini-info-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 11px 0;
+        border-bottom: 1px solid #edf2f7;
+        color: #475569;
+        line-height: 1.75;
+    }
+
+    .mini-info-list li:last-child {
+        border-bottom: none;
+    }
+
+    .mini-info-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #eff6ff;
+        color: #1d4ed8;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s ease;
+    }
+
+    .reveal-up { transform: translateY(50px); }
+    .reveal-left { transform: translateX(-60px); }
+    .reveal-right { transform: translateX(60px); }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0,0);
+    }
+
+    @media print {
+        .no-print,
+        nav,
+        footer {
+            display: none !important;
+        }
+
+        body {
+            background: #ffffff !important;
+        }
+
+        .appointment-table-card,
+        .appointment-summary-card,
+        .appointment-page-hero,
+        .appointment-info-card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+    }
+
+    @media (max-width: 991px) {
+        .appointment-page-hero {
+            padding: 42px 24px;
+        }
+
+        .appointment-page-hero h2 {
+            font-size: 2rem;
+        }
+
+        .appointment-page-hero-bg {
+            background:
+                linear-gradient(135deg, rgba(15, 23, 42, 0.48) 0%, rgba(29, 78, 216, 0.24) 55%, rgba(56, 189, 248, 0.12) 100%),
+                url('https://images.unsplash.com/photo-1579684453377-8e3f2ea4e8a9?auto=format&fit=crop&w=1800&q=80') center center/cover no-repeat;
+        }
+    }
+</style>
+
+<section class="section-space doctor-appointments-page">
+    <div class="container">
+
+        <div class="appointment-page-hero reveal reveal-up show">
+            <div class="appointment-page-hero-bg"></div>
+
+            <div class="appointment-page-hero-content">
+                <span class="appointment-badge">
+                    <i class="bi bi-calendar2-check"></i>
+                    SmartCare HMS • Doctor Appointments
+                </span>
+                <h2>Appointment List for Dr. {{ doctor.name }}</h2>
+                <p>
+                    Review all consultation records, search by patient contact number, filter by date range,
+                    and print organized appointment details whenever needed for follow-up, documentation, or reporting.
+                </p>
+
+                <div class="hero-pills">
+                    <span class="hero-pill"><i class="bi bi-search"></i> Smart Search</span>
+                    <span class="hero-pill"><i class="bi bi-funnel"></i> Date Filtering</span>
+                    <span class="hero-pill"><i class="bi bi-printer"></i> Quick Print</span>
+                    <span class="hero-pill"><i class="bi bi-file-earmark-medical"></i> Prescription Access</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4 summary-row">
+            <div class="col-md-4">
+                <div class="appointment-summary-card reveal reveal-left">
+                    <div class="summary-top">
+                        <div>
+                            <h3>{{ total_visible }}</h3>
+                            <p>Total Visible Records</p>
+                        </div>
+                        <div class="summary-icon"><i class="bi bi-clipboard-data"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="appointment-summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>{{ doctor.hospital_name }}</h3>
+                            <p>Hospital</p>
+                        </div>
+                        <div class="summary-icon"><i class="bi bi-hospital"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="appointment-summary-card reveal reveal-right">
+                    <div class="summary-top">
+                        <div>
+                            <h3>{{ doctor.specialist }}</h3>
+                            <p>Specialization</p>
+                        </div>
+                        <div class="summary-icon"><i class="bi bi-heart-pulse"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="appointment-table-card reveal reveal-up">
+            <h3 class="appointment-table-title">Appointment Records</h3>
+            <p class="appointment-table-subtitle">
+                Search by patient contact number and filter records by date range.
+                Print the filtered result for clinical review, reporting, or documentation.
+            </p>
+
+            <form method="get" class="row g-3 mb-4 search-box-modern no-print">
+                <div class="col-md-3">
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ query }}"
+                        class="form-control"
+                        placeholder="Search by patient contact"
+                    >
+                </div>
+                <div class="col-md-3">
+                    <input
+                        type="date"
+                        name="from_date"
+                        value="{{ from_date }}"
+                        class="form-control"
+                    >
+                </div>
+                <div class="col-md-3">
+                    <input
+                        type="date"
+                        name="to_date"
+                        value="{{ to_date }}"
+                        class="form-control"
+                    >
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-search-modern w-100">Filter</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" onclick="window.print()" class="btn btn-print-modern w-100">
+                        Print
+                    </button>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table doctor-table">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Contact</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Mode</th>
+                            <th>Category</th>
+                            <th>Urgency</th>
+                            <th>Symptoms</th>
+                            <th>Status</th>
+                            <th>Prescription</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in appointments %}
+                        <tr>
+                            <td>{{ a.patient.first_name }}</td>
+                            <td>{{ a.patient.last_name }}</td>
+                            <td>{{ a.patient.contact }}</td>
+                            <td>{{ a.appointment_date }}</td>
+                            <td>{{ a.appointment_time }}</td>
+                            <td>{{ a.appointment_mode }}</td>
+                            <td>{{ a.problem_category }}</td>
+                            <td>{{ a.urgency_level }}</td>
+                            <td>{{ a.symptoms|truncatewords:8 }}</td>
+                            <td>
+                                {% if a.display_status == 'Completed' %}
+                                    <span class="status-badge status-completed">{{ a.display_status }}</span>
+                                {% elif a.display_status == 'Missed' %}
+                                    <span class="status-badge status-missed">{{ a.display_status }}</span>
+                                {% else %}
+                                    <span class="status-badge status-cancelled">{{ a.display_status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if a.has_prescription %}
+                                    <a href="{% url 'doctor_view_prescription' a.id %}" class="view-prescription-btn">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                        View
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">No Prescription</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="11" class="text-center text-muted py-4">No appointments found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="appointment-info-card reveal reveal-up mt-4">
+            <h3 class="appointment-table-title">Professional Notes</h3>
+            <p class="appointment-table-subtitle">
+                Use appointment history more effectively for follow-up decisions, care review, and organized documentation.
+            </p>
+
+            <ul class="mini-info-list">
+                <li>
+                    <span class="mini-info-dot"><i class="bi bi-search"></i></span>
+                    <span>Search by contact number to locate a patient’s consultation history faster during clinical review.</span>
+                </li>
+                <li>
+                    <span class="mini-info-dot"><i class="bi bi-calendar-range"></i></span>
+                    <span>Apply date range filtering to evaluate appointment activity between selected periods more accurately.</span>
+                </li>
+                <li>
+                    <span class="mini-info-dot"><i class="bi bi-printer"></i></span>
+                    <span>Print filtered appointment records whenever a paper-ready summary is needed for office or reporting use.</span>
+                </li>
+                <li>
+                    <span class="mini-info-dot"><i class="bi bi-prescription2"></i></span>
+                    <span>Open prescription records directly from completed appointments for faster medical reference and continuity of care.</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const appointmentRevealItems = document.querySelectorAll('.reveal');
+
+    function appointmentRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.9;
+        appointmentRevealItems.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+            if (top < triggerBottom) {
+                setTimeout(() => {
+                    el.classList.add('show');
+                }, index * 70);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', appointmentRevealOnScroll);
+    window.addEventListener('load', appointmentRevealOnScroll);
+</script>
+{% endblock %}

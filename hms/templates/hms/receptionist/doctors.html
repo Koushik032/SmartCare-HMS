@@ -1,0 +1,377 @@
+{% extends 'hms/base.html' %}
+{% block title %}Manage Doctors{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #0f172a;
+        --secondary: #1d4ed8;
+        --accent: #38bdf8;
+        --muted: #64748b;
+        --border: #e6edf5;
+        --white: #ffffff;
+        --soft: #f8fbff;
+        --success: #16a34a;
+        --danger: #dc2626;
+        --warning: #f59e0b;
+        --shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
+        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
+        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
+        --transition: all 0.35s ease;
+    }
+
+    body {
+        background:
+            radial-gradient(circle at top left, rgba(56, 189, 248, 0.06), transparent 28%),
+            radial-gradient(circle at bottom right, rgba(29, 78, 216, 0.05), transparent 24%),
+            #f8fbff;
+    }
+
+    .page-space {
+        padding: 34px 0 72px;
+    }
+
+    .hero-box {
+        position: relative;
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(29, 78, 216, 0.86)),
+            url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        color: #fff;
+        border-radius: 30px;
+        padding: 52px 38px;
+        margin-bottom: 28px;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .hero-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.16);
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 14px;
+    }
+
+    .hero-box h1 {
+        font-size: 2.2rem;
+        font-weight: 900;
+        margin-bottom: 10px;
+    }
+
+    .hero-box p {
+        margin: 0;
+        color: rgba(255,255,255,0.92);
+        line-height: 1.85;
+        max-width: 760px;
+    }
+
+    .summary-card,
+    .doctor-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+    }
+
+    .summary-card {
+        padding: 24px;
+        height: 100%;
+    }
+
+    .summary-card:hover,
+    .doctor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .summary-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
+
+    .summary-card h3 {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #1d4ed8;
+        margin-bottom: 6px;
+    }
+
+    .summary-card p {
+        margin: 0;
+        color: var(--muted);
+        font-weight: 600;
+    }
+
+    .doctor-card {
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .doctor-image-wrap {
+        width: 100%;
+        height: 240px;
+        background: #e2e8f0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .doctor-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .doctor-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1d4ed8;
+        font-size: 2.5rem;
+        font-weight: 800;
+    }
+
+    .doctor-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: rgba(15, 23, 42, 0.82);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 7px 12px;
+        border-radius: 999px;
+    }
+
+    .doctor-body {
+        padding: 22px;
+    }
+
+    .doctor-name {
+        font-size: 1.24rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 14px;
+    }
+
+    .doctor-meta {
+        background: #f8fbff;
+        border: 1px solid #e9eff7;
+        border-radius: 14px;
+        padding: 11px 13px;
+        margin-bottom: 10px;
+        color: #475569;
+        line-height: 1.7;
+    }
+
+    .doctor-meta strong {
+        color: #0f172a;
+    }
+
+    .doctor-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid #edf2f7;
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .status-available {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .status-unavailable {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .btn-toggle-availability {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        transition: var(--transition);
+    }
+
+    .btn-make-unavailable {
+        background: #dc2626;
+    }
+
+    .btn-make-unavailable:hover {
+        background: #b91c1c;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-make-available {
+        background: #16a34a;
+    }
+
+    .btn-make-available:hover {
+        background: #15803d;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .empty-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow-md);
+        padding: 42px 24px;
+        text-align: center;
+    }
+
+    .empty-card h4 {
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 10px;
+    }
+
+    .empty-card p {
+        color: var(--muted);
+        margin: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-space">
+    <div class="container">
+
+        <div class="hero-box">
+            <span class="hero-chip">
+                <i class="bi bi-headset"></i>
+                Reception Desk Management
+            </span>
+            <h1>Manage Doctors Availability</h1>
+            <p>
+                Control which doctors are currently available for patients in {{ receptionist.organization_name }}.
+                If a doctor is marked unavailable, patients will not see that doctor in their booking list.
+            </p>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="summary-card">
+                    <div class="summary-icon"><i class="bi bi-heart-pulse"></i></div>
+                    <h3>{{ doctors|length }}</h3>
+                    <p>Total Hospital Doctors</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="summary-card">
+                    <div class="summary-icon"><i class="bi bi-building"></i></div>
+                    <h3>{{ receptionist.organization_name }}</h3>
+                    <p>Hospital / Organization</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="summary-card">
+                    <div class="summary-icon"><i class="bi bi-shield-check"></i></div>
+                    <h3>Live</h3>
+                    <p>Availability Control</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for doctor in doctors %}
+            <div class="col-md-6 col-lg-4">
+                <div class="doctor-card">
+                    <div class="doctor-image-wrap">
+                        {% if doctor.photo %}
+                            <img src="{{ doctor.photo.url }}" alt="{{ doctor.name }}" class="doctor-image">
+                        {% else %}
+                            <div class="doctor-placeholder">{{ doctor.name|slice:":1" }}</div>
+                        {% endif %}
+                        <span class="doctor-badge">{{ doctor.specialist|default:"Doctor" }}</span>
+                    </div>
+
+                    <div class="doctor-body">
+                        <h4 class="doctor-name">Dr. {{ doctor.name }}</h4>
+
+                        <div class="doctor-meta">
+                            <strong>Hospital:</strong> {{ doctor.hospital_name }}
+                        </div>
+
+                        <div class="doctor-meta">
+                            <strong>Location:</strong> {{ doctor.location|default:"Not provided" }}
+                        </div>
+
+                        <div class="doctor-meta">
+                            <strong>Fee:</strong> {{ doctor.consultancy_fee }}
+                        </div>
+
+                        <div class="doctor-footer">
+                            {% if doctor.is_available %}
+                                <span class="status-pill status-available">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Available
+                                </span>
+                                <a href="{% url 'receptionist_toggle_doctor_availability' doctor.id %}" class="btn-toggle-availability btn-make-unavailable">
+                                    <i class="bi bi-x-circle"></i>
+                                    Make Unavailable
+                                </a>
+                            {% else %}
+                                <span class="status-pill status-unavailable">
+                                    <i class="bi bi-slash-circle-fill"></i>
+                                    Unavailable
+                                </span>
+                                <a href="{% url 'receptionist_toggle_doctor_availability' doctor.id %}" class="btn-toggle-availability btn-make-available">
+                                    <i class="bi bi-check-circle"></i>
+                                    Make Available
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-card">
+                    <h4>No doctors found</h4>
+                    <p>No approved doctors are currently linked with {{ receptionist.organization_name }}.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

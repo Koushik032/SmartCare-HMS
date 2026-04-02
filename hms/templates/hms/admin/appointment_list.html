@@ -1,0 +1,706 @@
+{% extends 'hms/base.html' %}
+{% block title %}All Appointments{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #0f172a;
+        --primary-2: #1e293b;
+        --secondary: #1d4ed8;
+        --accent: #38bdf8;
+        --accent-2: #0ea5e9;
+        --muted: #64748b;
+        --border: #e5edf5;
+        --soft: #f8fbff;
+        --white: #ffffff;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #0ea5e9;
+        --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.06);
+        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
+        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
+        --shadow-blue: 0 18px 45px rgba(29, 78, 216, 0.22);
+        --transition: all 0.35s ease;
+        --gradient-blue: linear-gradient(135deg, #1d4ed8, #38bdf8);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at top left, rgba(56, 189, 248, 0.06), transparent 28%),
+            radial-gradient(circle at bottom right, rgba(29, 78, 216, 0.05), transparent 24%),
+            #f8fbff;
+    }
+
+    .appointment-page {
+        padding: 34px 0 74px;
+    }
+
+    .page-hero {
+        position: relative;
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(29, 78, 216, 0.86) 58%, rgba(56, 189, 248, 0.72) 100%),
+            url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border-radius: 32px;
+        padding: 56px 42px;
+        margin-bottom: 26px;
+        box-shadow: var(--shadow-lg);
+        isolation: isolate;
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .page-hero::before,
+    .page-hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        z-index: -1;
+    }
+
+    .page-hero::before {
+        width: 250px;
+        height: 250px;
+        top: -80px;
+        right: -70px;
+    }
+
+    .page-hero::after {
+        width: 170px;
+        height: 170px;
+        bottom: -45px;
+        left: -25px;
+    }
+
+    .hero-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.16);
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-highlight {
+        display: inline-block;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+        border: 1px solid rgba(255,255,255,0.14);
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 14px;
+        backdrop-filter: blur(8px);
+    }
+
+    .page-hero h2 {
+        font-size: 2.3rem;
+        font-weight: 900;
+        margin-bottom: 10px;
+        letter-spacing: -0.5px;
+    }
+
+    .page-hero p {
+        color: rgba(255,255,255,0.92);
+        margin-bottom: 0;
+        line-height: 1.9;
+        max-width: 760px;
+    }
+
+    .stats-row {
+        margin-bottom: 28px;
+    }
+
+    .stats-card {
+        background: rgba(255,255,255,0.97);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 28px 22px;
+        box-shadow: var(--shadow-md);
+        height: 100%;
+        text-align: center;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-7px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .stats-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(29, 78, 216, 0.02), rgba(56, 189, 248, 0.05));
+        opacity: 0;
+        transition: var(--transition);
+    }
+
+    .stats-card:hover::before {
+        opacity: 1;
+    }
+
+    .stats-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        margin: 0 auto 14px;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+        color: var(--secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        z-index: 2;
+    }
+
+    .stats-card h3 {
+        font-size: 1.95rem;
+        font-weight: 900;
+        color: var(--secondary);
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .stats-card p {
+        margin: 0;
+        color: var(--muted);
+        font-weight: 700;
+        position: relative;
+        z-index: 2;
+    }
+
+    .search-shell {
+        background: rgba(255,255,255,0.98);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        padding: 24px;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 30px;
+    }
+
+    .search-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+
+    .search-title {
+        margin: 0;
+        color: var(--primary);
+        font-size: 1.1rem;
+        font-weight: 800;
+    }
+
+    .search-subtitle {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+
+    .search-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #eff6ff;
+        color: var(--secondary);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .search-shell .form-control {
+        min-height: 58px;
+        border-radius: 16px;
+        background: #f8fafc;
+        border: 1px solid #dbe2ea;
+        box-shadow: none;
+        padding-left: 16px;
+    }
+
+    .search-shell .form-control:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    }
+
+    .btn-search-modern {
+        min-height: 58px;
+        border-radius: 16px;
+        border: none;
+        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        color: #ffffff;
+        font-weight: 800;
+        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+        transition: var(--transition);
+    }
+
+    .btn-search-modern:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    .appointment-card {
+        background: rgba(255,255,255,0.98);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        box-shadow: var(--shadow-md);
+        height: 100%;
+        overflow: hidden;
+        transition: var(--transition);
+        position: relative;
+    }
+
+    .appointment-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .appointment-image-wrap {
+        position: relative;
+        width: 100%;
+        height: 220px;
+        overflow: hidden;
+        background: #e2e8f0;
+    }
+
+    .appointment-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+    }
+
+    .appointment-card:hover .appointment-image {
+        transform: scale(1.05);
+    }
+
+    .appointment-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1d4ed8;
+        font-size: 2.6rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+    }
+
+    .appointment-top-badge {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: rgba(15, 23, 42, 0.82);
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 7px 12px;
+        border-radius: 999px;
+        backdrop-filter: blur(8px);
+    }
+
+    .appointment-top {
+        background: linear-gradient(135deg, #eff6ff, #f8fbff);
+        padding: 20px 22px;
+        border-bottom: 1px solid #e8eef7;
+    }
+
+    .appointment-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .appointment-top h4 {
+        font-size: 1.22rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
+
+    .appointment-top p {
+        color: #64748b;
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    .appointment-body {
+        padding: 22px;
+    }
+
+    .appointment-meta-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .appointment-meta {
+        margin: 0;
+        color: #475569;
+        line-height: 1.75;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .appointment-meta i {
+        color: var(--secondary);
+        margin-top: 4px;
+    }
+
+    .appointment-meta strong {
+        color: #0f172a;
+    }
+
+    .appointment-footer {
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid #edf2f7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .status-pending {
+        background: #fef3c7;
+        color: #b45309;
+    }
+
+    .status-confirmed,
+    .status-approved {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-completed {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status-cancelled,
+    .status-rejected {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .status-default {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+
+    .mode-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        background: #f8fafc;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+    .empty-state-card {
+        background: rgba(255,255,255,0.98);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        box-shadow: var(--shadow-md);
+        padding: 54px 22px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 78px;
+        height: 78px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        margin: 0 auto 18px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .empty-state-card h4 {
+        color: #0f172a;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .empty-state-card p {
+        color: #64748b;
+        margin-bottom: 0;
+        line-height: 1.8;
+        max-width: 620px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s ease;
+    }
+
+    .reveal-left { transform: translateX(-60px); }
+    .reveal-right { transform: translateX(60px); }
+    .reveal-up { transform: translateY(50px); }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+
+    @media (max-width: 991px) {
+        .page-hero {
+            padding: 40px 24px;
+        }
+
+        .page-hero h2 {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-hero {
+            padding: 34px 20px;
+            border-radius: 24px;
+        }
+
+        .page-hero h2 {
+            font-size: 1.8rem;
+        }
+
+        .search-shell,
+        .appointment-card,
+        .empty-state-card {
+            border-radius: 22px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section-space appointment-page">
+    <div class="container">
+
+        <div class="page-hero reveal reveal-up show">
+            <span class="hero-chip">
+                <i class="bi bi-shield-check"></i>
+                Admin Panel
+            </span>
+
+            <div class="hero-highlight">
+                Review and manage appointments through a modern healthcare dashboard
+            </div>
+
+            <h2>All Appointments</h2>
+            <p>
+                Search appointments by doctor, patient, or hospital and review the full appointment list
+                through a clean, professional, and visually organized interface.
+            </p>
+        </div>
+
+        <div class="row g-4 stats-row">
+            <div class="col-md-4">
+                <div class="stats-card reveal reveal-left">
+                    <div class="stats-icon"><i class="bi bi-calendar2-check"></i></div>
+                    <h3>{{ appointments|length }}</h3>
+                    <p>Visible Appointments</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card reveal reveal-up">
+                    <div class="stats-icon"><i class="bi bi-search-heart"></i></div>
+                    <h3>Smart</h3>
+                    <p>Appointment Search</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card reveal reveal-right">
+                    <div class="stats-icon"><i class="bi bi-clipboard2-pulse"></i></div>
+                    <h3>Live</h3>
+                    <p>Status Tracking</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-shell reveal reveal-up">
+            <div class="search-header">
+                <div>
+                    <h3 class="search-title">Search Appointments</h3>
+                    <p class="search-subtitle">Find appointment records by doctor, patient, hospital, or related details.</p>
+                </div>
+                <span class="search-badge">
+                    <i class="bi bi-hospital"></i>
+                    Appointment Directory
+                </span>
+            </div>
+
+            <form method="get" class="row g-3">
+                <div class="col-md-10">
+                    <input
+                        type="text"
+                        name="q"
+                        class="form-control"
+                        value="{{ query }}"
+                        placeholder="Search by doctor, patient, hospital, or email"
+                    >
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-search-modern w-100">
+                        <i class="bi bi-search me-1"></i>
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="row g-4">
+            {% for a in appointments %}
+            <div class="col-md-6 col-lg-4">
+                <div class="appointment-card reveal reveal-up">
+
+                    <div class="appointment-image-wrap">
+                        {% if a.patient.photo %}
+                            <img src="{{ a.patient.photo.url }}" alt="{{ a.patient.first_name }}" class="appointment-image">
+                        {% else %}
+                            <div class="appointment-placeholder">
+                                {{ a.patient.first_name|slice:":1" }}{{ a.patient.last_name|slice:":1" }}
+                            </div>
+                        {% endif %}
+                        <span class="appointment-top-badge">Patient Profile</span>
+                    </div>
+
+                    <div class="appointment-top">
+                        <span class="appointment-chip">
+                            <i class="bi bi-calendar2-check"></i>
+                            Appointment Record
+                        </span>
+                        <h4>{{ a.patient.first_name }} {{ a.patient.last_name }}</h4>
+                        <p>Doctor: {{ a.doctor.name }}</p>
+                    </div>
+
+                    <div class="appointment-body">
+                        <div class="appointment-meta-list">
+                            <p class="appointment-meta">
+                                <i class="bi bi-calendar-event"></i>
+                                <span><strong>Date:</strong> {{ a.appointment_date }}</span>
+                            </p>
+
+                            <p class="appointment-meta">
+                                <i class="bi bi-clock"></i>
+                                <span><strong>Time:</strong> {{ a.appointment_time }}</span>
+                            </p>
+
+                            <p class="appointment-meta">
+                                <i class="bi bi-building"></i>
+                                <span><strong>Hospital:</strong> {{ a.doctor.hospital_name|default:"Not provided" }}</span>
+                            </p>
+
+                            <p class="appointment-meta">
+                                <i class="bi bi-telephone"></i>
+                                <span><strong>Contact:</strong> {{ a.patient.contact|default:"Not available" }}</span>
+                            </p>
+
+                            <p class="appointment-meta">
+                                <i class="bi bi-heart-pulse"></i>
+                                <span><strong>Symptoms:</strong> {{ a.symptoms|default:"-" }}</span>
+                            </p>
+                        </div>
+
+                        <div class="appointment-footer">
+                            <span class="status-badge
+                                {% if a.status|lower == 'pending' %}status-pending
+                                {% elif a.status|lower == 'confirmed' or a.status|lower == 'approved' %}status-confirmed
+                                {% elif a.status|lower == 'completed' %}status-completed
+                                {% elif a.status|lower == 'cancelled' or a.status|lower == 'rejected' %}status-cancelled
+                                {% else %}status-default{% endif %}">
+                                <i class="bi bi-activity"></i>
+                                {{ a.status }}
+                            </span>
+
+                            <span class="mode-badge">
+                                <i class="bi bi-display"></i>
+                                {{ a.appointment_mode|default:"Not specified" }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-state-card reveal reveal-up">
+                    <div class="empty-icon"><i class="bi bi-calendar-x"></i></div>
+                    <h4>No Appointments Found</h4>
+                    <p>
+                        No appointments matched your current search or selected filters.
+                        Try another keyword to explore the appointment directory.
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const appointmentReveal = document.querySelectorAll('.reveal');
+
+    function appointmentRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.88;
+        appointmentReveal.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+            if (top < triggerBottom) {
+                setTimeout(() => {
+                    el.classList.add('show');
+                }, index * 50);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', appointmentRevealOnScroll);
+    window.addEventListener('load', appointmentRevealOnScroll);
+</script>
+{% endblock %}
