@@ -4,115 +4,149 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --muted: #64748b;
-        --border: #e6edf5;
-        --soft: #f8fbff;
-        --white: #ffffff;
-        --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.05);
-        --shadow-md: 0 16px 34px rgba(15, 23, 42, 0.08);
-        --shadow-lg: 0 24px 50px rgba(15, 23, 42, 0.12);
-        --transition: all 0.35s ease;
+        --wi-primary: #07111f;
+        --wi-dark: #0f172a;
+        --wi-blue: #2563eb;
+        --wi-blue-dark: #1d4ed8;
+        --wi-cyan: #06b6d4;
+        --wi-green: #16a34a;
+        --wi-orange: #f59e0b;
+        --wi-red: #dc2626;
+        --wi-muted: #64748b;
+        --wi-border: rgba(148, 163, 184, 0.24);
+        --wi-soft: #f8fbff;
+        --wi-white: #ffffff;
+
+        --wi-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --wi-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --wi-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --wi-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --wi-gradient-green: linear-gradient(135deg, #16a34a, #22c55e);
+        --wi-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --wi-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
     }
 
-    .combined-page {
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
+    }
+
+    .walkin-page {
         position: relative;
         overflow: hidden;
-        padding: 28px 0 56px;
-        background:
-            radial-gradient(circle at top left, rgba(29, 78, 216, 0.05), transparent 24%),
-            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.05), transparent 24%),
-            #f8fbff;
+        padding: 36px 0 76px;
     }
 
-    .combined-page::before {
+    .walkin-page::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.24), rgba(255,255,255,0));
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
         pointer-events: none;
     }
 
-    .combined-shell {
-        background: #ffffff;
-        border: 1px solid #e9eef5;
-        border-radius: 28px;
-        box-shadow: var(--shadow-lg);
-        overflow: hidden;
-        position: relative;
-    }
-
-    .combined-top {
-        background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 64, 175, 0.86) 55%, rgba(56, 189, 248, 0.76) 100%),
-            url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: #ffffff;
-        padding: 42px 36px;
-        position: relative;
-        overflow: hidden;
-        isolation: isolate;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .combined-top::before,
-    .combined-top::after {
+    .walkin-page::after {
         content: "";
         position: absolute;
+        width: 380px;
+        height: 380px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
-        z-index: 0;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
+        pointer-events: none;
     }
 
-    .combined-top::before {
-        width: 220px;
-        height: 220px;
-        top: -70px;
-        right: -60px;
-    }
-
-    .combined-top::after {
-        width: 150px;
-        height: 150px;
-        bottom: -45px;
-        left: -25px;
-    }
-
-    .combined-top > * {
+    .walkin-hero {
         position: relative;
-        z-index: 2;
+        overflow: hidden;
+        border-radius: 32px;
+        padding: 54px 46px;
+        margin-bottom: 20px;
+        background:
+            var(--wi-gradient-dark),
+            url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--wi-shadow-lg);
+        isolation: isolate;
     }
 
-    .combined-badge {
+    .walkin-hero::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -170px;
+        right: -140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
+    }
+
+    .walkin-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .hero-chip,
+    .hero-highlight,
+    .hero-pill {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 7px 14px;
+        gap: 7px;
         border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .hero-chip {
+        padding: 8px 15px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
-        font-size: 12px;
-        font-weight: 700;
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
         margin-bottom: 12px;
-        backdrop-filter: blur(10px);
     }
 
-    .combined-top h2 {
-        margin: 0 0 8px;
-        font-size: 2rem;
-        font-weight: 900;
-        letter-spacing: -0.4px;
+    .hero-highlight {
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
+        margin-bottom: 14px;
+    }
+
+    .walkin-hero h2 {
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
         line-height: 1.08;
-        text-shadow: 0 10px 24px rgba(0,0,0,0.18);
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 980px;
     }
 
-    .combined-top p {
-        margin: 0;
-        color: rgba(255,255,255,0.94);
-        line-height: 1.8;
-        max-width: 840px;
-        text-shadow: 0 4px 12px rgba(0,0,0,0.14);
+    .walkin-hero p {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 980px;
+        margin-bottom: 0;
+        font-size: 1rem;
     }
 
     .hero-pills {
@@ -123,197 +157,369 @@
     }
 
     .hero-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.10);
-        border: 1px solid rgba(255,255,255,0.14);
-        color: #fff;
-        font-size: 12px;
-        font-weight: 600;
-        backdrop-filter: blur(6px);
-    }
-
-    .combined-body {
-        padding: 24px;
-        background: linear-gradient(to bottom right, #ffffff, #fbfdff);
-    }
-
-    .section-label {
-        font-size: 0.82rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        color: #2563eb;
-        text-transform: uppercase;
-        margin-bottom: 16px;
-    }
-
-    .form-label {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
         font-weight: 700;
-        color: #334155;
-        margin-bottom: 7px;
-        font-size: 0.94rem;
     }
 
-    .combined-body .form-control,
-    .combined-body .form-select,
-    .combined-body input,
-    .combined-body select,
-    .combined-body textarea {
-        min-height: 50px;
-        border-radius: 12px;
-        border: 1px solid #dbe3ee;
-        background: #fbfdff;
-        box-shadow: none;
-        padding: 11px 13px;
-        width: 100%;
-        transition: var(--transition);
+    .summary-card,
+    .form-card,
+    .form-section-card,
+    .pricing-card,
+    .access-card,
+    .guide-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--wi-border);
+        border-radius: 28px;
+        box-shadow: var(--wi-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--wi-transition);
     }
 
-    .combined-body textarea.form-control,
-    .combined-body textarea {
-        min-height: 120px;
-        padding-top: 12px;
+    .summary-card::before,
+    .form-card::before,
+    .form-section-card::before,
+    .pricing-card::before,
+    .access-card::before,
+    .guide-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
     }
 
-    .combined-body .form-control:focus,
-    .combined-body .form-select:focus,
-    .combined-body input:focus,
-    .combined-body select:focus,
-    .combined-body textarea:focus {
-        background: #ffffff;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-        outline: none;
+    .summary-card > *,
+    .form-card > *,
+    .form-section-card > *,
+    .pricing-card > *,
+    .access-card > *,
+    .guide-card > * {
+        position: relative;
+        z-index: 2;
     }
 
-    .summary-strip {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-bottom: 24px;
-    }
-
-    .summary-box,
-    .pricing-panel,
-    .radio-box,
-    .info-panel {
-        background: #ffffff;
-        border: 1px solid #e8eef7;
-        border-radius: 20px;
-        transition: var(--transition);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .summary-box,
-    .pricing-panel,
-    .radio-box,
-    .info-panel {
-        padding: 20px;
-    }
-
-    .summary-box:hover,
-    .pricing-panel:hover,
-    .radio-box:hover,
-    .info-panel:hover {
+    .summary-card:hover,
+    .form-card:hover,
+    .form-section-card:hover,
+    .pricing-card:hover,
+    .access-card:hover,
+    .guide-card:hover {
         transform: translateY(-4px);
-        box-shadow: var(--shadow-md);
+        box-shadow: var(--wi-shadow-md);
+        border-color: rgba(37,99,235,0.28);
     }
 
-    .summary-icon,
-    .pricing-icon {
-        width: 52px;
-        height: 52px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
+    .summary-row {
+        --bs-gutter-x: 10px;
+        --bs-gutter-y: 10px;
+        margin-bottom: 20px;
+    }
+
+    .summary-row > [class*="col-"] {
+        display: flex;
+    }
+
+    .summary-card {
+        width: 100%;
+        min-height: 136px;
+        padding: 19px 17px;
+        border-radius: 21px;
+    }
+
+    .summary-card::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 4px;
+        width: 100%;
+        background: var(--wi-gradient-main);
+    }
+
+    .summary-top {
         display: flex;
         align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        box-shadow: var(--shadow-sm);
+        justify-content: space-between;
+        gap: 12px;
+        height: 100%;
     }
 
     .summary-icon {
-        margin-bottom: 14px;
-    }
-
-    .summary-box h5 {
-        margin: 0 0 6px;
-        font-size: 1rem;
-        font-weight: 800;
-        color: #0f172a;
-    }
-
-    .summary-box p {
-        margin: 0;
-        color: #64748b;
-        font-size: 0.94rem;
-        line-height: 1.7;
-    }
-
-    .pricing-panel {
-        margin-bottom: 24px;
-        background: linear-gradient(180deg, #ffffff, #f8fbff);
-    }
-
-    .pricing-header {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--wi-blue-dark);
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: center;
+        font-size: 21px;
+        box-shadow: inset 0 1px 0 #ffffff, 0 8px 18px rgba(15,23,42,0.06);
+        flex-shrink: 0;
+    }
+
+    .summary-card h3 {
+        color: var(--wi-blue-dark);
+        font-size: 1.32rem;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+        margin-bottom: 5px;
+        line-height: 1.15;
+        max-width: 190px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .summary-card p {
+        margin: 0;
+        color: var(--wi-muted);
+        font-weight: 800;
+        font-size: 0.84rem;
+        line-height: 1.38;
+    }
+
+    .walkin-layout {
+        display: grid;
+        grid-template-columns: 1.18fr 0.82fr;
+        gap: 22px;
+        align-items: start;
+    }
+
+    .form-card,
+    .pricing-card,
+    .access-card,
+    .guide-card {
+        padding: 24px;
+    }
+
+    .right-stack {
+        display: grid;
+        gap: 18px;
+        position: sticky;
+        top: 20px;
+    }
+
+    .section-topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
         margin-bottom: 18px;
     }
 
-    .pricing-header h5 {
-        margin: 0;
-        font-size: 1.08rem;
-        font-weight: 800;
-        color: #0f172a;
+    .section-title {
+        font-size: 1.32rem;
+        font-weight: 950;
+        color: var(--wi-primary);
+        margin-bottom: 6px;
+        letter-spacing: -0.35px;
+        line-height: 1.28;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
-    .pricing-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
+    .section-title i {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        background: #eff6ff;
+        color: var(--wi-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
     }
 
-    .price-box {
-        background: #f8fbff;
-        border: 1px solid #e7edf5;
-        border-radius: 16px;
+    .section-subtitle {
+        color: var(--wi-muted);
+        margin-bottom: 0;
+        line-height: 1.68;
+        font-size: 0.92rem;
+    }
+
+    .section-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--wi-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
+    }
+
+    .form-section-card {
         padding: 18px;
-        transition: var(--transition);
+        margin-bottom: 18px;
+        border-radius: 24px;
+        background:
+            radial-gradient(circle at top right, rgba(37,99,235,0.04), transparent 32%),
+            linear-gradient(135deg, #ffffff, #f8fbff);
     }
 
-    .price-box:hover {
+    .mini-section-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--wi-primary);
+        font-size: 1.02rem;
+        font-weight: 950;
+        margin-bottom: 16px;
+        letter-spacing: -0.2px;
+    }
+
+    .mini-section-title i {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: var(--wi-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .field-box {
+        padding: 14px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        height: 100%;
+        transition: var(--wi-transition);
+    }
+
+    .field-box:hover {
         background: #ffffff;
+        border-color: rgba(37,99,235,0.24);
+        box-shadow: var(--wi-shadow-sm);
         transform: translateY(-2px);
     }
 
-    .price-box h6 {
-        margin: 0 0 6px;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #475569;
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #334155;
+        font-size: 0.9rem;
+        font-weight: 950;
+        margin-bottom: 9px;
     }
 
-    .price-box p {
-        margin: 0;
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: #0f172a;
+    .field-icon {
+        width: 29px;
+        height: 29px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: var(--wi-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        flex-shrink: 0;
     }
 
-    .price-highlight p {
-        color: #1d4ed8;
+    .walkin-page .form-control,
+    .walkin-page .form-select,
+    .walkin-page input,
+    .walkin-page select,
+    .walkin-page textarea {
+        min-height: 52px;
+        border-radius: 15px;
+        border: 1px solid #dbe3ee;
+        background: #ffffff;
+        box-shadow: none !important;
+        padding: 12px 14px;
+        width: 100%;
+        transition: var(--wi-transition);
+        color: #334155;
+        font-size: 0.92rem;
+    }
+
+    .walkin-page textarea.form-control,
+    .walkin-page textarea {
+        min-height: 130px;
+        padding-top: 12px;
+        resize: vertical;
+    }
+
+    .walkin-page .form-control:focus,
+    .walkin-page .form-select:focus,
+    .walkin-page input:focus,
+    .walkin-page select:focus,
+    .walkin-page textarea:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10) !important;
+        outline: none;
+    }
+
+    .readonly-fee {
+        background: #eff6ff !important;
+        color: var(--wi-blue-dark) !important;
+        font-weight: 950;
+        border-color: #dbeafe !important;
+    }
+
+    .helper-text {
+        display: block;
+        margin-top: 7px;
+        color: var(--wi-muted);
+        font-size: 0.83rem;
+        line-height: 1.55;
+    }
+
+    .required-note {
+        display: block;
+        margin-top: 7px;
+        color: var(--wi-red);
+        font-size: 0.84rem;
+        font-weight: 850;
+        line-height: 1.55;
+    }
+
+    .text-danger {
+        display: block;
+        margin-top: 7px;
+        color: var(--wi-red) !important;
+        font-size: 0.84rem;
+        font-weight: 850;
+        line-height: 1.55;
+    }
+
+    .radio-box {
+        padding: 16px;
+        border-radius: 20px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        height: 100%;
+        transition: var(--wi-transition);
+    }
+
+    .radio-box:hover {
+        background: #ffffff;
+        border-color: rgba(37,99,235,0.24);
+        box-shadow: var(--wi-shadow-sm);
+        transform: translateY(-2px);
     }
 
     .radio-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 10px;
     }
 
     .radio-item {
@@ -321,19 +527,30 @@
         align-items: center;
         gap: 8px;
         color: #334155;
-        font-weight: 600;
-        background: #f8fbff;
-        border: 1px solid #e8eef7;
-        padding: 9px 12px;
-        border-radius: 12px;
-        font-size: 0.94rem;
+        font-weight: 850;
+        background: #ffffff;
+        border: 1px solid #dbe3ee;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-size: 0.88rem;
+        transition: var(--wi-transition);
+        cursor: pointer;
+    }
+
+    .radio-item:hover {
+        background: #eff6ff;
+        border-color: rgba(37,99,235,0.28);
+        transform: translateY(-1px);
     }
 
     .radio-item input[type="radio"] {
-        width: 18px;
-        height: 18px;
+        width: 18px !important;
+        height: 18px !important;
+        min-height: auto !important;
+        padding: 0 !important;
         accent-color: #2563eb;
         cursor: pointer;
+        flex-shrink: 0;
     }
 
     .radio-item label {
@@ -341,91 +558,303 @@
         margin: 0;
     }
 
-    .info-panel h5 {
-        margin: 0 0 10px;
-        font-size: 1rem;
-        font-weight: 800;
-        color: #0f172a;
+    .pricing-card {
+        background:
+            radial-gradient(circle at top right, rgba(22,163,74,0.08), transparent 32%),
+            linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248,251,255,0.96));
     }
 
-    .info-panel p {
-        margin: 0 0 8px;
-        color: #64748b;
-        line-height: 1.7;
-        font-size: 0.94rem;
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
     }
 
-    .info-panel p:last-child {
+    .price-box {
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        border-radius: 18px;
+        padding: 14px;
+        transition: var(--wi-transition);
+    }
+
+    .price-box:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--wi-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .price-box h6 {
+        margin: 0 0 6px;
+        font-size: 0.78rem;
+        font-weight: 900;
+        color: var(--wi-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .price-box p {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 950;
+        color: var(--wi-primary);
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
+
+    .price-highlight {
+        background: linear-gradient(135deg, #eff6ff, #ecfeff);
+        border-color: #bfdbfe;
+    }
+
+    .price-highlight p {
+        color: var(--wi-blue-dark);
+        font-size: 1.28rem;
+    }
+
+    .access-card {
+        background:
+            radial-gradient(circle at top right, rgba(245,158,11,0.08), transparent 32%),
+            linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,251,235,0.76));
+    }
+
+    .info-line {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 16px;
+        background: #ffffff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.6;
+        margin-bottom: 10px;
+        font-size: 0.88rem;
+    }
+
+    .info-line:last-child {
         margin-bottom: 0;
     }
 
-    .btn-combined-submit {
+    .info-line i {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--wi-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .info-line strong {
+        color: var(--wi-primary);
+        font-weight: 950;
+    }
+
+    .guide-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+    }
+
+    .guide-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 13px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.62;
+        transition: var(--wi-transition);
+        font-size: 0.88rem;
+    }
+
+    .guide-list li:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--wi-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .guide-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--wi-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 900;
+        flex-shrink: 0;
+    }
+
+    .submit-panel {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 22px;
+        background:
+            radial-gradient(circle at top right, rgba(37,99,235,0.06), transparent 30%),
+            linear-gradient(135deg, #ffffff, #f8fbff);
+        border: 1px solid #e5edf7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .submit-note {
+        color: var(--wi-muted);
+        line-height: 1.65;
+        font-size: 0.9rem;
+        margin: 0;
+        max-width: 560px;
+    }
+
+    .submit-note strong {
+        color: var(--wi-primary);
+    }
+
+    .btn-walkin-submit {
         min-height: 48px;
-        padding: 11px 24px;
+        padding: 10px 22px;
         border: none;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        border-radius: 999px;
+        background: var(--wi-gradient-green);
         color: #ffffff;
-        font-weight: 800;
-        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
-        transition: 0.25s ease;
+        font-weight: 900;
+        box-shadow: 0 10px 22px rgba(22,163,74,0.18);
+        transition: var(--wi-transition);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
+        white-space: nowrap;
     }
 
-    .btn-combined-submit:hover {
+    .btn-walkin-submit:hover {
         color: #ffffff;
         transform: translateY(-2px);
-        box-shadow: 0 18px 34px rgba(29, 78, 216, 0.22);
-    }
-
-    .required-note {
-        color: #dc2626;
-        font-size: 0.88rem;
-        font-weight: 600;
-        margin-top: 8px;
-    }
-
-    .text-danger {
-        font-size: 0.85rem;
-        font-weight: 600;
+        box-shadow: 0 14px 28px rgba(22,163,74,0.24);
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
     .reveal-up {
-        transform: translateY(35px);
+        transform: translateY(40px);
+    }
+
+    .reveal-left {
+        transform: translateX(-42px);
+    }
+
+    .reveal-right {
+        transform: translateX(42px);
     }
 
     .reveal.show {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate(0, 0);
     }
 
     @media (max-width: 991px) {
-        .summary-strip,
+        .walkin-page {
+            padding: 30px 0 62px;
+        }
+
+        .walkin-hero {
+            padding: 44px 28px;
+            border-radius: 28px;
+        }
+
+        .walkin-hero h2 {
+            font-size: 2rem;
+        }
+
+        .summary-row > [class*="col-"] {
+            display: block;
+        }
+
+        .walkin-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .right-stack {
+            position: static;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .walkin-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .walkin-hero h2 {
+            font-size: 1.78rem;
+        }
+
+        .walkin-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .summary-card,
+        .form-card,
+        .form-section-card,
+        .pricing-card,
+        .access-card,
+        .guide-card {
+            border-radius: 22px;
+        }
+
+        .form-card,
+        .pricing-card,
+        .access-card,
+        .guide-card {
+            padding: 22px;
+        }
+
         .pricing-grid {
             grid-template-columns: 1fr;
         }
 
-        .combined-top,
-        .combined-body {
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
-        .combined-top h2 {
-            font-size: 1.85rem;
-        }
-
         .radio-list {
             flex-direction: column;
-            gap: 12px;
+            align-items: stretch;
+        }
+
+        .radio-item {
+            width: 100%;
+        }
+
+        .submit-panel {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-walkin-submit {
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 1.18rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.86rem;
         }
     }
 </style>
@@ -434,275 +863,539 @@
 {% block content %}
 {{ doctor_data|json_script:"doctor-data-json" }}
 
-<section class="combined-page">
-    <div class="container">
-        <div class="combined-shell">
+<section class="walkin-page">
+    <div class="container position-relative" style="z-index: 2;">
 
-            <div class="combined-top reveal reveal-up show">
-                <span class="combined-badge">
-                    <i class="bi bi-person-plus"></i>
-                    SmartCare HMS • Receptionist Smart Intake
-                </span>
-                <h2>Walk-in Patient + Instant Appointment</h2>
-                <p>
-                    Register a walk-in patient and create a consultation appointment through one clean, efficient, and modern front-desk workflow.
-                </p>
+        <div class="walkin-hero reveal reveal-up show">
+            <span class="hero-chip">
+                <i class="bi bi-person-plus"></i>
+                SmartCare HMS • Receptionist Smart Intake
+            </span>
 
-                <div class="hero-pills">
-                    <span class="hero-pill"><i class="bi bi-person-vcard"></i> Patient Registration</span>
-                    <span class="hero-pill"><i class="bi bi-person-badge"></i> Doctor Assignment</span>
-                    <span class="hero-pill"><i class="bi bi-cash-stack"></i> Fee Summary</span>
-                    <span class="hero-pill"><i class="bi bi-calendar2-check"></i> Instant Booking</span>
+            <div class="hero-highlight">
+                <i class="bi bi-lightning-charge"></i>
+                Register walk-in patient and create appointment instantly
+            </div>
+
+            <h2>Walk-in Patient + Instant Appointment</h2>
+
+            <p>
+                Register a new walk-in patient, create their secure account, assign a doctor,
+                choose appointment details, and confirm the consultation from one modern front-desk workflow.
+            </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-person-vcard"></i> Patient Registration</span>
+                <span class="hero-pill"><i class="bi bi-person-badge"></i> Doctor Assignment</span>
+                <span class="hero-pill"><i class="bi bi-cash-stack"></i> Fee Summary</span>
+                <span class="hero-pill"><i class="bi bi-calendar2-check"></i> Instant Booking</span>
+            </div>
+        </div>
+
+        <div class="row summary-row">
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>Patient</h3>
+                            <p>Create new walk-in profile</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-person-vcard"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="combined-body">
-
-                <div class="summary-strip">
-                    <div class="summary-box reveal reveal-up">
-                        <div class="summary-icon"><i class="bi bi-person-vcard"></i></div>
-                        <h5>Register Patient</h5>
-                        <p>Create a secure patient profile instantly from the reception desk.</p>
-                    </div>
-                    <div class="summary-box reveal reveal-up">
-                        <div class="summary-icon"><i class="bi bi-person-badge"></i></div>
-                        <h5>Assign Doctor</h5>
-                        <p>Select the appropriate doctor from your approved organization list.</p>
-                    </div>
-                    <div class="summary-box reveal reveal-up">
-                        <div class="summary-icon"><i class="bi bi-calendar2-check"></i></div>
-                        <h5>Confirm Visit</h5>
-                        <p>Complete patient intake and appointment booking in one smooth process.</p>
-                    </div>
-                </div>
-
-                <div class="pricing-panel reveal reveal-up">
-                    <div class="pricing-header">
-                        <div class="pricing-icon"><i class="bi bi-cash-stack"></i></div>
-                        <h5>Consultation Fee Summary</h5>
-                    </div>
-
-                    <div class="pricing-grid">
-                        <div class="price-box">
-                            <h6>Doctor Fee</h6>
-                            <p id="doctor-fee">0.00</p>
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>Doctor</h3>
+                            <p>Assign appointment doctor</p>
                         </div>
-                        <div class="price-box">
-                            <h6>Discount</h6>
-                            <p id="discount-percent">0%</p>
-                        </div>
-                        <div class="price-box">
-                            <h6>You Save</h6>
-                            <p id="discount-amount">0.00</p>
-                        </div>
-                        <div class="price-box price-highlight">
-                            <h6>Final Payable</h6>
-                            <p id="final-fee">0.00</p>
+                        <div class="summary-icon">
+                            <i class="bi bi-person-badge"></i>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <form method="post">
-                    {% csrf_token %}
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>Instant</h3>
+                            <p>Register and book together</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-calendar2-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    <div class="section-label">Patient Information</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.first_name.label }}</label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <small class="text-danger">{{ form.first_name.errors|striptags }}</small>
-                            {% endif %}
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="walkin-layout">
+                <div class="form-card reveal reveal-left">
+                    <div class="section-topbar">
+                        <div>
+                            <h3 class="section-title">
+                                <i class="bi bi-clipboard2-pulse"></i>
+                                Walk-in Intake Form
+                            </h3>
+                            <p class="section-subtitle">
+                                Fill patient account details, security information, appointment details,
+                                consultation preferences, symptoms, and access information carefully.
+                            </p>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.last_name.label }}</label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <small class="text-danger">{{ form.last_name.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.username.label }}</label>
-                            {{ form.username }}
-                            {% if form.username.errors %}
-                                <small class="text-danger">{{ form.username.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.email.label }}</label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <small class="text-danger">{{ form.email.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.contact.label }}</label>
-                            {{ form.contact }}
-                            {% if form.contact.errors %}
-                                <small class="text-danger">{{ form.contact.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <div class="radio-box">
-                                <label class="form-label d-block">{{ form.gender.label }}</label>
-                                <div class="radio-list">
-                                    {% for choice in form.gender %}
-                                        <div class="radio-item">
-                                            {{ choice.tag }}
-                                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-                                        </div>
-                                    {% endfor %}
+
+                        <span class="section-chip">
+                            <i class="bi bi-pencil-square"></i>
+                            Intake
+                        </span>
+                    </div>
+
+                    <div class="form-section-card">
+                        <h4 class="mini-section-title">
+                            <i class="bi bi-person-lines-fill"></i>
+                            Patient Information
+                        </h4>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-person"></i></span>
+                                        {{ form.first_name.label }}
+                                    </label>
+                                    {{ form.first_name }}
+                                    {% if form.first_name.errors %}
+                                        <small class="text-danger">{{ form.first_name.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
-                                {% if form.gender.errors %}
-                                    <small class="text-danger">{{ form.gender.errors|striptags }}</small>
-                                {% endif %}
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="section-label">Account Security</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.password.label }}</label>
-                            {{ form.password }}
-                            {% if form.password.errors %}
-                                <small class="text-danger">{{ form.password.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.confirm_password.label }}</label>
-                            {{ form.confirm_password }}
-                            {% if form.confirm_password.errors %}
-                                <small class="text-danger">{{ form.confirm_password.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="section-label">Appointment Details</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.doctor.label }}</label>
-                            {{ form.doctor }}
-                            {% if form.doctor.errors %}
-                                <small class="text-danger">{{ form.doctor.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ form.appointment_date.label }}</label>
-                            {{ form.appointment_date }}
-                            {% if form.appointment_date.errors %}
-                                <small class="text-danger">{{ form.appointment_date.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ form.appointment_time.label }}</label>
-                            {{ form.appointment_time }}
-                            {% if form.appointment_time.errors %}
-                                <small class="text-danger">{{ form.appointment_time.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.problem_category.label }}</label>
-                            {{ form.problem_category }}
-                            {% if form.problem_category.errors %}
-                                <small class="text-danger">{{ form.problem_category.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Consultancy Fee</label>
-                            <input type="text" id="doctor-fee-inline" class="form-control" readonly>
-                        </div>
-                    </div>
-
-                    <div class="section-label">Consultation Preferences</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <div class="radio-box">
-                                <label class="form-label d-block">{{ form.appointment_mode.label }}</label>
-                                <div class="radio-list">
-                                    {% for choice in form.appointment_mode %}
-                                        <div class="radio-item">
-                                            {{ choice.tag }}
-                                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-                                        </div>
-                                    {% endfor %}
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-person"></i></span>
+                                        {{ form.last_name.label }}
+                                    </label>
+                                    {{ form.last_name }}
+                                    {% if form.last_name.errors %}
+                                        <small class="text-danger">{{ form.last_name.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
-                                {% if form.appointment_mode.errors %}
-                                    <small class="text-danger">{{ form.appointment_mode.errors|striptags }}</small>
-                                {% endif %}
                             </div>
-                        </div>
 
-                        <div class="col-md-6">
-                            <div class="radio-box">
-                                <label class="form-label d-block">{{ form.urgency_level.label }}</label>
-                                <div class="radio-list">
-                                    {% for choice in form.urgency_level %}
-                                        <div class="radio-item">
-                                            {{ choice.tag }}
-                                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-                                        </div>
-                                    {% endfor %}
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-person-badge"></i></span>
+                                        {{ form.username.label }}
+                                    </label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                        <small class="text-danger">{{ form.username.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
-                                {% if form.urgency_level.errors %}
-                                    <small class="text-danger">{{ form.urgency_level.errors|striptags }}</small>
-                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-envelope"></i></span>
+                                        {{ form.email.label }}
+                                    </label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <small class="text-danger">{{ form.email.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-telephone"></i></span>
+                                        {{ form.contact.label }}
+                                    </label>
+                                    {{ form.contact }}
+                                    {% if form.contact.errors %}
+                                        <small class="text-danger">{{ form.contact.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="radio-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-gender-ambiguous"></i></span>
+                                        {{ form.gender.label }}
+                                    </label>
+
+                                    <div class="radio-list">
+                                        {% for choice in form.gender %}
+                                            <div class="radio-item">
+                                                {{ choice.tag }}
+                                                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    {% if form.gender.errors %}
+                                        <small class="text-danger">{{ form.gender.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="section-label">Symptoms</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-12">
-                            <label class="form-label">{{ form.symptoms.label }}</label>
-                            {{ form.symptoms }}
-                            {% if form.symptoms.errors %}
-                                <small class="text-danger">{{ form.symptoms.errors|striptags }}</small>
-                            {% endif %}
+                    <div class="form-section-card">
+                        <h4 class="mini-section-title">
+                            <i class="bi bi-shield-lock"></i>
+                            Account Security
+                        </h4>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-key"></i></span>
+                                        {{ form.password.label }}
+                                    </label>
+                                    {{ form.password }}
+                                    {% if form.password.errors %}
+                                        <small class="text-danger">{{ form.password.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-check2-square"></i></span>
+                                        {{ form.confirm_password.label }}
+                                    </label>
+                                    {{ form.confirm_password }}
+                                    {% if form.confirm_password.errors %}
+                                        <small class="text-danger">{{ form.confirm_password.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="section-label">Consultation Access</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6" id="meeting-link-box">
-                            <div class="info-panel">
-                                <label class="form-label">{{ form.meeting_link.label }}</label>
-                                {{ form.meeting_link }}
-                                <div class="required-note">Meeting link is required for online appointments.</div>
-                                {% if form.meeting_link.errors %}
-                                    <small class="text-danger">{{ form.meeting_link.errors|striptags }}</small>
-                                {% endif %}
+                    <div class="form-section-card">
+                        <h4 class="mini-section-title">
+                            <i class="bi bi-calendar2-check"></i>
+                            Appointment Details
+                        </h4>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-person-badge"></i></span>
+                                        {{ form.doctor.label }}
+                                    </label>
+                                    {{ form.doctor }}
+                                    <small class="helper-text">Select the doctor for this walk-in appointment.</small>
+                                    {% if form.doctor.errors %}
+                                        <small class="text-danger">{{ form.doctor.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-calendar-event"></i></span>
+                                        {{ form.appointment_date.label }}
+                                    </label>
+                                    {{ form.appointment_date }}
+                                    {% if form.appointment_date.errors %}
+                                        <small class="text-danger">{{ form.appointment_date.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-clock"></i></span>
+                                        {{ form.appointment_time.label }}
+                                    </label>
+                                    {{ form.appointment_time }}
+                                    {% if form.appointment_time.errors %}
+                                        <small class="text-danger">{{ form.appointment_time.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-clipboard2-pulse"></i></span>
+                                        {{ form.problem_category.label }}
+                                    </label>
+                                    {{ form.problem_category }}
+                                    {% if form.problem_category.errors %}
+                                        <small class="text-danger">{{ form.problem_category.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-cash"></i></span>
+                                        Consultancy Fee
+                                    </label>
+                                    <input type="text" id="doctor-fee-inline" class="form-control readonly-fee" readonly>
+                                    <small class="helper-text">Auto calculated from selected doctor fee.</small>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-6" id="offline-info-box">
-                            <div class="info-panel">
-                                <h5>Hospital Information</h5>
-                                <p><strong>Hospital:</strong> <span id="doctor-hospital">Select a doctor</span></p>
-                                <p><strong>Location:</strong> <span id="doctor-location">Select a doctor</span></p>
+                    <div class="form-section-card">
+                        <h4 class="mini-section-title">
+                            <i class="bi bi-sliders2"></i>
+                            Consultation Preferences
+                        </h4>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="radio-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-camera-video"></i></span>
+                                        {{ form.appointment_mode.label }}
+                                    </label>
+
+                                    <div class="radio-list">
+                                        {% for choice in form.appointment_mode %}
+                                            <div class="radio-item">
+                                                {{ choice.tag }}
+                                                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    {% if form.appointment_mode.errors %}
+                                        <small class="text-danger">{{ form.appointment_mode.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="radio-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-activity"></i></span>
+                                        {{ form.urgency_level.label }}
+                                    </label>
+
+                                    <div class="radio-list">
+                                        {% for choice in form.urgency_level %}
+                                            <div class="radio-item">
+                                                {{ choice.tag }}
+                                                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    {% if form.urgency_level.errors %}
+                                        <small class="text-danger">{{ form.urgency_level.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-12" id="visit-note-box">
-                            <label class="form-label">{{ form.visit_note.label }}</label>
-                            {{ form.visit_note }}
-                            {% if form.visit_note.errors %}
-                                <small class="text-danger">{{ form.visit_note.errors|striptags }}</small>
-                            {% endif %}
+                    <div class="form-section-card">
+                        <h4 class="mini-section-title">
+                            <i class="bi bi-journal-medical"></i>
+                            Symptoms & Consultation Access
+                        </h4>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-journal-text"></i></span>
+                                        {{ form.symptoms.label }}
+                                    </label>
+                                    {{ form.symptoms }}
+                                    <small class="helper-text">
+                                        Add patient symptoms or a short visit reason for doctor preparation.
+                                    </small>
+                                    {% if form.symptoms.errors %}
+                                        <small class="text-danger">{{ form.symptoms.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-12" id="meeting-link-box">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-link-45deg"></i></span>
+                                        {{ form.meeting_link.label }}
+                                    </label>
+                                    {{ form.meeting_link }}
+                                    <small class="required-note">
+                                        Meeting link is required for online appointments.
+                                    </small>
+                                    {% if form.meeting_link.errors %}
+                                        <small class="text-danger">{{ form.meeting_link.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-12" id="visit-note-box">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-chat-left-text"></i></span>
+                                        {{ form.visit_note.label }}
+                                    </label>
+                                    {{ form.visit_note }}
+                                    <small class="helper-text">Use this for offline visit instruction if needed.</small>
+                                    {% if form.visit_note.errors %}
+                                        <small class="text-danger">{{ form.visit_note.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     {% if form.non_field_errors %}
-                        <div class="alert alert-danger">{{ form.non_field_errors|striptags }}</div>
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors|striptags }}
+                        </div>
                     {% endif %}
 
-                    <button type="submit" class="btn-combined-submit">
-                        <i class="bi bi-check2-circle"></i>
-                        Register Patient & Create Appointment
-                    </button>
-                </form>
+                    <div class="submit-panel">
+                        <p class="submit-note">
+                            <strong>Before submitting:</strong>
+                            Check patient account details, doctor, date, time, mode, urgency and final fee carefully.
+                        </p>
+
+                        <button type="submit" class="btn-walkin-submit">
+                            <i class="bi bi-check2-circle"></i>
+                            Register Patient & Create Appointment
+                        </button>
+                    </div>
+                </div>
+
+                <aside class="right-stack reveal reveal-right">
+                    <div class="pricing-card">
+                        <div class="section-topbar">
+                            <div>
+                                <h3 class="section-title">
+                                    <i class="bi bi-cash-stack"></i>
+                                    Consultation Fee Summary
+                                </h3>
+                                <p class="section-subtitle">
+                                    Doctor fee and final payable amount update automatically after doctor selection.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pricing-grid">
+                            <div class="price-box">
+                                <h6>Doctor Fee</h6>
+                                <p id="doctor-fee">0.00</p>
+                            </div>
+
+                            <div class="price-box">
+                                <h6>Discount</h6>
+                                <p id="discount-percent">0%</p>
+                            </div>
+
+                            <div class="price-box">
+                                <h6>You Save</h6>
+                                <p id="discount-amount">0.00</p>
+                            </div>
+
+                            <div class="price-box price-highlight">
+                                <h6>Final Payable</h6>
+                                <p id="final-fee">0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="access-card" id="offline-info-box">
+                        <div class="section-topbar">
+                            <div>
+                                <h3 class="section-title">
+                                    <i class="bi bi-hospital"></i>
+                                    Hospital Information
+                                </h3>
+                                <p class="section-subtitle">
+                                    Offline appointment location details will show after doctor selection.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="info-line">
+                            <i class="bi bi-building"></i>
+                            <span>
+                                <strong>Hospital:</strong><br>
+                                <span id="doctor-hospital">Select a doctor</span>
+                            </span>
+                        </div>
+
+                        <div class="info-line">
+                            <i class="bi bi-geo-alt"></i>
+                            <span>
+                                <strong>Location:</strong><br>
+                                <span id="doctor-location">Select a doctor</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="guide-card">
+                        <div class="section-topbar">
+                            <div>
+                                <h3 class="section-title">
+                                    <i class="bi bi-info-circle"></i>
+                                    Walk-in Intake Guide
+                                </h3>
+                                <p class="section-subtitle">
+                                    Follow these steps for a clean receptionist workflow.
+                                </p>
+                            </div>
+                        </div>
+
+                        <ul class="guide-list">
+                            <li>
+                                <span class="guide-dot"><i class="bi bi-person-plus"></i></span>
+                                <span>Create a new patient account with correct name, username, email and contact.</span>
+                            </li>
+
+                            <li>
+                                <span class="guide-dot"><i class="bi bi-key"></i></span>
+                                <span>Use a clear password and confirm it correctly before submitting.</span>
+                            </li>
+
+                            <li>
+                                <span class="guide-dot"><i class="bi bi-person-badge"></i></span>
+                                <span>Select the correct doctor so fee, hospital and location update properly.</span>
+                            </li>
+
+                            <li>
+                                <span class="guide-dot"><i class="bi bi-camera-video"></i></span>
+                                <span>For online appointments, add a valid meeting link before creating appointment.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
             </div>
-        </div>
+        </form>
+
     </div>
 </section>
 {% endblock %}
@@ -754,6 +1447,7 @@
             meetingLinkBox.style.display = 'block';
             offlineInfoBox.style.display = 'none';
             visitNoteBox.style.display = 'none';
+
             if (meetingLinkInput) {
                 meetingLinkInput.setAttribute('required', 'required');
             }
@@ -761,6 +1455,7 @@
             meetingLinkBox.style.display = 'none';
             offlineInfoBox.style.display = 'block';
             visitNoteBox.style.display = 'block';
+
             if (meetingLinkInput) {
                 meetingLinkInput.removeAttribute('required');
             }
@@ -769,10 +1464,12 @@
 
     function combinedRevealOnScroll() {
         const triggerBottom = window.innerHeight * 0.9;
+
         combinedReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
-                setTimeout(() => el.classList.add('show'), index * 70);
+                setTimeout(() => el.classList.add('show'), index * 60);
             }
         });
     }

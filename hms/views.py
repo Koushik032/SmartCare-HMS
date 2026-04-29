@@ -34,9 +34,9 @@ from .forms import (
     DoctorPasswordForm,
     ReceptionistProfileForm,
     ReceptionistPasswordForm,PatientProfileForm, PatientPasswordForm,
+    ReceptionistAssignAppointmentTimeForm,
+    PatientAppointmentRequestForm,
 )
-
-
 # -------------------------
 # Public Pages
 # -------------------------
@@ -928,20 +928,19 @@ def book_appointment(request):
     selected_doctor_id = request.GET.get('doctor')
     bkash_number = "017XXXXXXXX"
 
+    doctors = Doctor.objects.filter(
+        is_approved=True,
+        is_available=True
+    ).order_by('name')
+
     if request.method == 'POST':
-        form = AppointmentForm(request.POST)
+        form = PatientAppointmentRequestForm(request.POST)
     else:
         initial_data = {}
         if selected_doctor_id:
             initial_data['doctor'] = selected_doctor_id
-        form = AppointmentForm(initial=initial_data)
+        form = PatientAppointmentRequestForm(initial=initial_data)
 
-    doctors = Doctor.objects.filter(
-        is_approved=True,
-        is_available=True
-    )
-
-    # form doctor field eo available doctor set kore deya better
     if 'doctor' in form.fields:
         form.fields['doctor'].queryset = doctors
 
@@ -966,6 +965,9 @@ def book_appointment(request):
                 ((float(doctor.consultancy_fee or 0) * discount_percent) / 100),
                 2
             ),
+            'available_from_time': doctor.available_from_time.strftime('%I:%M %p') if doctor.available_from_time else '',
+            'available_to_time': doctor.available_to_time.strftime('%I:%M %p') if doctor.available_to_time else '',
+            'availability_note': doctor.availability_note or '',
         }
         for doctor in doctors
     ]
@@ -981,7 +983,12 @@ def book_appointment(request):
 
             appointment.consultancy_fee = round(final_fee, 2)
 
-            # Payment logic
+            # NEW FLOW:
+            # Patient only selects date.
+            # Receptionist will assign approximate time later.
+            appointment.appointment_time = None
+            appointment.status = 'Pending Receptionist'
+
             if appointment.payment_method == 'Bkash':
                 appointment.payment_number = bkash_number
                 appointment.payment_status = 'Paid'
@@ -998,7 +1005,7 @@ def book_appointment(request):
 
             messages.success(
                 request,
-                f"Your appointment was successfully booked. Level: {level_name}, Discount: {discount_percent}%."
+                f"Appointment request submitted successfully. Receptionist will assign an approximate time soon. Level: {level_name}, Discount: {discount_percent}%."
             )
             return redirect('patient_history')
 
@@ -1030,27 +1037,31 @@ def patient_history(request):
     total_appointments = appointments.count()
     completed_count = appointments.filter(status='Completed').count()
     booked_count = appointments.filter(status='Booked').count()
-    cancelled_count = appointments.filter(status='Cancelled').count()
+    cancelled_count = appointments.filter(
+        status__in=['Cancelled by Patient', 'Cancelled by Doctor']
+    ).count()
+    pending_receptionist_count = appointments.filter(status='Pending Receptionist').count()
 
     for a in appointments:
-        # prescription check
         a.has_prescription = Prescription.objects.filter(appointment=a).exists()
 
-        # appointment datetime বানানো
-        try:
-            naive_dt = datetime.combine(a.appointment_date, a.appointment_time)
-            appointment_dt = timezone.make_aware(
-                naive_dt,
-                timezone.get_current_timezone()
-            )
-        except Exception:
-            appointment_dt = None
+        appointment_dt = None
+        if a.appointment_date and a.appointment_time:
+            try:
+                naive_dt = datetime.combine(a.appointment_date, a.appointment_time)
+                appointment_dt = timezone.make_aware(
+                    naive_dt,
+                    timezone.get_current_timezone()
+                )
+            except Exception:
+                appointment_dt = None
 
-        # display status logic
         if a.status == 'Completed':
             a.display_status = 'Completed'
-        elif a.status == 'Cancelled':
-            a.display_status = 'Cancelled'
+        elif a.status in ['Cancelled by Patient', 'Cancelled by Doctor']:
+            a.display_status = a.status
+        elif a.status == 'Pending Receptionist':
+            a.display_status = 'Waiting for Receptionist Time'
         elif a.status == 'Booked':
             if appointment_dt and appointment_dt < now and not a.has_prescription:
                 a.display_status = 'Missed'
@@ -1059,11 +1070,9 @@ def patient_history(request):
         else:
             a.display_status = a.status
 
-        # cancel only if future booked
         a.can_cancel = (
-            a.status == 'Booked'
-            and appointment_dt is not None
-            and appointment_dt > now
+            a.status in ['Booked', 'Pending Receptionist']
+            and (appointment_dt is None or appointment_dt > now)
         )
 
     context = {
@@ -1072,38 +1081,93 @@ def patient_history(request):
         'completed_count': completed_count,
         'booked_count': booked_count,
         'cancelled_count': cancelled_count,
+        'pending_receptionist_count': pending_receptionist_count,
     }
+
     return render(request, 'hms/patient/history.html', context)
 
 
 
 @login_required
-def patient_cancel_appointment(request, appointment_id):
+def patient_cancel_appointment(request, pk):
     if not hasattr(request.user, 'patient'):
         return redirect('home')
 
     patient = request.user.patient
+
     appointment = get_object_or_404(
         Appointment,
-        id=appointment_id,
+        id=pk,
         patient=patient
     )
 
     now = timezone.localtime()
-    naive_dt = datetime.combine(appointment.appointment_date, appointment.appointment_time)
-    appointment_dt = timezone.make_aware(
-        naive_dt,
-        timezone.get_current_timezone()
-    )
 
-    if appointment.status == 'Booked' and appointment_dt > now:
-        appointment.status = 'Cancelled'
-        appointment.save()
-        messages.success(request, 'Appointment cancelled successfully.')
+    appointment_dt = None
+    if appointment.appointment_date and appointment.appointment_time:
+        try:
+            naive_dt = datetime.combine(appointment.appointment_date, appointment.appointment_time)
+            appointment_dt = timezone.make_aware(
+                naive_dt,
+                timezone.get_current_timezone()
+            )
+        except Exception:
+            appointment_dt = None
+
+    if appointment.status in ['Booked', 'Pending Receptionist']:
+        if appointment_dt is None or appointment_dt > now:
+            appointment.status = 'Cancelled by Patient'
+            appointment.save(update_fields=['status'])
+            messages.success(request, 'Appointment cancelled successfully.')
+        else:
+            messages.error(request, 'This appointment can no longer be cancelled.')
     else:
         messages.error(request, 'This appointment can no longer be cancelled.')
 
     return redirect('patient_history')
+
+@login_required
+def receptionist_assign_appointment_time(request, pk):
+    if not hasattr(request.user, 'receptionist'):
+        return redirect('home')
+
+    receptionist = request.user.receptionist
+
+    appointment = get_object_or_404(
+        Appointment.objects.select_related('patient', 'doctor'),
+        pk=pk,
+        doctor__hospital_name__iexact=receptionist.organization_name,
+        status='Pending Receptionist'
+    )
+
+    if request.method == 'POST':
+        form = ReceptionistAssignAppointmentTimeForm(request.POST, instance=appointment)
+
+        if form.is_valid():
+            appointment = form.save(commit=False)
+            appointment.status = 'Booked'
+            appointment.receptionist_assigned_at = timezone.now()
+
+            # NEW: receptionist message patient-er dropdown messages section-e unread hisebe show korbe
+            if appointment.receptionist_message:
+                appointment.patient_message_seen = False
+                appointment.patient_message_seen_at = None
+
+            appointment.save()
+
+            messages.success(
+                request,
+                f"Approximate time assigned successfully. This appointment is now visible in Dr. {appointment.doctor.name}'s pending appointments."
+            )
+            return redirect('receptionist_all_appointments')
+    else:
+        form = ReceptionistAssignAppointmentTimeForm(instance=appointment)
+
+    return render(request, 'hms/receptionist/assign_appointment_time.html', {
+        'form': form,
+        'appointment': appointment,
+        'receptionist': receptionist,
+    })
 
 
 @login_required
@@ -1414,11 +1478,19 @@ def doctor_profile(request):
                 doctor.contact = profile_form.cleaned_data['contact']
                 doctor.consultancy_fee = profile_form.cleaned_data['consultancy_fee']
                 doctor.about = profile_form.cleaned_data['about']
+
+                # NEW: doctor availability for next 7 days
+                doctor.available_from_time = profile_form.cleaned_data.get('available_from_time')
+                doctor.available_to_time = profile_form.cleaned_data.get('available_to_time')
+                doctor.availability_note = profile_form.cleaned_data.get('availability_note')
+                doctor.availability_updated_at = timezone.now()
+
                 if profile_form.cleaned_data.get('photo'):
                     doctor.photo = profile_form.cleaned_data['photo']
+
                 doctor.save()
 
-                messages.success(request, "Doctor profile updated successfully.")
+                messages.success(request, "Doctor profile and availability updated successfully.")
                 return redirect('doctor_profile')
 
         elif 'change_password' in request.POST:
@@ -1434,6 +1506,9 @@ def doctor_profile(request):
                     'username': request.user.username,
                     'email': request.user.email,
                     'photo': doctor.photo,
+                    'available_from_time': doctor.available_from_time,
+                    'available_to_time': doctor.available_to_time,
+                    'availability_note': doctor.availability_note,
                 },
                 user_instance=request.user
             )
@@ -1445,7 +1520,6 @@ def doctor_profile(request):
                 update_session_auth_hash(request, request.user)
                 messages.success(request, "Password changed successfully.")
                 return redirect('doctor_profile')
-
     else:
         profile_form = DoctorProfileForm(
             initial={
@@ -1459,6 +1533,9 @@ def doctor_profile(request):
                 'username': request.user.username,
                 'email': request.user.email,
                 'photo': doctor.photo,
+                'available_from_time': doctor.available_from_time,
+                'available_to_time': doctor.available_to_time,
+                'availability_note': doctor.availability_note,
             },
             user_instance=request.user
         )
@@ -1476,7 +1553,6 @@ def doctor_profile(request):
     })
 
 
-id="doctor-appointments-updated"
 @login_required
 def doctor_appointments(request):
     if not hasattr(request.user, 'doctor'):
@@ -1487,13 +1563,32 @@ def doctor_appointments(request):
     from_date = request.GET.get('from_date', '').strip()
     to_date = request.GET.get('to_date', '').strip()
 
+    # Auto move expired booked appointments to Missed
+    auto_mark_expired_doctor_appointments(doctor)
+
     appointments = Appointment.objects.filter(
         doctor=doctor,
-        status__in=['Completed', 'Missed', 'Cancelled by Patient', 'Cancelled by Doctor']
-    ).select_related('patient', 'patient__user').order_by('-appointment_date', '-appointment_time')
+        status__in=[
+            'Completed',
+            'Missed',
+            'Cancelled by Patient',
+            'Cancelled by Doctor'
+        ]
+    ).select_related(
+        'patient',
+        'patient__user'
+    ).order_by(
+        '-appointment_date',
+        '-appointment_time',
+        '-created_at'
+    )
 
     if query:
-        appointments = appointments.filter(patient__contact__icontains=query)
+        appointments = appointments.filter(
+            Q(patient__contact__icontains=query) |
+            Q(patient__first_name__icontains=query) |
+            Q(patient__last_name__icontains=query)
+        )
 
     if from_date:
         appointments = appointments.filter(appointment_date__gte=from_date)
@@ -1513,8 +1608,40 @@ def doctor_appointments(request):
         'to_date': to_date,
         'total_visible': appointments.count(),
     }
+
     return render(request, 'hms/doctor/appointments.html', context)
 
+from datetime import datetime
+from django.db.models import Q
+from django.utils import timezone
+
+
+def auto_mark_expired_doctor_appointments(doctor):
+    """
+    Doctor-er Booked appointment-er time over hoye gele
+    automatically Missed kore dibe.
+
+    Result:
+    - Pending appointments page theke remove hoye jabe
+    - Doctor appointments history page-e Missed hisebe show korbe
+    """
+
+    now = timezone.localtime()
+    today = now.date()
+    current_time = now.time()
+
+    expired_appointments = Appointment.objects.filter(
+        doctor=doctor,
+        status='Booked',
+        appointment_time__isnull=False
+    ).filter(
+        Q(appointment_date__lt=today) |
+        Q(appointment_date=today, appointment_time__lt=current_time)
+    )
+
+    expired_appointments.update(status='Missed')
+
+    return expired_appointments.count()
 
 @login_required
 def doctor_pending_appointments(request):
@@ -1524,12 +1651,25 @@ def doctor_pending_appointments(request):
     doctor = request.user.doctor
     today = timezone.localdate()
 
+    # Auto move expired booked appointments to Missed
+    auto_mark_expired_doctor_appointments(doctor)
+
+    # Only upcoming receptionist-assigned appointments will stay here
+    # Closest date and time will show first
     appointments = Appointment.objects.filter(
         doctor=doctor,
-        status='Booked'
-    ).select_related('patient', 'patient__user').order_by(
+        status='Booked',
+        appointment_time__isnull=False
+    ).filter(
+        Q(appointment_date__gt=today) |
+        Q(appointment_date=today, appointment_time__gte=timezone.localtime().time())
+    ).select_related(
+        'patient',
+        'patient__user'
+    ).order_by(
         'appointment_date',
-        'appointment_time'
+        'appointment_time',
+        'created_at'
     )
 
     for a in appointments:
@@ -1542,6 +1682,7 @@ def doctor_pending_appointments(request):
         'today': today,
         'total_visible': appointments.count(),
     }
+
     return render(request, 'hms/doctor/pending_appointments.html', context)
 
 
@@ -1635,8 +1776,10 @@ def doctor_complete_appointment(request, pk):
 
     if appointment.status == 'Booked':
         appointment.status = 'Completed'
-        appointment.save()
+        appointment.save(update_fields=['status'])
         messages.success(request, "Appointment marked as completed.")
+    else:
+        messages.error(request, "Only booked appointments can be completed.")
 
     return redirect('doctor_appointments')
 
@@ -1654,10 +1797,12 @@ def doctor_cancel_appointment(request, pk):
 
     if appointment.status == 'Booked':
         appointment.status = 'Cancelled by Doctor'
-        appointment.save()
+        appointment.save(update_fields=['status'])
         messages.success(request, "Appointment cancelled successfully.")
+    else:
+        messages.error(request, "Only booked appointments can be cancelled.")
 
-    return redirect('doctor_dashboard')
+    return redirect('doctor_appointments')
 
 @login_required
 def doctor_view_prescription(request, appointment_id):
@@ -1941,6 +2086,37 @@ def receptionist_profile(request):
     })
 
 @login_required
+def patient_messages(request):
+    if not hasattr(request.user, 'patient'):
+        return redirect('home')
+
+    patient = request.user.patient
+
+    messages_list = (
+        Appointment.objects.filter(patient=patient)
+        .exclude(receptionist_message__isnull=True)
+        .exclude(receptionist_message='')
+        .select_related('doctor', 'patient')
+        .order_by('-receptionist_assigned_at', '-appointment_date', '-appointment_time', '-created_at')
+    )
+
+    unread_messages = messages_list.filter(patient_message_seen=False)
+
+    # Page open korle message seen hoye jabe
+    unread_messages.update(
+        patient_message_seen=True,
+        patient_message_seen_at=timezone.now()
+    )
+
+    context = {
+        'patient': patient,
+        'messages_list': messages_list,
+        'total_messages': messages_list.count(),
+    }
+
+    return render(request, 'hms/patient/messages.html', context)
+
+@login_required
 def receptionist_create_appointment(request):
     if not hasattr(request.user, 'receptionist'):
         return redirect('home')
@@ -2138,10 +2314,10 @@ def receptionist_all_appointments(request):
     to_date = request.GET.get('to_date', '').strip()
 
     appointments = Appointment.objects.filter(
-        doctor__hospital_name__icontains=receptionist.organization_name
+        doctor__hospital_name__iexact=receptionist.organization_name
     ).select_related(
         'doctor', 'patient', 'patient__user'
-    ).order_by('-appointment_date', '-appointment_time')
+    ).order_by('-appointment_date', '-appointment_time', '-created_at')
 
     if query:
         appointments = appointments.filter(
@@ -2158,13 +2334,20 @@ def receptionist_all_appointments(request):
     if to_date:
         appointments = appointments.filter(appointment_date__lte=to_date)
 
+    pending_receptionist_count = appointments.filter(status='Pending Receptionist').count()
+    booked_count = appointments.filter(status='Booked').count()
+    completed_count = appointments.filter(status='Completed').count()
+
     return render(request, 'hms/receptionist/all_appointments.html', {
         'receptionist': receptionist,
         'appointments': appointments,
         'query': query,
         'from_date': from_date,
         'to_date': to_date,
-    })
+        'pending_receptionist_count': pending_receptionist_count,
+        'booked_count': booked_count,
+        'completed_count': completed_count,
+    }) 
 
 
 @login_required

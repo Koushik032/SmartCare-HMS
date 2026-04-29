@@ -3,137 +3,808 @@
 
 {% block content %}
 <style>
-    .patient-detail-page { padding: 34px 0 70px; }
-    .detail-hero {
-        background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #38bdf8 100%);
-        color: #fff;
-        border-radius: 30px;
-        padding: 55px 40px;
-        margin-bottom: 30px;
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+    :root {
+        --pd-primary: #07111f;
+        --pd-dark: #0f172a;
+        --pd-blue: #2563eb;
+        --pd-blue-dark: #1d4ed8;
+        --pd-cyan: #06b6d4;
+        --pd-green: #16a34a;
+        --pd-orange: #f59e0b;
+        --pd-red: #dc2626;
+        --pd-purple: #7c3aed;
+        --pd-muted: #64748b;
+        --pd-border: rgba(148, 163, 184, 0.24);
+        --pd-soft: #f8fbff;
+        --pd-white: #ffffff;
+
+        --pd-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --pd-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --pd-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --pd-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --pd-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --pd-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
     }
-    .detail-badge {
+
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
+    }
+
+    .patient-detail-page {
+        position: relative;
+        overflow: hidden;
+        padding: 38px 0 78px;
+    }
+
+    .patient-detail-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
+        pointer-events: none;
+    }
+
+    .patient-detail-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
+        pointer-events: none;
+    }
+
+    .detail-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 34px;
+        padding: 54px 46px;
+        margin-bottom: 24px;
+        background:
+            var(--pd-gradient-dark),
+            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--pd-shadow-lg);
+        isolation: isolate;
+    }
+
+    .detail-hero::before {
+        content: "";
+        position: absolute;
+        width: 440px;
+        height: 440px;
+        top: -180px;
+        right: -140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
+    }
+
+    .detail-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .detail-badge,
+    .hero-pill {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 16px;
         border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .detail-badge {
+        padding: 8px 15px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
-        font-size: 13px;
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
+        margin-bottom: 14px;
+    }
+
+    .detail-hero h2 {
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
+        line-height: 1.08;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 900px;
+    }
+
+    .detail-hero p {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 880px;
+        margin-bottom: 0;
+        font-size: 1rem;
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .hero-pill {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
         font-weight: 700;
-        margin-bottom: 16px;
     }
-    .detail-card, .prescription-card {
-        background: #fff;
-        border: 1px solid #e5edf5;
-        border-radius: 24px;
-        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-        padding: 26px;
+
+    .detail-card,
+    .prescription-card,
+    .appointment-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--pd-border);
+        border-radius: 28px;
+        box-shadow: var(--pd-shadow-sm);
+        backdrop-filter: blur(16px);
+        padding: 24px;
+        transition: var(--pd-transition);
     }
+
+    .detail-card::before,
+    .prescription-card::before,
+    .appointment-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
+    }
+
+    .detail-card > *,
+    .prescription-card > *,
+    .appointment-card > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .detail-card:hover,
+    .prescription-card:hover,
+    .appointment-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--pd-shadow-md);
+        border-color: rgba(37,99,235,0.28);
+    }
+
+    .profile-card {
+        text-align: center;
+        height: 100%;
+    }
+
+    .photo-frame {
+        position: relative;
+        width: 128px;
+        height: 128px;
+        margin: 0 auto 16px;
+    }
+
+    .photo-frame::before {
+        content: "";
+        position: absolute;
+        inset: -7px;
+        border-radius: 50%;
+        background: conic-gradient(from 180deg, #2563eb, #06b6d4, #10b981, #2563eb);
+        opacity: 0.75;
+    }
+
     .patient-photo {
-        width: 100px;
-        height: 100px;
+        position: relative;
+        width: 128px;
+        height: 128px;
         border-radius: 50%;
         object-fit: cover;
-        border: 3px solid #fff;
-        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+        border: 5px solid #ffffff;
+        box-shadow: 0 16px 34px rgba(15, 23, 42, 0.16);
+        background: #e2e8f0;
     }
+
     .patient-placeholder {
-        width: 100px;
-        height: 100px;
+        position: relative;
+        width: 128px;
+        height: 128px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        background: var(--pd-gradient-main);
         color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 800;
-        font-size: 1.8rem;
+        font-weight: 950;
+        font-size: 2.1rem;
+        border: 5px solid #ffffff;
+        box-shadow: 0 16px 34px rgba(15, 23, 42, 0.16);
     }
-    .section-title {
-        font-size: 1.3rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 16px;
+
+    .patient-name {
+        color: var(--pd-primary);
+        font-size: 1.28rem;
+        font-weight: 950;
+        letter-spacing: -0.3px;
+        line-height: 1.3;
+        margin-bottom: 6px;
     }
-    .detail-card p, .prescription-card p {
-        color: #64748b;
-        line-height: 1.8;
-        margin-bottom: 10px;
+
+    .patient-role {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--pd-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 12px;
+        font-weight: 850;
+        margin-bottom: 18px;
     }
-    .prescription-entry {
-        border: 1px solid #e8eef7;
-        border-radius: 18px;
-        padding: 18px;
+
+    .info-list {
+        display: grid;
+        gap: 10px;
+        text-align: left;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 10px 12px;
+        border-radius: 16px;
         background: #f8fbff;
-        margin-bottom: 16px;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.45;
+        font-size: 0.9rem;
     }
-    .prescription-entry:last-child {
-        margin-bottom: 0;
+
+    .info-row i {
+        width: 18px;
+        color: var(--pd-blue-dark);
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    .info-row span {
+        min-width: 0;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .info-row strong {
+        color: var(--pd-primary);
+        margin-right: 4px;
+        font-weight: 900;
+    }
+
+    .section-title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+
+    .section-title {
+        margin: 0;
+        color: var(--pd-primary);
+        font-size: 1.32rem;
+        font-weight: 950;
+        letter-spacing: -0.35px;
+        line-height: 1.28;
+    }
+
+    .section-subtitle {
+        margin: 6px 0 0;
+        color: var(--pd-muted);
+        line-height: 1.68;
+        font-size: 0.92rem;
+    }
+
+    .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--pd-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
+    }
+
+    .appointment-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .appointment-entry {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        padding: 14px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        transition: var(--pd-transition);
+    }
+
+    .appointment-entry:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--pd-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .appointment-info {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        min-width: 0;
+    }
+
+    .appointment-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 13px;
+        background: #eff6ff;
+        color: var(--pd-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+    }
+
+    .appointment-info small {
+        display: block;
+        color: var(--pd-muted);
+        font-size: 0.72rem;
+        font-weight: 850;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .appointment-info strong {
+        display: block;
+        color: var(--pd-primary);
+        font-size: 0.9rem;
+        font-weight: 900;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .prescription-list {
+        display: grid;
+        gap: 14px;
+    }
+
+    .prescription-entry {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #e5edf7;
+        border-radius: 22px;
+        padding: 18px;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.07), transparent 30%),
+            linear-gradient(180deg, #ffffff, #f8fbff);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+        transition: var(--pd-transition);
+    }
+
+    .prescription-entry:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--pd-shadow-md);
+        border-color: rgba(37,99,235,0.25);
+    }
+
+    .prescription-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e8eef7;
+    }
+
+    .prescription-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--pd-primary);
+        font-weight: 900;
+        font-size: 0.92rem;
+    }
+
+    .prescription-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 11px;
+        border-radius: 999px;
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+        font-size: 11.5px;
+        font-weight: 850;
+    }
+
+    .prescription-body {
+        display: grid;
+        gap: 11px;
+    }
+
+    .prescription-row {
+        padding: 12px 13px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #edf2f7;
+        color: #475569;
+        line-height: 1.65;
+        font-size: 0.92rem;
+    }
+
+    .prescription-row strong {
+        color: var(--pd-primary);
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-right: 5px;
+    }
+
+    .empty-state {
+        padding: 22px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        color: var(--pd-muted);
+        text-align: center;
+        font-weight: 750;
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+    .empty-state i {
+        display: block;
+        font-size: 1.6rem;
+        color: var(--pd-blue-dark);
+        margin-bottom: 8px;
+    }
+
+    .quick-note-card {
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at top right, rgba(245,158,11,0.10), transparent 30%),
+            linear-gradient(135deg, #fff7ed, #fffbeb);
+        border: 1px solid #fed7aa;
+        color: #7c2d12;
+        text-align: left;
+        line-height: 1.65;
+        font-size: 0.88rem;
+    }
+
+    .quick-note-card strong {
+        color: #9a3412;
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .reveal-left { transform: translateX(-45px); }
+    .reveal-right { transform: translateX(45px); }
+    .reveal-up { transform: translateY(40px); }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+
+    @media (max-width: 991px) {
+        .patient-detail-page {
+            padding: 30px 0 62px;
+        }
+
+        .detail-hero {
+            padding: 44px 28px;
+            border-radius: 28px;
+        }
+
+        .appointment-entry {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .detail-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .detail-hero h2 {
+            font-size: 1.78rem;
+        }
+
+        .detail-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .detail-card,
+        .prescription-card,
+        .appointment-card {
+            padding: 20px;
+            border-radius: 22px;
+        }
+
+        .section-title {
+            font-size: 1.18rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.86rem;
+        }
+
+        .info-row span {
+            white-space: normal;
+        }
     }
 </style>
 
 <section class="section-space patient-detail-page">
-    <div class="container">
+    <div class="container position-relative" style="z-index: 2;">
 
-        <div class="detail-hero">
+        <div class="detail-hero reveal reveal-up show">
             <span class="detail-badge">
                 <i class="bi bi-person-vcard"></i>
                 Patient Detail
             </span>
+
             <h2>{{ patient.first_name }} {{ patient.last_name }}</h2>
-            <p class="mb-0">
-                Patient profile and previous prescriptions written under your completed consultations.
+
+            <p>
+                View patient profile information, completed consultation history, and previous prescriptions
+                written under your completed appointments.
             </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-person-lines-fill"></i> Patient Profile</span>
+                <span class="hero-pill"><i class="bi bi-calendar-check"></i> Completed Visits</span>
+                <span class="hero-pill"><i class="bi bi-prescription2"></i> Prescriptions</span>
+                <span class="hero-pill"><i class="bi bi-shield-check"></i> Clinical Record</span>
+            </div>
         </div>
 
         <div class="row g-4">
             <div class="col-lg-4">
-                <div class="detail-card text-center">
-                    {% if patient.photo %}
-                        <img src="{{ patient.photo.url }}" alt="{{ patient.first_name }}" class="patient-photo mb-3">
-                    {% else %}
-                        <div class="patient-placeholder mx-auto mb-3">{{ patient.first_name|slice:":1" }}</div>
-                    {% endif %}
+                <div class="detail-card profile-card reveal reveal-left">
+                    <div class="photo-frame">
+                        {% if patient.photo %}
+                            <img src="{{ patient.photo.url }}" alt="{{ patient.first_name }}" class="patient-photo">
+                        {% else %}
+                            <div class="patient-placeholder">{{ patient.first_name|slice:":1" }}</div>
+                        {% endif %}
+                    </div>
 
-                    <h4 class="fw-bold mb-2">{{ patient.first_name }} {{ patient.last_name }}</h4>
-                    <p><strong>Email:</strong> {{ patient.user.email|default:"-" }}</p>
-                    <p><strong>Contact:</strong> {{ patient.contact|default:"-" }}</p>
-                    <p><strong>Gender:</strong> {{ patient.gender|default:"-" }}</p>
+                    <h4 class="patient-name">{{ patient.first_name }} {{ patient.last_name }}</h4>
+
+                    <span class="patient-role">
+                        <i class="bi bi-person-heart"></i>
+                        Patient Profile
+                    </span>
+
+                    <div class="info-list">
+                        <div class="info-row">
+                            <i class="bi bi-envelope"></i>
+                            <span>
+                                <strong>Email:</strong>
+                                {{ patient.user.email|default:"-" }}
+                            </span>
+                        </div>
+
+                        <div class="info-row">
+                            <i class="bi bi-telephone"></i>
+                            <span>
+                                <strong>Contact:</strong>
+                                {{ patient.contact|default:"-" }}
+                            </span>
+                        </div>
+
+                        <div class="info-row">
+                            <i class="bi bi-gender-ambiguous"></i>
+                            <span>
+                                <strong>Gender:</strong>
+                                {{ patient.gender|default:"-" }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="quick-note-card">
+                        <strong>Clinical reminder:</strong>
+                        Review previous appointment and prescription history before giving follow-up advice.
+                    </div>
                 </div>
             </div>
 
             <div class="col-lg-8">
-                <div class="detail-card mb-4">
-                    <h3 class="section-title">Completed Appointments With This Patient</h3>
-                    {% for ap in completed_appointments %}
-                        <p>
-                            <strong>Date:</strong> {{ ap.appointment_date }}
-                            | <strong>Time:</strong> {{ ap.appointment_time }}
-                            | <strong>Mode:</strong> {{ ap.appointment_mode }}
-                        </p>
-                    {% empty %}
-                        <p class="mb-0">No completed appointment records found.</p>
-                    {% endfor %}
+                <div class="appointment-card mb-4 reveal reveal-right">
+                    <div class="section-title-row">
+                        <div>
+                            <h3 class="section-title">Completed Appointments</h3>
+                            <p class="section-subtitle">
+                                Previous completed consultations with this patient.
+                            </p>
+                        </div>
+
+                        <span class="section-badge">
+                            <i class="bi bi-calendar2-check"></i>
+                            History
+                        </span>
+                    </div>
+
+                    <div class="appointment-list">
+                        {% for ap in completed_appointments %}
+                            <div class="appointment-entry">
+                                <div class="appointment-info">
+                                    <span class="appointment-icon">
+                                        <i class="bi bi-calendar-event"></i>
+                                    </span>
+                                    <div>
+                                        <small>Date</small>
+                                        <strong>{{ ap.appointment_date }}</strong>
+                                    </div>
+                                </div>
+
+                                <div class="appointment-info">
+                                    <span class="appointment-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </span>
+                                    <div>
+                                        <small>Time</small>
+                                        <strong>{{ ap.appointment_time }}</strong>
+                                    </div>
+                                </div>
+
+                                <div class="appointment-info">
+                                    <span class="appointment-icon">
+                                        <i class="bi bi-camera-video"></i>
+                                    </span>
+                                    <div>
+                                        <small>Mode</small>
+                                        <strong>{{ ap.appointment_mode }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="empty-state">
+                                <i class="bi bi-calendar-x"></i>
+                                No completed appointment records found.
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
 
-                <div class="prescription-card">
-                    <h3 class="section-title">Previous Prescriptions</h3>
-
-                    {% for pr in prescriptions %}
-                        <div class="prescription-entry">
-                            <p><strong>Appointment:</strong> {{ pr.appointment.appointment_date }} {{ pr.appointment.appointment_time }}</p>
-                            <p><strong>Prescription:</strong> {{ pr.prescription_text }}</p>
-                            <p class="mb-0"><strong>Advice:</strong> {{ pr.advice|default:"-" }}</p>
+                <div class="prescription-card reveal reveal-up">
+                    <div class="section-title-row">
+                        <div>
+                            <h3 class="section-title">Previous Prescriptions</h3>
+                            <p class="section-subtitle">
+                                Prescription history created from completed consultations.
+                            </p>
                         </div>
-                    {% empty %}
-                        <p class="mb-0">No previous prescription found for this patient.</p>
-                    {% endfor %}
+
+                        <span class="section-badge">
+                            <i class="bi bi-file-earmark-medical"></i>
+                            Medical Notes
+                        </span>
+                    </div>
+
+                    <div class="prescription-list">
+                        {% for pr in prescriptions %}
+                            <div class="prescription-entry">
+                                <div class="prescription-top">
+                                    <div class="prescription-date">
+                                        <i class="bi bi-calendar-check"></i>
+                                        {{ pr.appointment.appointment_date }} {{ pr.appointment.appointment_time }}
+                                    </div>
+
+                                    <span class="prescription-chip">
+                                        <i class="bi bi-check-circle"></i>
+                                        Saved
+                                    </span>
+                                </div>
+
+                                <div class="prescription-body">
+                                    <div class="prescription-row">
+                                        <strong>
+                                            <i class="bi bi-prescription2"></i>
+                                            Prescription:
+                                        </strong>
+                                        {{ pr.prescription_text }}
+                                    </div>
+
+                                    <div class="prescription-row">
+                                        <strong>
+                                            <i class="bi bi-chat-left-heart"></i>
+                                            Advice:
+                                        </strong>
+                                        {{ pr.advice|default:"-" }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="empty-state">
+                                <i class="bi bi-file-earmark-x"></i>
+                                No previous prescription found for this patient.
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 </section>
+
+<script>
+    const patientDetailRevealItems = document.querySelectorAll('.reveal');
+
+    function patientDetailRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.88;
+
+        patientDetailRevealItems.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+
+            if (top < triggerBottom) {
+                setTimeout(() => {
+                    el.classList.add('show');
+                }, index * 45);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', patientDetailRevealOnScroll);
+    window.addEventListener('load', patientDetailRevealOnScroll);
+</script>
 {% endblock %}

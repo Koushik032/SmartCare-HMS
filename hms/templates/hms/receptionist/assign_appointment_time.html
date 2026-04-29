@@ -1,0 +1,1009 @@
+{% extends 'hms/base.html' %}
+{% block title %}Assign Appointment Time{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --at-primary: #07111f;
+        --at-dark: #0f172a;
+        --at-blue: #2563eb;
+        --at-blue-dark: #1d4ed8;
+        --at-cyan: #06b6d4;
+        --at-green: #16a34a;
+        --at-orange: #f59e0b;
+        --at-red: #dc2626;
+        --at-muted: #64748b;
+        --at-border: rgba(148, 163, 184, 0.24);
+        --at-soft: #f8fbff;
+        --at-white: #ffffff;
+
+        --at-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --at-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --at-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --at-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --at-gradient-green: linear-gradient(135deg, #2563eb, #14b8a6);
+        --at-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --at-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
+    }
+
+    .assign-page {
+        position: relative;
+        overflow: hidden;
+        padding: 36px 0 76px;
+    }
+
+    .assign-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
+        pointer-events: none;
+    }
+
+    .assign-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
+        pointer-events: none;
+    }
+
+    .assign-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 32px;
+        padding: 54px 46px;
+        margin-bottom: 22px;
+        background:
+            var(--at-gradient-dark),
+            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--at-shadow-lg);
+        isolation: isolate;
+    }
+
+    .assign-hero::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -170px;
+        right: -140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
+    }
+
+    .assign-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .hero-chip,
+    .hero-highlight,
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .hero-chip {
+        padding: 8px 15px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
+        margin-bottom: 12px;
+    }
+
+    .hero-highlight {
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
+        margin-bottom: 14px;
+    }
+
+    .assign-hero h2 {
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
+        line-height: 1.08;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 980px;
+    }
+
+    .assign-hero p {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 940px;
+        margin-bottom: 0;
+        font-size: 1rem;
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .hero-pill {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
+        font-weight: 700;
+    }
+
+    .assign-main-card,
+    .appointment-summary-card,
+    .assign-form-card,
+    .guide-card,
+    .timeline-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--at-border);
+        border-radius: 28px;
+        box-shadow: var(--at-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--at-transition);
+    }
+
+    .assign-main-card::before,
+    .appointment-summary-card::before,
+    .assign-form-card::before,
+    .guide-card::before,
+    .timeline-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
+    }
+
+    .assign-main-card > *,
+    .appointment-summary-card > *,
+    .assign-form-card > *,
+    .guide-card > *,
+    .timeline-card > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .assign-main-card:hover,
+    .appointment-summary-card:hover,
+    .assign-form-card:hover,
+    .guide-card:hover,
+    .timeline-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--at-shadow-md);
+        border-color: rgba(37,99,235,0.28);
+    }
+
+    .assign-main-card {
+        padding: 24px;
+    }
+
+    .assign-layout {
+        display: grid;
+        grid-template-columns: 0.86fr 1.14fr;
+        gap: 22px;
+        align-items: start;
+    }
+
+    .left-stack {
+        display: grid;
+        gap: 18px;
+        position: sticky;
+        top: 20px;
+    }
+
+    .appointment-summary-card,
+    .assign-form-card,
+    .guide-card,
+    .timeline-card {
+        padding: 24px;
+    }
+
+    .section-topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    .section-title {
+        font-size: 1.28rem;
+        font-weight: 950;
+        color: var(--at-primary);
+        margin-bottom: 6px;
+        letter-spacing: -0.35px;
+        line-height: 1.28;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        background: #eff6ff;
+        color: var(--at-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .section-subtitle {
+        color: var(--at-muted);
+        margin-bottom: 0;
+        line-height: 1.68;
+        font-size: 0.92rem;
+    }
+
+    .section-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--at-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
+    }
+
+    .patient-mini-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        border-radius: 22px;
+        background:
+            radial-gradient(circle at top right, rgba(37,99,235,0.08), transparent 32%),
+            linear-gradient(135deg, #ffffff, #f8fbff);
+        border: 1px solid #e5edf7;
+        margin-bottom: 16px;
+    }
+
+    .patient-avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 22px;
+        background: var(--at-gradient-main);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.65rem;
+        font-weight: 950;
+        flex-shrink: 0;
+        box-shadow: 0 16px 32px rgba(37,99,235,0.18);
+    }
+
+    .patient-mini-card h4 {
+        color: var(--at-primary);
+        font-size: 1.08rem;
+        font-weight: 950;
+        margin: 0 0 5px;
+        line-height: 1.3;
+    }
+
+    .patient-mini-card p {
+        color: var(--at-muted);
+        font-size: 0.88rem;
+        line-height: 1.55;
+        margin: 0;
+    }
+
+    .info-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        border-radius: 16px;
+        padding: 13px;
+        line-height: 1.6;
+        color: #475569;
+        transition: var(--at-transition);
+        font-size: 0.88rem;
+        min-width: 0;
+    }
+
+    .info-item:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--at-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .info-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: var(--at-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 14px;
+    }
+
+    .info-text {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .info-text small {
+        display: block;
+        color: var(--at-muted);
+        font-size: 0.74rem;
+        font-weight: 850;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .info-text strong {
+        display: block;
+        color: var(--at-primary);
+        font-size: 0.92rem;
+        font-weight: 950;
+        line-height: 1.35;
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: fit-content;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+        font-size: 0.78rem;
+        font-weight: 900;
+        margin-top: 2px;
+    }
+
+    .form-field {
+        padding: 15px;
+        border-radius: 20px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        transition: var(--at-transition);
+        margin-bottom: 16px;
+    }
+
+    .form-field:hover {
+        background: #ffffff;
+        border-color: rgba(37,99,235,0.25);
+        box-shadow: var(--at-shadow-sm);
+        transform: translateY(-2px);
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #334155;
+        font-size: 0.92rem;
+        font-weight: 950;
+        margin-bottom: 9px;
+    }
+
+    .field-icon {
+        width: 31px;
+        height: 31px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--at-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 14px;
+    }
+
+    .assign-page .form-control,
+    .assign-page textarea,
+    .assign-page input,
+    .assign-page select {
+        width: 100%;
+        min-height: 52px;
+        border-radius: 15px;
+        background: #ffffff;
+        border: 1px solid #dbe3ee;
+        box-shadow: none !important;
+        padding: 12px 14px;
+        transition: var(--at-transition);
+        font-size: 0.92rem;
+        color: #334155;
+    }
+
+    .assign-page textarea {
+        min-height: 145px;
+        resize: vertical;
+    }
+
+    .assign-page .form-control:focus,
+    .assign-page textarea:focus,
+    .assign-page input:focus,
+    .assign-page select:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10) !important;
+        outline: none;
+    }
+
+    .helper-text {
+        display: block;
+        margin-top: 7px;
+        color: var(--at-muted);
+        font-size: 0.84rem;
+        line-height: 1.6;
+    }
+
+    .error-text {
+        display: block;
+        margin-top: 7px;
+        color: var(--at-red);
+        font-size: 0.84rem;
+        font-weight: 850;
+        line-height: 1.55;
+    }
+
+    .submit-panel {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 22px;
+        background:
+            radial-gradient(circle at top right, rgba(37,99,235,0.06), transparent 30%),
+            linear-gradient(135deg, #ffffff, #f8fbff);
+        border: 1px solid #e5edf7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .submit-note {
+        color: var(--at-muted);
+        line-height: 1.65;
+        font-size: 0.9rem;
+        margin: 0;
+        max-width: 560px;
+    }
+
+    .submit-note strong {
+        color: var(--at-primary);
+    }
+
+    .btn-assign-main,
+    .btn-back-modern {
+        min-height: 48px;
+        padding: 10px 20px;
+        border-radius: 999px;
+        font-weight: 900;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: var(--at-transition);
+        font-size: 0.86rem;
+        white-space: nowrap;
+        border: none;
+    }
+
+    .btn-assign-main {
+        background: var(--at-gradient-green);
+        color: #ffffff;
+        box-shadow: 0 10px 22px rgba(37,99,235,0.20);
+    }
+
+    .btn-assign-main:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(37,99,235,0.24);
+    }
+
+    .btn-back-modern {
+        border: 1px solid #dbe3ee;
+        background: #ffffff;
+        color: var(--at-primary);
+    }
+
+    .btn-back-modern:hover {
+        color: var(--at-primary);
+        background: #f8fafc;
+        transform: translateY(-2px);
+    }
+
+    .guide-list,
+    .timeline-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+    }
+
+    .guide-list li,
+    .timeline-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 13px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.62;
+        transition: var(--at-transition);
+        font-size: 0.88rem;
+    }
+
+    .guide-list li:hover,
+    .timeline-list li:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--at-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .guide-dot,
+    .timeline-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--at-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 900;
+        flex-shrink: 0;
+    }
+
+    .timeline-dot {
+        background: var(--at-gradient-main);
+        color: #ffffff;
+        box-shadow: 0 8px 16px rgba(37,99,235,0.16);
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .reveal-up {
+        transform: translateY(40px);
+    }
+
+    .reveal-left {
+        transform: translateX(-42px);
+    }
+
+    .reveal-right {
+        transform: translateX(42px);
+    }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+
+    @media (max-width: 991px) {
+        .assign-page {
+            padding: 30px 0 62px;
+        }
+
+        .assign-hero {
+            padding: 44px 28px;
+            border-radius: 28px;
+        }
+
+        .assign-hero h2 {
+            font-size: 2rem;
+        }
+
+        .assign-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .left-stack {
+            position: static;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .assign-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .assign-hero h2 {
+            font-size: 1.78rem;
+        }
+
+        .assign-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .assign-main-card,
+        .appointment-summary-card,
+        .assign-form-card,
+        .guide-card,
+        .timeline-card {
+            border-radius: 22px;
+        }
+
+        .assign-main-card,
+        .appointment-summary-card,
+        .assign-form-card,
+        .guide-card,
+        .timeline-card {
+            padding: 22px;
+        }
+
+        .section-title {
+            font-size: 1.16rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.86rem;
+        }
+
+        .patient-mini-card {
+            align-items: flex-start;
+        }
+
+        .submit-panel {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-assign-main,
+        .btn-back-modern {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="assign-page">
+    <div class="container position-relative" style="z-index: 2;">
+
+        <div class="assign-hero reveal reveal-up show">
+            <span class="hero-chip">
+                <i class="bi bi-clock-history"></i>
+                SmartCare HMS • Receptionist Workflow
+            </span>
+
+            <div class="hero-highlight">
+                <i class="bi bi-send-check"></i>
+                Assign approximate appointment time and notify patient
+            </div>
+
+            <h2>Assign Appointment Time</h2>
+
+            <p>
+                Patient selected only the appointment date. Now add an approximate appointment time
+                and send a clear message. After saving, this appointment will move to the doctor pending appointment list.
+            </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-calendar2-check"></i> Date Selected</span>
+                <span class="hero-pill"><i class="bi bi-clock"></i> Time Assignment</span>
+                <span class="hero-pill"><i class="bi bi-chat-left-text"></i> Patient Message</span>
+                <span class="hero-pill"><i class="bi bi-person-heart"></i> Doctor Pending</span>
+            </div>
+        </div>
+
+        <div class="assign-main-card reveal reveal-up">
+            <div class="assign-layout">
+
+                <aside class="left-stack reveal reveal-left">
+                    <div class="appointment-summary-card">
+                        <div class="section-topbar">
+                            <div>
+                                <h3 class="section-title">
+                                    <i class="bi bi-person-vcard"></i>
+                                    Appointment Summary
+                                </h3>
+                                <p class="section-subtitle">
+                                    Review patient and appointment information before assigning time.
+                                </p>
+                            </div>
+
+                            <span class="section-chip">
+                                <i class="bi bi-info-circle"></i>
+                                Details
+                            </span>
+                        </div>
+
+                        <div class="patient-mini-card">
+                            <div class="patient-avatar">
+                                {{ appointment.patient.first_name|slice:":1" }}
+                            </div>
+
+                            <div>
+                                <h4>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</h4>
+                                <p>Patient appointment request waiting for time assignment.</p>
+                            </div>
+                        </div>
+
+                        <div class="info-list">
+                            <div class="info-item">
+                                <span class="info-icon"><i class="bi bi-person-heart"></i></span>
+                                <span class="info-text">
+                                    <small>Doctor</small>
+                                    <strong>Dr. {{ appointment.doctor.name }}</strong>
+                                </span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-icon"><i class="bi bi-calendar-event"></i></span>
+                                <span class="info-text">
+                                    <small>Selected Date</small>
+                                    <strong>{{ appointment.appointment_date }}</strong>
+                                </span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-icon"><i class="bi bi-clipboard2-pulse"></i></span>
+                                <span class="info-text">
+                                    <small>Problem Category</small>
+                                    <strong>{{ appointment.problem_category }}</strong>
+                                </span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-icon"><i class="bi bi-activity"></i></span>
+                                <span class="info-text">
+                                    <small>Urgency</small>
+                                    <strong>{{ appointment.urgency_level }}</strong>
+                                </span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-icon"><i class="bi bi-flag"></i></span>
+                                <span class="info-text">
+                                    <small>Current Status</small>
+                                    <span class="status-pill">
+                                        <i class="bi bi-hourglass-split"></i>
+                                        {{ appointment.status }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-card">
+                        <div class="section-topbar">
+                            <div>
+                                <h3 class="section-title">
+                                    <i class="bi bi-list-ol"></i>
+                                    Workflow Steps
+                                </h3>
+                                <p class="section-subtitle">
+                                    This is the expected appointment flow.
+                                </p>
+                            </div>
+                        </div>
+
+                        <ul class="timeline-list">
+                            <li>
+                                <span class="timeline-dot">1</span>
+                                <span>Patient submits appointment request with selected date.</span>
+                            </li>
+
+                            <li>
+                                <span class="timeline-dot">2</span>
+                                <span>Receptionist assigns approximate time and sends message.</span>
+                            </li>
+
+                            <li>
+                                <span class="timeline-dot">3</span>
+                                <span>Appointment moves to doctor pending appointment list.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="assign-form-card reveal reveal-right">
+                    <div class="section-topbar">
+                        <div>
+                            <h3 class="section-title">
+                                <i class="bi bi-send-check"></i>
+                                Time & Message Form
+                            </h3>
+                            <p class="section-subtitle">
+                                Select an approximate appointment time and write a clear message for the patient.
+                            </p>
+                        </div>
+
+                        <span class="section-chip">
+                            <i class="bi bi-pencil-square"></i>
+                            Assign
+                        </span>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="form-field">
+                            <label class="form-label">
+                                <span class="field-icon"><i class="bi bi-clock"></i></span>
+                                Approximate Appointment Time
+                            </label>
+
+                            {{ form.appointment_time }}
+
+                            <small class="helper-text">
+                                Choose a realistic approximate time based on doctor availability and queue pressure.
+                            </small>
+
+                            {% if form.appointment_time.errors %}
+                                <small class="error-text">{{ form.appointment_time.errors.0 }}</small>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">
+                                <span class="field-icon"><i class="bi bi-chat-left-text"></i></span>
+                                Message for Patient
+                            </label>
+
+                            {{ form.receptionist_message }}
+
+                            <small class="helper-text">
+                                Example: “Your appointment is expected around 3:30 PM. Please arrive 15 minutes early.”
+                            </small>
+
+                            {% if form.receptionist_message.errors %}
+                                <small class="error-text">{{ form.receptionist_message.errors.0 }}</small>
+                            {% endif %}
+                        </div>
+
+                        <div class="submit-panel">
+                            <p class="submit-note">
+                                <strong>Before sending:</strong>
+                                Confirm the date, doctor, urgency and message. After submit, this appointment will be visible to the doctor.
+                            </p>
+
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button type="submit" class="btn-assign-main">
+                                    <i class="bi bi-send-check"></i>
+                                    Send Time & Move to Doctor Pending
+                                </button>
+
+                                <a href="{% url 'receptionist_all_appointments' %}" class="btn-back-modern">
+                                    <i class="bi bi-arrow-left-circle"></i>
+                                    Back
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="guide-card reveal reveal-up mt-4">
+            <div class="section-topbar">
+                <div>
+                    <h3 class="section-title">
+                        <i class="bi bi-info-circle"></i>
+                        Assignment Guide
+                    </h3>
+                    <p class="section-subtitle">
+                        These notes help receptionist users provide clearer communication and reduce patient confusion.
+                    </p>
+                </div>
+
+                <span class="section-chip">
+                    <i class="bi bi-lightbulb"></i>
+                    Tips
+                </span>
+            </div>
+
+            <ul class="guide-list">
+                <li>
+                    <span class="guide-dot"><i class="bi bi-clock-history"></i></span>
+                    <span>Use approximate time instead of exact guaranteed time, because doctor queue can change.</span>
+                </li>
+
+                <li>
+                    <span class="guide-dot"><i class="bi bi-chat-left-text"></i></span>
+                    <span>Write a polite patient message with time, arrival instruction, and any needed note.</span>
+                </li>
+
+                <li>
+                    <span class="guide-dot"><i class="bi bi-person-heart"></i></span>
+                    <span>After saving, the doctor can see this appointment in pending appointments.</span>
+                </li>
+
+                <li>
+                    <span class="guide-dot"><i class="bi bi-shield-check"></i></span>
+                    <span>Double-check doctor name and appointment date before submitting the time assignment.</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const assignTimeReveal = document.querySelectorAll('.reveal');
+
+    function assignTimeRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.9;
+
+        assignTimeReveal.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+
+            if (top < triggerBottom) {
+                setTimeout(() => el.classList.add('show'), index * 60);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', assignTimeRevealOnScroll);
+    window.addEventListener('load', assignTimeRevealOnScroll);
+</script>
+{% endblock %}

@@ -4,256 +4,661 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --muted: #64748b;
-        --border: #e6edf5;
-        --shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
-        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
-        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
-        --transition: all 0.35s ease;
+        --wp-primary: #07111f;
+        --wp-blue: #2563eb;
+        --wp-blue-dark: #1d4ed8;
+        --wp-cyan: #06b6d4;
+        --wp-green: #16a34a;
+        --wp-orange: #f59e0b;
+        --wp-red: #dc2626;
+        --wp-muted: #64748b;
+        --wp-border: rgba(148, 163, 184, 0.24);
+        --wp-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --wp-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --wp-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+        --wp-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --wp-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --wp-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
     }
 
-    .prescription-page { padding: 40px 0 70px; }
-
-    .prescription-shell {
-        background: rgba(255,255,255,0.98);
-        border: 1px solid var(--border);
-        border-radius: 30px;
-        box-shadow: var(--shadow-lg);
-        overflow: hidden;
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
     }
 
-    .prescription-top {
+    .write-prescription-page {
         position: relative;
         overflow: hidden;
+        padding: 36px 0 74px;
+    }
+
+    .write-prescription-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
+        pointer-events: none;
+    }
+
+    .write-prescription-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
+        pointer-events: none;
+    }
+
+    .prescription-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 32px;
+        padding: 52px 46px;
+        margin-bottom: 20px;
         background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 64, 175, 0.84) 55%, rgba(56, 189, 248, 0.74) 100%),
-            url('https://images.unsplash.com/photo-1580281657527-47cfaae0af34?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            var(--wp-gradient-dark),
+            url('https://images.unsplash.com/photo-1580281657527-47cfaae0af34?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
         color: #ffffff;
-        padding: 46px 40px;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--wp-shadow-lg);
         isolation: isolate;
     }
 
-    .prescription-top::before,
-    .prescription-top::after {
+    .prescription-hero::before {
         content: "";
         position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -170px;
+        right: -140px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
         z-index: -1;
     }
 
-    .prescription-top::before {
-        width: 220px;
-        height: 220px;
-        top: -70px;
-        right: -60px;
+    .prescription-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
     }
 
-    .prescription-top::after {
-        width: 150px;
-        height: 150px;
-        bottom: -45px;
-        left: -25px;
-    }
-
-    .prescription-badge {
+    .hero-badge,
+    .hero-highlight,
+    .hero-pill {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
+        gap: 7px;
         border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .hero-badge {
+        padding: 8px 15px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
-        font-size: 13px;
-        font-weight: 700;
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
+        margin-bottom: 12px;
+    }
+
+    .hero-highlight {
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
         margin-bottom: 14px;
-        backdrop-filter: blur(10px);
     }
 
-    .prescription-top h2 {
-        font-size: 2.05rem;
-        font-weight: 900;
-        margin-bottom: 10px;
-        letter-spacing: -0.3px;
+    .prescription-hero h2 {
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
+        line-height: 1.08;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 900px;
     }
 
-    .prescription-top p {
-        margin: 0;
-        color: rgba(255,255,255,0.92);
-        line-height: 1.85;
+    .prescription-hero p {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 900px;
+        margin-bottom: 0;
+        font-size: 1rem;
     }
 
-    .prescription-body { padding: 36px; background: linear-gradient(to bottom right, #ffffff, #fbfdff); }
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
 
-    .info-card, .form-card {
-        background: #f8fbff;
-        border: 1px solid #e8eef7;
-        border-radius: 24px;
+    .hero-pill {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
+        font-weight: 700;
+    }
+
+    .prescription-layout {
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr;
+        gap: 22px;
+        align-items: start;
+    }
+
+    .info-card,
+    .form-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--wp-border);
+        border-radius: 28px;
+        box-shadow: var(--wp-shadow-sm);
+        backdrop-filter: blur(16px);
         padding: 24px;
-        height: 100%;
-        box-shadow: var(--shadow-sm);
-        transition: var(--transition);
+        transition: var(--wp-transition);
     }
 
-    .info-card:hover, .form-card:hover {
+    .info-card::before,
+    .form-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
+    }
+
+    .info-card > *,
+    .form-card > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .info-card:hover,
+    .form-card:hover {
         transform: translateY(-4px);
-        box-shadow: var(--shadow-md);
+        box-shadow: var(--wp-shadow-md);
+        border-color: rgba(37,99,235,0.28);
+    }
+
+    .info-card {
+        position: sticky;
+        top: 20px;
     }
 
     .section-title {
         display: flex;
         align-items: center;
         gap: 10px;
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: #0f172a;
+        font-size: 1.32rem;
+        font-weight: 950;
+        color: var(--wp-primary);
         margin-bottom: 18px;
+        line-height: 1.3;
+        letter-spacing: -0.35px;
     }
 
     .title-icon {
         width: 42px;
         height: 42px;
-        border-radius: 14px;
+        border-radius: 15px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
+        color: var(--wp-blue-dark);
         font-size: 18px;
+        flex-shrink: 0;
     }
 
-    .info-card p {
+    .patient-info-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .patient-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
         color: #475569;
-        line-height: 1.8;
-        margin-bottom: 10px;
+        line-height: 1.6;
+        font-size: 0.88rem;
+        transition: var(--wp-transition);
+    }
+
+    .patient-info-item:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--wp-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .patient-info-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--wp-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .patient-info-item strong {
+        color: var(--wp-primary);
+        margin-right: 4px;
+        font-weight: 950;
+    }
+
+    .symptoms-note {
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at top right, rgba(245,158,11,0.10), transparent 30%),
+            linear-gradient(135deg, #fff7ed, #fffbeb);
+        border: 1px solid #fed7aa;
+        color: #7c2d12;
+    }
+
+    .symptoms-note h5 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #9a3412;
+        font-weight: 950;
+        font-size: 0.96rem;
+        margin-bottom: 9px;
+    }
+
+    .symptoms-note p {
+        margin: 0;
+        line-height: 1.7;
+        font-size: 0.9rem;
+        white-space: pre-line;
+    }
+
+    .form-subtitle {
+        color: var(--wp-muted);
+        line-height: 1.65;
+        font-size: 0.92rem;
+        margin-top: -8px;
+        margin-bottom: 20px;
+    }
+
+    .form-field {
+        padding: 15px;
+        border-radius: 20px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        transition: var(--wp-transition);
+        margin-bottom: 16px;
+    }
+
+    .form-field:hover {
+        background: #ffffff;
+        border-color: rgba(37,99,235,0.25);
+        box-shadow: var(--wp-shadow-sm);
+        transform: translateY(-2px);
     }
 
     .form-label {
-        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
         color: #334155;
-        margin-bottom: 8px;
+        font-size: 0.92rem;
+        font-weight: 950;
+        margin-bottom: 9px;
     }
 
-    .prescription-body .form-control,
-    .prescription-body textarea,
-    .prescription-body input {
-        border-radius: 14px;
+    .field-icon {
+        width: 31px;
+        height: 31px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--wp-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 14px;
+    }
+
+    .form-card .form-control,
+    .form-card textarea,
+    .form-card input,
+    .form-card select {
+        border-radius: 15px;
         border: 1px solid #dbe3ee;
-        background: #fbfdff;
+        background: #ffffff;
         box-shadow: none;
         width: 100%;
+        min-height: 52px;
         padding: 12px 14px;
-        transition: var(--transition);
+        transition: var(--wp-transition);
+        font-size: 0.92rem;
+        color: #334155;
     }
 
-    .prescription-body .form-control:focus,
-    .prescription-body textarea:focus,
-    .prescription-body input:focus {
+    .form-card textarea,
+    .form-card textarea.form-control {
+        min-height: 135px;
+        resize: vertical;
+    }
+
+    .form-card .form-control:focus,
+    .form-card textarea:focus,
+    .form-card input:focus,
+    .form-card select:focus {
         background: #ffffff;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10);
         outline: none;
     }
 
     .btn-prescription-main {
-        min-height: 52px;
-        padding: 12px 22px;
+        min-height: 48px;
+        padding: 10px 20px;
         border: none;
-        border-radius: 14px;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        border-radius: 999px;
+        background: var(--wp-gradient-main);
         color: #ffffff;
-        font-weight: 700;
-        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
-        transition: var(--transition);
+        font-weight: 900;
+        box-shadow: 0 10px 22px rgba(37,99,235,0.18);
+        transition: var(--wp-transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
 
     .btn-prescription-main:hover {
         color: #ffffff;
         transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(37,99,235,0.22);
     }
 
     .field-error {
-        color: #dc2626;
-        margin-top: 6px;
+        color: var(--wp-red);
+        margin-top: 7px;
         display: block;
-        font-weight: 600;
+        font-weight: 800;
+        font-size: 0.84rem;
+    }
+
+    .submit-panel {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #ffffff, #f8fbff);
+        border: 1px solid #e5edf7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .submit-note {
+        color: var(--wp-muted);
+        line-height: 1.65;
         font-size: 0.9rem;
+        margin: 0;
+        max-width: 600px;
+    }
+
+    .submit-note strong {
+        color: var(--wp-primary);
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
-    .reveal-up { transform: translateY(50px); }
-    .reveal.show { opacity: 1; transform: translate(0,0); }
+    .reveal-up {
+        transform: translateY(40px);
+    }
+
+    .reveal-left {
+        transform: translateX(-42px);
+    }
+
+    .reveal-right {
+        transform: translateX(42px);
+    }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0,0);
+    }
+
+    @media (max-width: 991px) {
+        .write-prescription-page {
+            padding: 30px 0 62px;
+        }
+
+        .prescription-hero {
+            padding: 44px 28px;
+            border-radius: 28px;
+        }
+
+        .prescription-hero h2 {
+            font-size: 2rem;
+        }
+
+        .prescription-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .info-card {
+            position: static;
+        }
+
+        .info-card,
+        .form-card {
+            padding: 22px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .prescription-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .prescription-hero h2 {
+            font-size: 1.78rem;
+        }
+
+        .prescription-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .info-card,
+        .form-card {
+            border-radius: 22px;
+        }
+
+        .section-title {
+            font-size: 1.18rem;
+        }
+
+        .submit-panel {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-prescription-main {
+            width: 100%;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="prescription-page">
-  <div class="container">
-    <div class="prescription-shell">
-      <div class="prescription-top reveal reveal-up show">
-        <span class="prescription-badge">
-            <i class="bi bi-journal-medical"></i>
-            Doctor Prescription
-        </span>
-        <h2>Online Appointment Prescription</h2>
-        <p>Review patient symptoms and write a professional prescription.</p>
-      </div>
+<section class="write-prescription-page">
+    <div class="container position-relative" style="z-index: 2;">
 
-      <div class="prescription-body">
-        <div class="row g-4">
-          <div class="col-lg-4">
-            <div class="info-card reveal reveal-up">
-              <h4 class="section-title">
-                <span class="title-icon"><i class="bi bi-person-vcard"></i></span>
-                Patient Case
-              </h4>
-              <p><strong>Patient:</strong> {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</p>
-              <p><strong>Email:</strong> {{ appointment.patient.user.email }}</p>
-              <p><strong>Contact:</strong> {{ appointment.patient.contact }}</p>
-              <p><strong>Date:</strong> {{ appointment.appointment_date }}</p>
-              <p><strong>Time:</strong> {{ appointment.appointment_time }}</p>
-              <p><strong>Mode:</strong> {{ appointment.appointment_mode }}</p>
-              <p class="mb-0"><strong>Symptoms:</strong> {{ appointment.symptoms|default:"No symptoms provided." }}</p>
-            </div>
-          </div>
+        <div class="prescription-hero reveal reveal-up show">
+            <span class="hero-badge">
+                <i class="bi bi-journal-medical"></i>
+                SmartCare HMS • Doctor Prescription
+            </span>
 
-          <div class="col-lg-8">
-            <div class="form-card reveal reveal-up">
-              <h4 class="section-title">
-                <span class="title-icon"><i class="bi bi-file-earmark-medical"></i></span>
-                Write Prescription
-              </h4>
-              <form method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                  <label class="form-label">{{ form.prescription_text.label }}</label>
-                  {{ form.prescription_text }}
-                  {% if form.prescription_text.errors %}<small class="field-error">{{ form.prescription_text.errors|striptags }}</small>{% endif %}
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">{{ form.advice.label }}</label>
-                  {{ form.advice }}
-                  {% if form.advice.errors %}<small class="field-error">{{ form.advice.errors|striptags }}</small>{% endif %}
-                </div>
-                <button type="submit" class="btn-prescription-main">
-                    <i class="bi bi-check2-circle me-1"></i>
-                    Save Prescription
-                </button>
-              </form>
+            <div class="hero-highlight">
+                <i class="bi bi-file-earmark-medical"></i>
+                Review patient case and write prescription
             </div>
-          </div>
+
+            <h2>Online Appointment Prescription</h2>
+
+            <p>
+                Review patient symptoms, appointment details, and write a clear professional prescription
+                with advice for this consultation.
+            </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-person-vcard"></i> Patient Case</span>
+                <span class="hero-pill"><i class="bi bi-capsule"></i> Prescription</span>
+                <span class="hero-pill"><i class="bi bi-chat-left-heart"></i> Advice</span>
+                <span class="hero-pill"><i class="bi bi-check-circle"></i> Save Record</span>
+            </div>
         </div>
-      </div>
+
+        <div class="prescription-layout">
+            <aside class="info-card reveal reveal-left">
+                <h4 class="section-title">
+                    <span class="title-icon"><i class="bi bi-person-vcard"></i></span>
+                    Patient Case
+                </h4>
+
+                <div class="patient-info-list">
+                    <div class="patient-info-item">
+                        <span class="patient-info-icon"><i class="bi bi-person"></i></span>
+                        <span><strong>Patient:</strong> {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</span>
+                    </div>
+
+                    <div class="patient-info-item">
+                        <span class="patient-info-icon"><i class="bi bi-envelope"></i></span>
+                        <span><strong>Email:</strong> {{ appointment.patient.user.email }}</span>
+                    </div>
+
+                    <div class="patient-info-item">
+                        <span class="patient-info-icon"><i class="bi bi-telephone"></i></span>
+                        <span><strong>Contact:</strong> {{ appointment.patient.contact }}</span>
+                    </div>
+
+                    <div class="patient-info-item">
+                        <span class="patient-info-icon"><i class="bi bi-calendar-event"></i></span>
+                        <span><strong>Date:</strong> {{ appointment.appointment_date }}</span>
+                    </div>
+
+                    <div class="patient-info-item">
+                        <span class="patient-info-icon"><i class="bi bi-clock"></i></span>
+                        <span><strong>Time:</strong> {{ appointment.appointment_time }}</span>
+                    </div>
+
+                    <div class="patient-info-item">
+                        <span class="patient-info-icon"><i class="bi bi-camera-video"></i></span>
+                        <span><strong>Mode:</strong> {{ appointment.appointment_mode }}</span>
+                    </div>
+                </div>
+
+                <div class="symptoms-note">
+                    <h5>
+                        <i class="bi bi-chat-left-text"></i>
+                        Symptoms
+                    </h5>
+                    <p>{{ appointment.symptoms|default:"No symptoms provided." }}</p>
+                </div>
+            </aside>
+
+            <div class="form-card reveal reveal-right">
+                <h4 class="section-title">
+                    <span class="title-icon"><i class="bi bi-file-earmark-medical"></i></span>
+                    Write Prescription
+                </h4>
+
+                <p class="form-subtitle">
+                    Fill in prescription and advice carefully before saving the consultation record.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-field">
+                        <label class="form-label">
+                            <span class="field-icon">
+                                <i class="bi bi-prescription2"></i>
+                            </span>
+                            {{ form.prescription_text.label }}
+                        </label>
+                        {{ form.prescription_text }}
+                        {% if form.prescription_text.errors %}
+                            <small class="field-error">{{ form.prescription_text.errors|striptags }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label">
+                            <span class="field-icon">
+                                <i class="bi bi-chat-left-heart"></i>
+                            </span>
+                            {{ form.advice.label }}
+                        </label>
+                        {{ form.advice }}
+                        {% if form.advice.errors %}
+                            <small class="field-error">{{ form.advice.errors|striptags }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="submit-panel">
+                        <p class="submit-note">
+                            <strong>Before saving:</strong>
+                            Review medicine names, dosage, duration and advice clearly.
+                        </p>
+
+                        <button type="submit" class="btn-prescription-main">
+                            <i class="bi bi-check2-circle"></i>
+                            Save Prescription
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </div>
-  </div>
 </section>
 {% endblock %}
 
@@ -262,11 +667,13 @@
     const writePrescriptionReveal = document.querySelectorAll('.reveal');
 
     function writePrescriptionRevealOnScroll() {
-        const triggerBottom = window.innerHeight * 0.9;
+        const triggerBottom = window.innerHeight * 0.88;
+
         writePrescriptionReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
-                setTimeout(() => el.classList.add('show'), index * 80);
+                setTimeout(() => el.classList.add('show'), index * 45);
             }
         });
     }

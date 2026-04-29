@@ -35,6 +35,7 @@ urlpatterns = [
     path('patient/prescription/<int:pk>/', views.patient_prescription_detail, name='patient_prescription_detail'),
     path('patient/history/prescription/<int:appointment_id>/', views.patient_view_prescription, name='patient_view_prescription'),
     path('patient/<int:patient_id>/', views.patient_profile_view, name='patient_profile_view'),
+    path('patient/messages/', views.patient_messages, name='patient_messages'),
 
 
     # path('doctor/dashboard/', views.doctor_dashboard, name='doctor_dashboard'),
@@ -70,6 +71,7 @@ urlpatterns = [
     path('receptionist/test-report/create/', views.receptionist_create_test_report, name='receptionist_create_test_report'),
     path('receptionist/test-reports/', views.receptionist_all_test_reports, name='receptionist_all_test_reports'),
     path('receptionist/test-report/<int:report_id>/', views.receptionist_view_test_report, name='receptionist_view_test_report'),
+    path('receptionist/appointment/<int:pk>/assign-time/',views.receptionist_assign_appointment_time,name='receptionist_assign_appointment_time'),
 
     path('patient/report-show/', views.patient_report_show, name='patient_report_show'),
     path('doctor/report-show/', views.doctor_report_show_list, name='doctor_report_show_list'),

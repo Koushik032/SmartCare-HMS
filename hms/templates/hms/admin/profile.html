@@ -4,135 +4,236 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --muted: #64748b;
-        --border: #e6edf5;
-        --soft: #f8fbff;
-        --white: #ffffff;
-        --shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
-        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
-        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
-        --transition: all 0.35s ease;
+        --pro-primary: #07111f;
+        --pro-dark: #0f172a;
+        --pro-blue: #2563eb;
+        --pro-blue-dark: #1d4ed8;
+        --pro-cyan: #06b6d4;
+        --pro-sky: #38bdf8;
+        --pro-green: #10b981;
+        --pro-red: #ef4444;
+        --pro-muted: #64748b;
+        --pro-border: rgba(148, 163, 184, 0.24);
+        --pro-soft: #f6faff;
+        --pro-white: #ffffff;
+        --pro-shadow-sm: 0 10px 26px rgba(15, 23, 42, 0.07);
+        --pro-shadow-md: 0 20px 52px rgba(15, 23, 42, 0.11);
+        --pro-shadow-lg: 0 34px 90px rgba(15, 23, 42, 0.16);
+        --pro-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --pro-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.84), rgba(6, 182, 212, 0.66));
+        --pro-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
     }
 
     .profile-page {
-        padding: 40px 0 70px;
+        position: relative;
+        overflow: hidden;
+        padding: 42px 0 88px;
+    }
+
+    .profile-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -150px;
+        top: -160px;
+        pointer-events: none;
+    }
+
+    .profile-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -140px;
+        bottom: -150px;
+        pointer-events: none;
     }
 
     .profile-shell {
-        background: rgba(255,255,255,0.98);
-        border: 1px solid var(--border);
-        border-radius: 30px;
-        box-shadow: var(--shadow-lg);
+        position: relative;
+        z-index: 2;
         overflow: hidden;
+        background: rgba(255,255,255,0.94);
+        border: 1px solid var(--pro-border);
+        border-radius: 38px;
+        box-shadow: var(--pro-shadow-lg);
+        backdrop-filter: blur(18px);
     }
 
     .profile-top {
         position: relative;
         overflow: hidden;
+        padding: 62px 52px;
         background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 64, 175, 0.86) 55%, rgba(56, 189, 248, 0.76) 100%),
-            url('https://images.unsplash.com/photo-1579684453423-f84349ef60b0?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            var(--pro-gradient-dark),
+            url('https://images.unsplash.com/photo-1579684453423-f84349ef60b0?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
         color: #ffffff;
-        padding: 46px 40px;
         isolation: isolate;
     }
 
-    .profile-top::before,
-    .profile-top::after {
+    .profile-top::before {
         content: "";
         position: absolute;
+        width: 480px;
+        height: 480px;
+        top: -190px;
+        right: -150px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
         z-index: -1;
     }
 
-    .profile-top::before {
-        width: 220px;
-        height: 220px;
-        top: -70px;
-        right: -60px;
-    }
-
     .profile-top::after {
-        width: 150px;
-        height: 150px;
-        bottom: -45px;
-        left: -25px;
+        content: "";
+        position: absolute;
+        width: 270px;
+        height: 270px;
+        left: -95px;
+        bottom: -105px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
     }
 
-    .profile-badge {
+    .profile-badge,
+    .profile-highlight,
+    .profile-pill {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 14px;
         border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .profile-badge {
+        padding: 9px 17px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.20);
         font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 14px;
-        backdrop-filter: blur(10px);
+        font-weight: 850;
+        margin-bottom: 16px;
+    }
+
+    .profile-highlight {
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 18px;
     }
 
     .profile-top h2 {
-        margin: 0 0 10px;
-        font-size: 2.1rem;
-        font-weight: 900;
-        letter-spacing: -0.4px;
+        font-size: clamp(2.1rem, 4vw, 3.05rem);
+        font-weight: 950;
+        line-height: 1.08;
+        letter-spacing: -1px;
+        margin-bottom: 14px;
     }
 
     .profile-top p {
-        margin: 0;
         color: rgba(255,255,255,0.92);
-        line-height: 1.85;
-        max-width: 760px;
+        line-height: 1.9;
+        max-width: 850px;
+        margin-bottom: 0;
+    }
+
+    .profile-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .profile-pill {
+        padding: 9px 15px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 13px;
+        font-weight: 700;
     }
 
     .profile-body {
-        padding: 36px;
-        background: linear-gradient(to bottom right, #ffffff, #fbfdff);
+        padding: 38px;
+        background:
+            radial-gradient(circle at top left, rgba(37, 99, 235, 0.05), transparent 24%),
+            linear-gradient(135deg, #ffffff, #f8fbff);
     }
 
-    .profile-card {
-        background: #f8fbff;
-        border: 1px solid #e8eef7;
-        border-radius: 24px;
-        padding: 26px;
-        box-shadow: var(--shadow-sm);
-        transition: var(--transition);
-        max-width: 980px;
-        margin: 0 auto;
+    .profile-view-layout {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 28px;
+        align-items: stretch;
     }
 
-    .profile-card:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-md);
+    .profile-info-card,
+    .profile-photo-card,
+    .profile-form-card {
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--pro-border);
+        border-radius: 30px;
+        box-shadow: var(--pro-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--pro-transition);
+    }
+
+    .profile-info-card:hover,
+    .profile-photo-card:hover,
+    .profile-form-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--pro-shadow-md);
+        border-color: rgba(37,99,235,0.30);
+    }
+
+    .profile-info-card {
+        padding: 30px;
+    }
+
+    .profile-photo-card {
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .section-title {
         display: flex;
         align-items: center;
-        gap: 10px;
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 18px;
+        gap: 12px;
+        color: var(--pro-primary);
+        font-size: 1.25rem;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+        margin-bottom: 20px;
     }
 
     .title-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
-        font-size: 18px;
-        box-shadow: var(--shadow-sm);
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--pro-blue-dark);
+        font-size: 20px;
+        box-shadow: inset 0 1px 0 #ffffff, var(--pro-shadow-sm);
+        flex-shrink: 0;
     }
 
     .info-grid {
@@ -142,28 +243,134 @@
     }
 
     .info-box {
-        background: rgba(255,255,255,0.88);
-        border: 1px solid #e8eef7;
-        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        border-radius: 20px;
         padding: 18px;
+        transition: var(--pro-transition);
+    }
+
+    .info-box:hover {
+        background: #ffffff;
+        transform: translateY(-3px);
+        box-shadow: var(--pro-shadow-sm);
     }
 
     .info-box .label {
-        color: #64748b;
-        font-size: 0.9rem;
-        margin-bottom: 6px;
-        font-weight: 600;
+        color: var(--pro-muted);
+        font-size: 0.88rem;
+        margin-bottom: 7px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
     }
 
     .info-box .value {
-        color: #0f172a;
-        font-weight: 800;
+        color: var(--pro-primary);
+        font-size: 1.02rem;
+        font-weight: 900;
         line-height: 1.7;
         word-break: break-word;
     }
 
+    .admin-avatar-wrap {
+        position: relative;
+        width: 270px;
+        height: 270px;
+        margin: 0 auto 24px;
+    }
+
+    .admin-avatar-ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(from 180deg, #2563eb, #06b6d4, #10b981, #2563eb);
+        padding: 8px;
+        box-shadow: var(--pro-shadow-lg);
+    }
+
+    .admin-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle at top left, rgba(255,255,255,0.45), transparent 30%),
+            var(--pro-gradient-main);
+        border: 8px solid #ffffff;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        font-weight: 950;
+        letter-spacing: -2px;
+        text-transform: uppercase;
+        overflow: hidden;
+    }
+
+    .admin-avatar-badge {
+        position: absolute;
+        right: 18px;
+        bottom: 20px;
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        background: #ffffff;
+        border: 1px solid #dbeafe;
+        color: var(--pro-blue-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: var(--pro-shadow-md);
+    }
+
+    .profile-photo-card h3 {
+        color: var(--pro-primary);
+        font-size: 1.45rem;
+        font-weight: 950;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .profile-photo-card p {
+        color: var(--pro-muted);
+        text-align: center;
+        line-height: 1.8;
+        margin-bottom: 18px;
+    }
+
+    .role-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 15px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--pro-blue-dark);
+        border: 1px solid #bfdbfe;
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .profile-actions {
+        margin-top: 26px;
+        padding-top: 22px;
+        border-top: 1px solid #edf2f7;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .profile-form-card {
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 32px;
+    }
+
     .form-label {
-        font-weight: 700;
+        font-weight: 800;
         color: #334155;
         margin-bottom: 8px;
     }
@@ -172,14 +379,14 @@
     .profile-body input,
     .profile-body select,
     .profile-body textarea {
-        min-height: 52px;
-        border-radius: 14px;
-        border: 1px solid #dbe3ee;
-        background: #fbfdff;
+        min-height: 54px;
+        border-radius: 16px;
+        border: 1px solid rgba(148,163,184,0.30);
+        background: #f8fbff;
         box-shadow: none;
         width: 100%;
         padding: 12px 14px;
-        transition: var(--transition);
+        transition: var(--pro-transition);
     }
 
     .profile-body .form-control:focus,
@@ -187,88 +394,145 @@
     .profile-body select:focus,
     .profile-body textarea:focus {
         background: #ffffff;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+        border-color: rgba(37,99,235,0.55);
+        box-shadow: 0 0 0 5px rgba(37,99,235,0.10);
         outline: none;
     }
 
-    .btn-profile-main {
+    .btn-profile-main,
+    .btn-profile-outline {
         min-height: 52px;
         padding: 12px 22px;
-        border: none;
-        border-radius: 14px;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
-        color: #ffffff;
-        font-weight: 700;
+        border-radius: 999px;
+        font-weight: 900;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        transition: var(--transition);
-        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+        transition: var(--pro-transition);
+    }
+
+    .btn-profile-main {
+        border: none;
+        background: var(--pro-gradient-main);
+        color: #ffffff;
+        box-shadow: 0 16px 34px rgba(37,99,235,0.24);
     }
 
     .btn-profile-main:hover {
         color: #ffffff;
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+        box-shadow: 0 22px 48px rgba(37,99,235,0.30);
     }
 
     .btn-profile-outline {
-        min-height: 52px;
-        padding: 12px 22px;
-        border-radius: 14px;
-        border: 1px solid #dbe3ee;
+        border: 1px solid var(--pro-border);
         background: #ffffff;
-        color: #0f172a;
-        font-weight: 700;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: var(--transition);
+        color: var(--pro-primary);
     }
 
     .btn-profile-outline:hover {
-        color: #0f172a;
-        background: #f8fafc;
-        transform: translateY(-2px);
+        color: var(--pro-blue-dark);
+        background: #eff6ff;
+        transform: translateY(-3px);
     }
 
     .field-error {
         color: #dc2626;
         margin-top: 6px;
         display: block;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 0.9rem;
+    }
+
+    .security-note {
+        margin-top: 22px;
+        padding: 18px;
+        border-radius: 20px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #334155;
+        line-height: 1.8;
+    }
+
+    .security-note strong {
+        color: var(--pro-blue-dark);
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
-    .reveal-up { transform: translateY(50px); }
+    .reveal-left { transform: translateX(-58px); }
+    .reveal-right { transform: translateX(58px); }
+    .reveal-up { transform: translateY(52px); }
 
     .reveal.show {
         opacity: 1;
-        transform: translate(0,0);
+        transform: translate(0, 0);
+    }
+
+    @media (max-width: 991px) {
+        .profile-page {
+            padding: 30px 0 68px;
+        }
+
+        .profile-top {
+            padding: 48px 28px;
+        }
+
+        .profile-body {
+            padding: 28px;
+        }
+
+        .profile-view-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-photo-card {
+            order: -1;
+        }
     }
 
     @media (max-width: 767px) {
-        .profile-top,
-        .profile-body {
-            padding-left: 22px;
-            padding-right: 22px;
+        .profile-shell {
+            border-radius: 28px;
+        }
+
+        .profile-top {
+            padding: 40px 22px;
         }
 
         .profile-top h2 {
-            font-size: 1.85rem;
+            font-size: 2rem;
+        }
+
+        .profile-body {
+            padding: 22px;
         }
 
         .info-grid {
             grid-template-columns: 1fr;
+        }
+
+        .admin-avatar-wrap {
+            width: 220px;
+            height: 220px;
+        }
+
+        .admin-avatar {
+            font-size: 4rem;
+        }
+
+        .profile-actions {
+            flex-direction: column;
+        }
+
+        .btn-profile-main,
+        .btn-profile-outline {
+            width: 100%;
         }
     }
 </style>
@@ -278,90 +542,183 @@
 <section class="profile-page">
     <div class="container">
         <div class="profile-shell">
+
             <div class="profile-top reveal reveal-up show">
                 <span class="profile-badge">
                     <i class="bi bi-shield-check"></i>
                     Administrator Account
                 </span>
+
+                <div class="profile-highlight">
+                    <i class="bi bi-person-gear"></i>
+                    Secure profile management and admin account control
+                </div>
+
                 <h2>Profile Management</h2>
-                <p>Manage your admin account information, update profile details, and change password securely.</p>
+
+                <p>
+                    Manage your admin account information, update profile details, and change your password securely.
+                    Your profile represents the main administrative identity inside SmartCare HMS.
+                </p>
+
+                <div class="profile-pills">
+                    <span class="profile-pill"><i class="bi bi-person-vcard"></i> Account Information</span>
+                    <span class="profile-pill"><i class="bi bi-pencil-square"></i> Edit Profile</span>
+                    <span class="profile-pill"><i class="bi bi-key"></i> Password Security</span>
+                    <span class="profile-pill"><i class="bi bi-shield-lock"></i> Admin Access</span>
+                </div>
             </div>
 
             <div class="profile-body">
                 {% if not edit_mode and not password_mode %}
-                    <div class="profile-card reveal reveal-up">
-                        <h4 class="section-title">
-                            <span class="title-icon"><i class="bi bi-person-vcard"></i></span>
-                            Account Information
-                        </h4>
 
-                        <div class="info-grid">
-                            <div class="info-box">
-                                <div class="label">Username</div>
-                                <div class="value">{{ request.user.username }}</div>
+                    <div class="profile-view-layout">
+                        <div class="profile-info-card reveal reveal-left">
+                            <h4 class="section-title">
+                                <span class="title-icon"><i class="bi bi-person-vcard"></i></span>
+                                Account Information
+                            </h4>
+
+                            <div class="info-grid">
+                                <div class="info-box">
+                                    <div class="label">Username</div>
+                                    <div class="value">{{ request.user.username }}</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="label">Email</div>
+                                    <div class="value">{{ request.user.email|default:"-" }}</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="label">First Name</div>
+                                    <div class="value">{{ request.user.first_name|default:"-" }}</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="label">Last Name</div>
+                                    <div class="value">{{ request.user.last_name|default:"-" }}</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="label">Account Type</div>
+                                    <div class="value">Administrator</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="label">Access Level</div>
+                                    <div class="value">Full Admin Control</div>
+                                </div>
                             </div>
-                            <div class="info-box">
-                                <div class="label">Email</div>
-                                <div class="value">{{ request.user.email|default:"-" }}</div>
+
+                            <div class="security-note">
+                                <strong><i class="bi bi-info-circle me-1"></i> Profile Note:</strong>
+                                Keep your email, username, and password updated to maintain secure access to
+                                SmartCare HMS administrative tools.
                             </div>
-                            <div class="info-box">
-                                <div class="label">First Name</div>
-                                <div class="value">{{ request.user.first_name|default:"-" }}</div>
-                            </div>
-                            <div class="info-box">
-                                <div class="label">Last Name</div>
-                                <div class="value">{{ request.user.last_name|default:"-" }}</div>
+
+                            <div class="profile-actions">
+                                <a href="{% url 'admin_profile' %}?edit=1" class="btn-profile-main">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Edit Profile
+                                </a>
+
+                                <a href="{% url 'admin_profile' %}?password=1" class="btn-profile-outline">
+                                    <i class="bi bi-key"></i>
+                                    Change Password
+                                </a>
                             </div>
                         </div>
 
-                        <div class="mt-4 d-flex gap-3 flex-wrap">
-                            <a href="{% url 'admin_profile' %}?edit=1" class="btn-profile-main">
-                                <i class="bi bi-pencil-square"></i>
-                                Edit Profile
-                            </a>
-                            <a href="{% url 'admin_profile' %}?password=1" class="btn-profile-outline">
-                                <i class="bi bi-key"></i>
-                                Change Password
-                            </a>
+                        <div class="profile-photo-card reveal reveal-right">
+                            <div class="admin-avatar-wrap">
+                                <div class="admin-avatar-ring">
+                                    <div class="admin-avatar">
+                                        {{ request.user.first_name|default:request.user.username|slice:":1" }}
+                                    </div>
+                                </div>
+
+                                <div class="admin-avatar-badge">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                            </div>
+
+                            <h3>
+                                {% if request.user.first_name or request.user.last_name %}
+                                    {{ request.user.first_name }} {{ request.user.last_name }}
+                                {% else %}
+                                    {{ request.user.username }}
+                                {% endif %}
+                            </h3>
+
+                            <p>
+                                Main administrator profile for managing doctors, patients, receptionists,
+                                appointments, messages, and healthcare service workflow.
+                            </p>
+
+                            <span class="role-chip">
+                                <i class="bi bi-person-gear"></i>
+                                SmartCare HMS Administrator
+                            </span>
                         </div>
                     </div>
 
                 {% elif edit_mode %}
-                    <div class="profile-card reveal reveal-up">
+
+                    <div class="profile-form-card reveal reveal-up">
                         <h4 class="section-title">
                             <span class="title-icon"><i class="bi bi-pencil-square"></i></span>
                             Edit Profile
                         </h4>
+
                         <form method="post">
                             {% csrf_token %}
+
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <label class="form-label">{{ profile_form.username.label }}</label>
                                     {{ profile_form.username }}
-                                    {% if profile_form.username.errors %}<small class="field-error">{{ profile_form.username.errors|striptags }}</small>{% endif %}
+                                    {% if profile_form.username.errors %}
+                                        <small class="field-error">{{ profile_form.username.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label">{{ profile_form.email.label }}</label>
                                     {{ profile_form.email }}
-                                    {% if profile_form.email.errors %}<small class="field-error">{{ profile_form.email.errors|striptags }}</small>{% endif %}
+                                    {% if profile_form.email.errors %}
+                                        <small class="field-error">{{ profile_form.email.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label">{{ profile_form.first_name.label }}</label>
                                     {{ profile_form.first_name }}
-                                    {% if profile_form.first_name.errors %}<small class="field-error">{{ profile_form.first_name.errors|striptags }}</small>{% endif %}
+                                    {% if profile_form.first_name.errors %}
+                                        <small class="field-error">{{ profile_form.first_name.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label">{{ profile_form.last_name.label }}</label>
                                     {{ profile_form.last_name }}
-                                    {% if profile_form.last_name.errors %}<small class="field-error">{{ profile_form.last_name.errors|striptags }}</small>{% endif %}
+                                    {% if profile_form.last_name.errors %}
+                                        <small class="field-error">{{ profile_form.last_name.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
 
-                            <div class="mt-4 d-flex gap-3 flex-wrap">
+                            <div class="security-note">
+                                <strong><i class="bi bi-shield-check me-1"></i> Update Safely:</strong>
+                                Make sure the username and email are correct before saving profile changes.
+                            </div>
+
+                            <div class="profile-actions">
                                 <button type="submit" name="save_profile" class="btn-profile-main">
                                     <i class="bi bi-check2-circle"></i>
                                     Save Changes
                                 </button>
+
                                 <a href="{% url 'admin_profile' %}" class="btn-profile-outline">
                                     <i class="bi bi-x-circle"></i>
                                     Cancel
@@ -371,36 +728,53 @@
                     </div>
 
                 {% elif password_mode %}
-                    <div class="profile-card reveal reveal-up">
+
+                    <div class="profile-form-card reveal reveal-up">
                         <h4 class="section-title">
                             <span class="title-icon"><i class="bi bi-key"></i></span>
                             Change Password
                         </h4>
+
                         <form method="post">
                             {% csrf_token %}
+
                             <div class="row g-4">
                                 <div class="col-md-12">
                                     <label class="form-label">{{ password_form.current_password.label }}</label>
                                     {{ password_form.current_password }}
-                                    {% if password_form.current_password.errors %}<small class="field-error">{{ password_form.current_password.errors|striptags }}</small>{% endif %}
+                                    {% if password_form.current_password.errors %}
+                                        <small class="field-error">{{ password_form.current_password.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label">{{ password_form.new_password.label }}</label>
                                     {{ password_form.new_password }}
-                                    {% if password_form.new_password.errors %}<small class="field-error">{{ password_form.new_password.errors|striptags }}</small>{% endif %}
+                                    {% if password_form.new_password.errors %}
+                                        <small class="field-error">{{ password_form.new_password.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label">{{ password_form.confirm_password.label }}</label>
                                     {{ password_form.confirm_password }}
-                                    {% if password_form.confirm_password.errors %}<small class="field-error">{{ password_form.confirm_password.errors|striptags }}</small>{% endif %}
+                                    {% if password_form.confirm_password.errors %}
+                                        <small class="field-error">{{ password_form.confirm_password.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
 
-                            <div class="mt-4 d-flex gap-3 flex-wrap">
+                            <div class="security-note">
+                                <strong><i class="bi bi-lock me-1"></i> Password Security:</strong>
+                                Use a strong password and avoid sharing admin login details with anyone.
+                            </div>
+
+                            <div class="profile-actions">
                                 <button type="submit" name="change_password" class="btn-profile-main">
                                     <i class="bi bi-check2-circle"></i>
                                     Update Password
                                 </button>
+
                                 <a href="{% url 'admin_profile' %}" class="btn-profile-outline">
                                     <i class="bi bi-x-circle"></i>
                                     Cancel
@@ -408,6 +782,7 @@
                             </div>
                         </form>
                     </div>
+
                 {% endif %}
             </div>
         </div>
@@ -420,11 +795,15 @@
     const profileReveal = document.querySelectorAll('.reveal');
 
     function profileRevealOnScroll() {
-        const triggerBottom = window.innerHeight * 0.9;
+        const triggerBottom = window.innerHeight * 0.88;
+
         profileReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
-                setTimeout(() => el.classList.add('show'), index * 80);
+                setTimeout(() => {
+                    el.classList.add('show');
+                }, index * 45);
             }
         });
     }

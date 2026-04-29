@@ -4,129 +4,164 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --muted: #64748b;
-        --border: #e6edf5;
-        --soft: #f8fbff;
-        --white: #ffffff;
-        --success: #16a34a;
-        --warning: #f59e0b;
-        --danger: #dc2626;
-        --shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
-        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
-        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
-        --transition: all 0.35s ease;
+        --pd-primary: #07111f;
+        --pd-dark: #0f172a;
+        --pd-blue: #2563eb;
+        --pd-blue-dark: #1d4ed8;
+        --pd-cyan: #06b6d4;
+        --pd-green: #16a34a;
+        --pd-orange: #f59e0b;
+        --pd-red: #dc2626;
+        --pd-purple: #7c3aed;
+        --pd-muted: #64748b;
+        --pd-border: rgba(148, 163, 184, 0.24);
+        --pd-soft: #f8fbff;
+        --pd-white: #ffffff;
+
+        --pd-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --pd-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --pd-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --pd-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --pd-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --pd-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
     }
 
-    .section-space {
-        padding: 34px 0 72px;
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
     }
 
     .patient-dashboard-page {
         position: relative;
         overflow: hidden;
-        background:
-            radial-gradient(circle at top left, rgba(37, 99, 235, 0.06), transparent 25%),
-            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.06), transparent 22%),
-            #f8fbff;
+        padding: 36px 0 76px;
     }
 
     .patient-dashboard-page::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.28), rgba(255,255,255,0));
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
+        pointer-events: none;
+    }
+
+    .patient-dashboard-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
         pointer-events: none;
     }
 
     .patient-hero {
-        background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(29, 78, 216, 0.84) 55%, rgba(56, 189, 248, 0.74) 100%),
-            url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: #ffffff;
-        border-radius: 32px;
-        padding: 60px 42px;
-        margin-bottom: 32px;
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
         position: relative;
         overflow: hidden;
+        border-radius: 32px;
+        padding: 54px 46px;
+        margin-bottom: 20px;
+        background:
+            var(--pd-gradient-dark),
+            url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--pd-shadow-lg);
         isolation: isolate;
-        border: 1px solid rgba(255,255,255,0.10);
-        backdrop-filter: blur(6px);
-    }
-
-    .patient-hero::before,
-    .patient-hero::after {
-        content: "";
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.08);
-        z-index: -1;
     }
 
     .patient-hero::before {
-        width: 240px;
-        height: 240px;
-        top: -70px;
-        right: -60px;
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -170px;
+        right: -140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
     }
 
     .patient-hero::after {
-        width: 180px;
-        height: 180px;
-        bottom: -60px;
-        left: -30px;
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .hero-badge,
+    .hero-highlight,
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
     }
 
     .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        border-radius: 999px;
+        padding: 8px 15px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
-        font-size: 14px;
-        font-weight: 700;
-        margin-bottom: 18px;
-        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
+        margin-bottom: 12px;
+    }
+
+    .hero-highlight {
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
+        margin-bottom: 14px;
     }
 
     .patient-hero h1 {
-        font-size: 2.45rem;
-        font-weight: 900;
-        margin-bottom: 10px;
-        letter-spacing: -0.4px;
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
         line-height: 1.08;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 980px;
     }
 
     .patient-hero p {
-        color: rgba(255,255,255,0.92);
-        max-width: 760px;
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 940px;
         margin-bottom: 0;
-        line-height: 1.85;
+        font-size: 1rem;
     }
 
     .hero-pills {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 22px;
+        gap: 8px;
+        margin-top: 18px;
     }
 
     .hero-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
         padding: 8px 14px;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.10);
-        border: 1px solid rgba(255,255,255,0.14);
-        color: #fff;
-        font-size: 13px;
-        font-weight: 600;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
+        font-weight: 700;
     }
 
     .dashboard-stat-card,
@@ -138,12 +173,55 @@
     .membership-benefit-card,
     .recent-shell,
     .quick-action-card,
-    .wellness-card {
-        background: #ffffff;
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-        transition: var(--transition);
+    .wellness-card,
+    .membership-shell,
+    .medibot-highlight,
+    .patient-visual-panel {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--pd-border);
+        border-radius: 28px;
+        box-shadow: var(--pd-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--pd-transition);
+    }
+
+    .dashboard-stat-card::before,
+    .dashboard-card::before,
+    .doctor-card::before,
+    .hospital-info-card::before,
+    .hospital-showcase-card::before,
+    .membership-status-card::before,
+    .membership-benefit-card::before,
+    .recent-shell::before,
+    .quick-action-card::before,
+    .wellness-card::before,
+    .membership-shell::before,
+    .patient-visual-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
+    }
+
+    .dashboard-stat-card > *,
+    .dashboard-card > *,
+    .doctor-card > *,
+    .hospital-info-card > *,
+    .hospital-showcase-card > *,
+    .membership-status-card > *,
+    .membership-benefit-card > *,
+    .recent-shell > *,
+    .quick-action-card > *,
+    .wellness-card > *,
+    .membership-shell > *,
+    .patient-visual-panel > * {
+        position: relative;
+        z-index: 2;
     }
 
     .dashboard-stat-card:hover,
@@ -155,253 +233,469 @@
     .membership-benefit-card:hover,
     .recent-shell:hover,
     .quick-action-card:hover,
-    .wellness-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-lg);
+    .wellness-card:hover,
+    .membership-shell:hover,
+    .patient-visual-panel:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--pd-shadow-md);
+        border-color: rgba(37,99,235,0.28);
+    }
+
+    .stats-row {
+        --bs-gutter-x: 10px;
+        --bs-gutter-y: 10px;
+        margin-bottom: 18px;
+    }
+
+    .stats-row > [class*="col-"] {
+        display: flex;
     }
 
     .dashboard-stat-card {
-        padding: 26px 22px;
-        text-align: left;
-        height: 100%;
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(180deg, #ffffff, #f8fbff);
-    }
-
-    .dashboard-stat-card::before {
-        content: "";
-        position: absolute;
-        inset: 0 auto auto 0;
         width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #1d4ed8, #38bdf8);
+        min-height: 136px;
+        padding: 19px 17px;
+        border-radius: 21px;
     }
 
     .dashboard-stat-card::after {
         content: "";
         position: absolute;
-        right: -30px;
-        bottom: -30px;
-        width: 110px;
-        height: 110px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(56,189,248,0.10), transparent 70%);
+        left: 0;
+        top: 0;
+        height: 4px;
+        width: 100%;
+        background: var(--pd-gradient-main);
     }
 
     .stat-top {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 14px;
-        margin-bottom: 12px;
+        gap: 12px;
+        height: 100%;
     }
 
     .stat-icon {
-        width: 54px;
-        height: 54px;
+        width: 52px;
+        height: 52px;
         border-radius: 16px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--pd-blue-dark);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
-        box-shadow: var(--shadow-sm);
+        font-size: 21px;
+        box-shadow: inset 0 1px 0 #ffffff, 0 8px 18px rgba(15,23,42,0.06);
         flex-shrink: 0;
     }
 
     .dashboard-stat-card h3 {
-        font-size: 2rem;
-        font-weight: 800;
-        color: #1d4ed8;
-        margin-bottom: 8px;
-        word-break: break-word;
+        color: var(--pd-blue-dark);
+        font-size: 1.48rem;
+        font-weight: 950;
         letter-spacing: -0.4px;
+        margin-bottom: 5px;
+        line-height: 1.12;
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .dashboard-stat-card p {
-        color: #64748b;
-        margin-bottom: 0;
-        font-weight: 600;
-    }
-
-    .dashboard-card,
-    .hospital-info-card {
-        padding: 28px;
-    }
-
-    .section-title {
-        font-size: 1.45rem;
+        margin: 0;
+        color: var(--pd-muted);
         font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 8px;
-        letter-spacing: -0.2px;
-    }
-
-    .section-subtitle {
-        color: #64748b;
-        margin-bottom: 22px;
-        line-height: 1.8;
+        font-size: 0.84rem;
+        line-height: 1.38;
     }
 
     .section-topbar {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 14px;
         margin-bottom: 18px;
     }
 
-    .btn-section-view {
+    .section-title {
+        font-size: 1.32rem;
+        font-weight: 950;
+        color: var(--pd-primary);
+        margin-bottom: 6px;
+        letter-spacing: -0.35px;
+        line-height: 1.28;
+    }
+
+    .section-subtitle {
+        color: var(--pd-muted);
+        margin-bottom: 0;
+        line-height: 1.68;
+        font-size: 0.92rem;
+    }
+
+    .section-chip,
+    .recent-chip,
+    .membership-label,
+    .hospital-meta {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--pd-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
+    }
+
+    .btn-section-view,
+    .btn-visit,
+    .quick-btn,
+    .btn-view-modern {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 44px;
-        padding: 10px 16px;
-        border-radius: 12px;
-        background: #0f172a;
+        gap: 7px;
+        min-height: 42px;
+        padding: 9px 15px;
+        border-radius: 999px;
         color: #ffffff;
-        font-weight: 700;
         text-decoration: none;
-        transition: 0.25s ease;
+        font-weight: 900;
+        font-size: 0.84rem;
+        background: linear-gradient(135deg, #0f172a, #334155);
+        box-shadow: 0 10px 22px rgba(15,23,42,0.14);
+        transition: var(--pd-transition);
+        white-space: nowrap;
+        border: none;
     }
 
-    .btn-section-view:hover {
+    .quick-btn,
+    .btn-view-modern {
+        background: var(--pd-gradient-main);
+        box-shadow: 0 10px 22px rgba(37,99,235,0.16);
+    }
+
+    .btn-section-view:hover,
+    .btn-visit:hover,
+    .quick-btn:hover,
+    .btn-view-modern:hover {
         color: #ffffff;
-        background: #1e293b;
         transform: translateY(-2px);
     }
 
-    .modern-table {
-        margin-bottom: 0;
-        vertical-align: middle;
+    /* Button alignment fix */
+    .quick-action-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        align-items: stretch;
     }
 
-    .modern-table thead th {
-        background: #f8fafc;
-        color: #0f172a;
-        font-weight: 700;
-        border-bottom: none;
-        padding: 14px 12px;
-        font-size: 0.95rem;
+    .quick-action-card {
+        padding: 20px;
+        text-align: center;
+        min-height: 260px;
+        border-radius: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
     }
 
-    .modern-table tbody td {
-        padding: 14px 12px;
-        color: #475569;
-        border-color: #eef2f7;
+    .quick-action-card p {
+        flex: 1;
     }
 
-    .status-badge {
-        display: inline-block;
-        padding: 7px 12px;
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 700;
+    .quick-action-card .quick-btn {
+        margin-top: auto;
+        align-self: center;
     }
 
-    .status-booked { background: #dbeafe; color: #1d4ed8; }
-    .status-completed { background: #dcfce7; color: #166534; }
-    .status-cancelled { background: #fee2e2; color: #b91c1c; }
-    .status-missed { background: #fef3c7; color: #b45309; }
-
-    .doctor-card {
-        overflow: hidden;
-        height: 100%;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.09);
+    .quick-action-card::after,
+    .doctor-card::after,
+    .hospital-showcase-card::after {
+        content: "";
+        position: absolute;
+        width: 105px;
+        height: 105px;
+        right: -45px;
+        bottom: -45px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6,182,212,0.13), transparent 70%);
     }
 
-    .doctor-image {
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
-        background: #e2e8f0;
-        transition: var(--transition);
-    }
-
-    .doctor-card:hover .doctor-image {
-        transform: scale(1.05);
-    }
-
-    .doctor-placeholder {
-        width: 100%;
-        height: 220px;
-        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    .quick-action-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 17px;
+        margin: 0 auto 13px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--pd-blue-dark);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #1d4ed8;
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 21px;
+        box-shadow: var(--pd-shadow-sm);
+        transition: var(--pd-transition);
     }
 
-    .doctor-content {
-        padding: 22px;
+    .quick-action-card:hover .quick-action-icon {
+        transform: scale(1.06);
     }
 
-    .doctor-content h5 {
-        font-weight: 800;
-        color: #0f172a;
+    .quick-action-card h5 {
+        font-size: 1rem;
+        font-weight: 950;
+        color: var(--pd-primary);
         margin-bottom: 8px;
-        letter-spacing: -0.2px;
+        line-height: 1.32;
     }
 
-    .doctor-content p {
-        color: #64748b;
-        margin-bottom: 8px;
-        line-height: 1.7;
+    .quick-action-card p {
+        color: var(--pd-muted);
+        line-height: 1.6;
+        margin-bottom: 13px;
+        font-size: 0.86rem;
     }
 
-    .btn-visit {
-        display: inline-flex;
+    /* Visual analytics */
+    .patient-visual-panel {
+        padding: 24px;
+    }
+
+    .visual-grid {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 18px;
+        align-items: center;
+    }
+
+    .visual-donut-wrap {
+        display: flex;
         align-items: center;
         justify-content: center;
-        background: #0f172a;
-        color: #ffffff;
-        text-decoration: none;
-        border-radius: 12px;
-        padding: 10px 16px;
-        font-weight: 700;
-        margin-top: 8px;
-        transition: 0.25s ease;
     }
 
-    .btn-visit:hover {
+    .visual-donut {
+        width: 190px;
+        height: 190px;
+        border-radius: 50%;
+        background:
+            conic-gradient(
+                #16a34a 0deg calc(var(--completed-rate, 0) * 3.6deg),
+                #2563eb calc(var(--completed-rate, 0) * 3.6deg) calc((var(--completed-rate, 0) + var(--pending-rate, 0)) * 3.6deg),
+                #e5edf7 calc((var(--completed-rate, 0) + var(--pending-rate, 0)) * 3.6deg) 360deg
+            );
+        position: relative;
+        box-shadow: inset 0 0 0 1px rgba(148,163,184,0.20), 0 16px 34px rgba(15,23,42,0.10);
+    }
+
+    .visual-donut::before {
+        content: "";
+        position: absolute;
+        inset: 31px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: inset 0 0 0 1px #e5edf7;
+    }
+
+    .visual-donut-center {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .visual-donut-center strong {
+        color: var(--pd-primary);
+        font-size: 1.65rem;
+        font-weight: 950;
+        line-height: 1;
+    }
+
+    .visual-donut-center span {
+        color: var(--pd-muted);
+        font-size: 0.78rem;
+        font-weight: 850;
+        margin-top: 6px;
+    }
+
+    .visual-bars {
+        display: grid;
+        gap: 14px;
+    }
+
+    .visual-progress-item {
+        padding: 14px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+    }
+
+    .visual-progress-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+
+    .visual-progress-top span {
+        color: #334155;
+        font-weight: 900;
+        font-size: 0.9rem;
+    }
+
+    .visual-progress-top strong {
+        color: var(--pd-blue-dark);
+        font-weight: 950;
+        font-size: 0.9rem;
+    }
+
+    .visual-track {
+        height: 12px;
+        border-radius: 999px;
+        background: #e5edf7;
+        overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(15,23,42,0.06);
+    }
+
+    .visual-fill {
+        height: 100%;
+        border-radius: 999px;
+        min-width: 4px;
+    }
+
+    .fill-completed {
+        background: linear-gradient(135deg, #16a34a, #22c55e);
+    }
+
+    .fill-pending {
+        background: linear-gradient(135deg, #2563eb, #38bdf8);
+    }
+
+    .fill-discount {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+    }
+
+    .visual-mini-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .visual-mini-card {
+        padding: 15px;
+        border-radius: 18px;
+        background: #ffffff;
+        border: 1px solid #e5edf7;
+        box-shadow: var(--pd-shadow-sm);
+    }
+
+    .visual-mini-card h5 {
+        margin: 0 0 5px;
+        color: var(--pd-blue-dark);
+        font-size: 1.18rem;
+        font-weight: 950;
+    }
+
+    .visual-mini-card p {
+        margin: 0;
+        color: var(--pd-muted);
+        font-size: 0.82rem;
+        font-weight: 800;
+        line-height: 1.4;
+    }
+
+    .medibot-highlight {
+        padding: 28px;
         color: #ffffff;
-        background: #1e293b;
-        transform: translateY(-2px);
+        background:
+            var(--pd-gradient-dark),
+            url('https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--pd-shadow-lg);
+    }
+
+    .medibot-highlight::before {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        top: -80px;
+        right: -70px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.10);
+    }
+
+    .medibot-highlight h4 {
+        font-size: 1.32rem;
+        font-weight: 950;
+        margin-bottom: 10px;
+        letter-spacing: -0.3px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .medibot-highlight p {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.78;
+        margin-bottom: 16px;
+        max-width: 920px;
+        font-size: 0.95rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .medibot-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .medibot-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: rgba(255,255,255,0.92);
+        line-height: 1.65;
+        font-size: 0.92rem;
+    }
+
+    .medibot-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.88);
+        flex-shrink: 0;
+        margin-top: 8px;
     }
 
     .membership-shell {
+        padding: 26px;
         background:
-            linear-gradient(135deg, rgba(248,251,255,0.95), rgba(238,245,255,0.95)),
-            url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        border: 1px solid #e2ebf6;
-        border-radius: 24px;
-        padding: 28px;
-        overflow: hidden;
-        box-shadow: 0 20px 48px rgba(15, 23, 42, 0.08);
+            radial-gradient(circle at top right, rgba(37,99,235,0.08), transparent 32%),
+            linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248,251,255,0.96));
     }
 
     .membership-status-card,
     .membership-benefit-card {
-        padding: 24px;
+        padding: 22px;
         height: 100%;
-    }
-
-    .membership-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        background: #eff6ff;
-        color: #1d4ed8;
-        font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 14px;
+        border-radius: 24px;
     }
 
     .membership-level-box {
@@ -414,62 +708,70 @@
     }
 
     .membership-level-name h4 {
-        font-size: 1.65rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 4px;
+        font-size: 1.55rem;
+        font-weight: 950;
+        color: var(--pd-primary);
+        margin-bottom: 5px;
+        letter-spacing: -0.35px;
     }
 
     .membership-level-name p {
         margin-bottom: 0;
-        color: #64748b;
+        color: var(--pd-muted);
+        line-height: 1.62;
+        font-size: 0.9rem;
     }
 
     .discount-circle {
-        width: 88px;
-        height: 88px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        width: 86px;
+        height: 86px;
+        border-radius: 28px;
+        background: var(--pd-gradient-main);
         color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.35rem;
-        font-weight: 800;
-        box-shadow: 0 14px 28px rgba(29, 78, 216, 0.18);
+        font-weight: 950;
+        box-shadow: 0 16px 30px rgba(37, 99, 235, 0.20);
+        flex-shrink: 0;
     }
 
     .membership-mini-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
+        gap: 10px;
         margin-top: 18px;
     }
 
     .membership-mini-box {
-        background: #f8fafc;
+        background: #f8fbff;
         border: 1px solid #e7edf5;
-        border-radius: 16px;
+        border-radius: 18px;
         padding: 16px;
-        transition: var(--transition);
+        transition: var(--pd-transition);
     }
 
     .membership-mini-box:hover {
-        transform: translateY(-3px);
-        background: #fff;
+        transform: translateY(-2px);
+        background: #ffffff;
+        box-shadow: var(--pd-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
     }
 
     .membership-mini-box h5 {
         margin: 0 0 6px;
-        color: #1d4ed8;
-        font-size: 1.25rem;
-        font-weight: 800;
+        color: var(--pd-blue-dark);
+        font-size: 1.22rem;
+        font-weight: 950;
+        line-height: 1.2;
     }
 
     .membership-mini-box p {
         margin: 0;
-        color: #64748b;
-        font-weight: 600;
+        color: var(--pd-muted);
+        font-weight: 800;
+        font-size: 0.84rem;
     }
 
     .benefit-list,
@@ -482,14 +784,17 @@
     }
 
     .benefit-list li,
-    .wellness-list li {
+    .wellness-list li,
+    .service-list li,
+    .location-list li {
         display: flex;
-        align-items: center;
-        gap: 12px;
+        align-items: flex-start;
+        gap: 10px;
         padding: 12px 0;
         border-bottom: 1px solid #edf2f7;
         color: #475569;
-        line-height: 1.7;
+        line-height: 1.65;
+        font-size: 0.9rem;
     }
 
     .benefit-list li:last-child,
@@ -504,199 +809,204 @@
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        background: var(--pd-gradient-main);
         flex-shrink: 0;
+        margin-top: 8px;
     }
 
     .recent-shell {
-        padding: 28px;
-        overflow: hidden;
-        background: linear-gradient(180deg, #ffffff, #fbfdff);
-    }
-
-    .recent-chip {
-        display: inline-flex;
-        align-items: center;
-        padding: 7px 12px;
-        border-radius: 999px;
-        background: #eff6ff;
-        color: #1d4ed8;
-        font-size: 12px;
-        font-weight: 700;
+        padding: 24px;
     }
 
     .recent-table-wrap {
         border: 1px solid #edf2f7;
-        border-radius: 18px;
+        border-radius: 20px;
         overflow: hidden;
+        background: #ffffff;
     }
 
-    .quick-action-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
+    .modern-table {
+        margin-bottom: 0;
+        vertical-align: middle;
+        min-width: 760px;
     }
 
-    .quick-action-card {
-        padding: 22px;
-        text-align: center;
-        height: 100%;
-        background: linear-gradient(180deg, #ffffff, #f9fcff);
-        position: relative;
-        overflow: hidden;
-        border: 1px solid #e8eef6;
+    .modern-table thead th {
+        background: #f8fafc;
+        color: var(--pd-primary);
+        font-weight: 900;
+        border-bottom: 1px solid #e5edf7;
+        padding: 13px 11px;
+        white-space: nowrap;
+        font-size: 0.86rem;
     }
 
-    .quick-action-card::after {
-        content: "";
-        position: absolute;
-        width: 110px;
-        height: 110px;
-        right: -30px;
-        bottom: -30px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(56,189,248,0.10), transparent 70%);
+    .modern-table tbody td {
+        padding: 13px 11px;
+        color: #475569;
+        border-color: #eef2f7;
+        line-height: 1.48;
+        vertical-align: middle;
+        font-size: 0.88rem;
     }
 
-    .quick-action-icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 16px;
-        margin: 0 auto 14px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        box-shadow: var(--shadow-sm);
-        transition: all 0.35s ease;
-        position: relative;
-        z-index: 2;
+    .modern-table tbody tr {
+        transition: var(--pd-transition);
     }
 
-    .quick-action-card:hover .quick-action-icon {
-        transform: scale(1.06);
+    .modern-table tbody tr:hover {
+        background: #f8fbff;
     }
 
-    .quick-action-card h5 {
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 8px;
-        position: relative;
-        z-index: 2;
-    }
-
-    .quick-action-card p {
-        color: #64748b;
-        line-height: 1.7;
-        margin-bottom: 14px;
-        font-size: 0.95rem;
-        position: relative;
-        z-index: 2;
-    }
-
-    .quick-btn {
+    .status-badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 44px;
-        padding: 10px 16px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
-        color: #fff;
-        text-decoration: none;
-        font-weight: 700;
-        transition: 0.25s ease;
-        position: relative;
-        z-index: 2;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
     }
 
-    .quick-btn:hover {
-        color: #fff;
-        transform: translateY(-2px);
+    .status-booked {
+        background: #dbeafe;
+        color: var(--pd-blue-dark);
+        border: 1px solid #bfdbfe;
     }
 
-    .medibot-highlight {
-        background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(29, 78, 216, 0.84)),
-            url('https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
-        border-radius: 26px;
-        padding: 30px;
-        color: #ffffff;
-        box-shadow: 0 24px 54px rgba(15, 23, 42, 0.16);
-        position: relative;
-        overflow: hidden;
+    .status-completed {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
     }
 
-    .medibot-highlight::before {
-        content: "";
-        position: absolute;
-        width: 180px;
-        height: 180px;
-        top: -50px;
-        right: -50px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+    .status-cancelled {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
     }
 
-    .medibot-highlight h4 {
-        font-weight: 800;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 2;
+    .status-missed {
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
     }
 
-    .medibot-highlight p {
-        color: rgba(255,255,255,0.92);
-        line-height: 1.85;
-        margin-bottom: 18px;
-        position: relative;
-        z-index: 2;
-        max-width: 860px;
+    .wellness-card,
+    .hospital-info-card {
+        padding: 24px;
+        height: 100%;
     }
 
-    .medibot-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        position: relative;
-        z-index: 2;
-        display: grid;
-        gap: 10px;
-    }
-
-    .medibot-list li {
+    .wellness-card h4,
+    .hospital-info-card h4 {
+        font-size: 1.2rem;
+        font-weight: 950;
+        color: var(--pd-primary);
+        margin-bottom: 14px;
         display: flex;
         align-items: center;
         gap: 10px;
-        color: rgba(255,255,255,0.92);
-        line-height: 1.75;
+        letter-spacing: -0.3px;
     }
 
-    .medibot-dot {
+    .wellness-card h4::before,
+    .hospital-info-card h4::before {
+        content: "";
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.88);
+        background: var(--pd-gradient-main);
         flex-shrink: 0;
     }
 
-    .hospital-showcase-card {
-        overflow: hidden;
+    .row.g-4 > [class*="col-"] {
+        display: flex;
+    }
+
+    .row.g-4 > [class*="col-"] > .doctor-card,
+    .row.g-4 > [class*="col-"] > .hospital-showcase-card,
+    .row.g-4 > [class*="col-"] > .wellness-card,
+    .row.g-4 > [class*="col-"] > .hospital-info-card {
+        width: 100%;
+    }
+
+    .doctor-card {
         height: 100%;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.09);
+        border-radius: 26px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .doctor-image {
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        background: #e2e8f0;
+        transition: var(--pd-transition);
+    }
+
+    .doctor-card:hover .doctor-image {
+        transform: scale(1.05);
+    }
+
+    .doctor-placeholder {
+        width: 100%;
+        height: 210px;
+        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--pd-blue-dark);
+        font-size: 2rem;
+        font-weight: 950;
+    }
+
+    .doctor-content {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .doctor-content h5 {
+        font-weight: 950;
+        color: var(--pd-primary);
+        margin-bottom: 9px;
+        letter-spacing: -0.25px;
+        line-height: 1.3;
+    }
+
+    .doctor-content p {
+        color: var(--pd-muted);
+        margin-bottom: 7px;
+        line-height: 1.62;
+        font-size: 0.88rem;
+        overflow-wrap: anywhere;
+    }
+
+    .doctor-content .btn-visit {
+        margin-top: auto;
+        align-self: flex-start;
+    }
+
+    .hospital-showcase-card {
+        height: 100%;
+        border-radius: 26px;
+        display: flex;
+        flex-direction: column;
     }
 
     .hospital-cover {
         position: relative;
-        min-height: 190px;
+        min-height: 185px;
         background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(29, 78, 216, 0.78)),
+            linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(37, 99, 235, 0.78)),
             url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
         display: flex;
         align-items: flex-end;
-        padding: 24px;
+        padding: 22px;
         overflow: hidden;
     }
 
@@ -713,7 +1023,7 @@
     .hospital-cover-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.72), rgba(29, 78, 216, 0.38));
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.72), rgba(37, 99, 235, 0.38));
         z-index: 2;
     }
 
@@ -721,298 +1031,242 @@
         transform: scale(1.06);
     }
 
-    .hospital-cover::before,
-    .hospital-cover::after {
-        content: "";
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.08);
-        z-index: 2;
-    }
-
-    .hospital-cover::before {
-        width: 150px;
-        height: 150px;
-        top: -40px;
-        right: -35px;
-    }
-
-    .hospital-cover::after {
-        width: 110px;
-        height: 110px;
-        bottom: -30px;
-        left: -20px;
-    }
-
     .hospital-letter {
-        width: 64px;
-        height: 64px;
-        border-radius: 18px;
+        width: 62px;
+        height: 62px;
+        border-radius: 19px;
         background: rgba(255,255,255,0.14);
         border: 1px solid rgba(255,255,255,0.18);
         color: #ffffff;
         font-size: 1.8rem;
-        font-weight: 800;
+        font-weight: 950;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
         z-index: 3;
+        backdrop-filter: blur(10px);
     }
 
     .hospital-content-wrap {
-        padding: 24px;
-    }
-
-    .hospital-meta {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: #eff6ff;
-        color: #1d4ed8;
-        border-radius: 999px;
-        padding: 6px 12px;
-        font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 10px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
     }
 
     .hospital-content-wrap h5 {
-        font-weight: 800;
-        color: #0f172a;
+        font-weight: 950;
+        color: var(--pd-primary);
         margin-bottom: 14px;
-        letter-spacing: -0.2px;
+        letter-spacing: -0.25px;
+        line-height: 1.3;
     }
 
     .hospital-detail-list {
         display: grid;
-        gap: 10px;
-        margin-bottom: 18px;
+        gap: 9px;
+        margin-bottom: 16px;
+        flex: 1;
     }
 
     .hospital-detail-item {
-        background: #f8fafc;
+        background: #f8fbff;
         border: 1px solid #e8eef6;
-        border-radius: 14px;
-        padding: 12px 14px;
+        border-radius: 15px;
+        padding: 11px 13px;
         color: #475569;
-        line-height: 1.7;
-        transition: var(--transition);
+        line-height: 1.62;
+        transition: var(--pd-transition);
+        font-size: 0.88rem;
     }
 
     .hospital-detail-item:hover {
-        background: #fff;
+        background: #ffffff;
         transform: translateX(2px);
+        box-shadow: var(--pd-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
     }
 
     .hospital-detail-item strong {
-        color: #0f172a;
+        color: var(--pd-primary);
     }
 
-    .btn-view-modern {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
-        padding: 10px 18px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
-        color: #ffffff;
-        font-weight: 700;
-        text-decoration: none;
-        border: none;
-        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.16);
-        transition: 0.25s ease;
+    .hospital-content-wrap .btn-view-modern {
+        margin-top: auto;
+        align-self: flex-start;
     }
 
-    .btn-view-modern:hover {
-        color: #ffffff;
-        transform: translateY(-2px);
-        box-shadow: 0 16px 30px rgba(29, 78, 216, 0.22);
-    }
-
-    .hospital-info-card h4,
-    .wellness-card h4 {
-        font-size: 1.35rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .wellness-card h4::before {
-        content: "";
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
-    }
-
-    .hospital-info-card,
-    .wellness-card {
-        padding: 28px;
-        height: 100%;
-        background: linear-gradient(180deg, #ffffff, #fbfdff);
-    }
-
-    .service-list li,
-    .location-list li {
-        padding: 11px 0;
-        border-bottom: 1px solid #eef2f7;
-        color: #475569;
-        line-height: 1.75;
+    .info-text {
+        color: var(--pd-muted);
+        line-height: 1.8;
+        font-size: 0.92rem;
+        margin-bottom: 0;
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
-    .reveal-up { transform: translateY(45px); }
+    .reveal-up {
+        transform: translateY(40px);
+    }
 
     .reveal.show {
         opacity: 1;
         transform: translate(0, 0);
     }
 
+    /* n8n Chat Widget Polished Override */
+    :root {
+        --chat--color-primary: #2563eb;
+        --chat--color-primary-shade-50: #1d4ed8;
+        --chat--color-primary-shade-100: #1e40af;
+        --chat--color-secondary: #06b6d4;
+        --chat--color-white: #ffffff;
+        --chat--color-light: #f8fbff;
+        --chat--color-light-shade-50: #eef6ff;
+        --chat--color-dark: #0f172a;
+        --chat--border-radius: 18px;
+        --chat--window--width: 380px;
+        --chat--window--height: 560px;
+        --chat--header--background: linear-gradient(135deg, #0f172a, #2563eb, #06b6d4);
+        --chat--header--color: #ffffff;
+        --chat--message--bot--background: #f1f5f9;
+        --chat--message--bot--color: #334155;
+        --chat--message--user--background: linear-gradient(135deg, #2563eb, #06b6d4);
+        --chat--message--user--color: #ffffff;
+        --chat--toggle--background: linear-gradient(135deg, #2563eb, #06b6d4);
+        --chat--toggle--hover--background: linear-gradient(135deg, #1d4ed8, #0891b2);
+    }
+
     @media (max-width: 1199px) {
         .quick-action-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .visual-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .visual-mini-grid {
+            grid-template-columns: 1fr;
         }
     }
 
     @media (max-width: 991px) {
+        .patient-dashboard-page {
+            padding: 30px 0 62px;
+        }
+
         .patient-hero {
-            padding: 40px 24px;
+            padding: 44px 28px;
+            border-radius: 28px;
         }
 
         .patient-hero h1 {
-            font-size: 1.95rem;
+            font-size: 2rem;
+        }
+
+        .stats-row > [class*="col-"] {
+            display: block;
+        }
+
+        .dashboard-stat-card {
+            min-height: 128px;
         }
 
         .membership-mini-grid {
             grid-template-columns: 1fr;
         }
+
+        .quick-action-card {
+            min-height: auto;
+        }
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
+        .patient-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .patient-hero h1 {
+            font-size: 1.78rem;
+        }
+
+        .patient-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
         .quick-action-grid {
             grid-template-columns: 1fr;
         }
 
+        .dashboard-stat-card,
         .dashboard-card,
+        .doctor-card,
         .hospital-info-card,
+        .hospital-showcase-card,
+        .membership-status-card,
+        .membership-benefit-card,
         .recent-shell,
+        .quick-action-card,
         .wellness-card,
-        .membership-shell {
-            padding: 22px;
+        .membership-shell,
+        .medibot-highlight,
+        .patient-visual-panel {
+            border-radius: 22px;
+        }
+
+        .section-title {
+            font-size: 1.18rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.86rem;
+        }
+
+        .visual-donut {
+            width: 165px;
+            height: 165px;
+        }
+
+        .visual-donut::before {
+            inset: 27px;
+        }
+
+        :root {
+            --chat--window--width: 92vw;
+            --chat--window--height: 520px;
         }
     }
-    /* Chatbot Button */
-#chatbot-toggle {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 60px;
-    height: 60px;
-    background: #ef4444;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    cursor: pointer;
-    z-index: 9999;
-}
-
-/* Chatbox */
-#chatbot-box {
-    position: fixed;
-    bottom: 100px;
-    right: 25px;
-    width: 320px;
-    height: 420px;
-    background: #fff;
-    border-radius: 12px;
-    display: none;
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    z-index: 9999;
-}
-
-/* Header */
-.chat-header {
-    background: #1d4ed8;
-    color: #fff;
-    padding: 10px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-}
-
-/* Body */
-#chat-body {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-}
-
-.bot-msg {
-    background: #e2e8f0;
-    padding: 8px;
-    margin-bottom: 6px;
-    border-radius: 8px;
-}
-
-.user-msg {
-    background: #1d4ed8;
-    color: white;
-    padding: 8px;
-    margin-bottom: 6px;
-    border-radius: 8px;
-    text-align: right;
-}
-
-/* Input */
-.chat-input {
-    display: flex;
-    border-top: 1px solid #ddd;
-}
-
-.chat-input input {
-    flex: 1;
-    border: none;
-    padding: 10px;
-    outline: none;
-}
-
-.chat-input button {
-    background: #1d4ed8;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-}
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="section-space patient-dashboard-page">
-    <div class="container">
+<section class="patient-dashboard-page">
+    <div class="container position-relative" style="z-index: 2;">
 
         <div class="patient-hero reveal reveal-up show">
             <span class="hero-badge">
                 <i class="bi bi-heart-pulse"></i>
                 SmartCare HMS • Patient Portal
             </span>
+
+            <div class="hero-highlight">
+                <i class="bi bi-shield-check"></i>
+                Secure healthcare dashboard with appointment, prescription and report support
+            </div>
+
             <h1>Welcome, {{ patient.first_name }} {{ patient.last_name }}</h1>
+
             <p>
                 Access appointments, review consultation history, discover specialist doctors,
                 open prescriptions, upload follow-up reports, and stay connected with trusted hospitals
-                through a secure and patient-focused digital healthcare experience.
+                through a secure patient-focused healthcare experience.
             </p>
 
             <div class="hero-pills">
@@ -1023,7 +1277,7 @@
             </div>
         </div>
 
-        <div class="row g-4 mb-4">
+        <div class="row stats-row">
             <div class="col-md-4">
                 <div class="dashboard-stat-card reveal reveal-up">
                     <div class="stat-top">
@@ -1035,6 +1289,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="dashboard-stat-card reveal reveal-up">
                     <div class="stat-top">
@@ -1046,6 +1301,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="dashboard-stat-card reveal reveal-up">
                     <div class="stat-top">
@@ -1059,7 +1315,7 @@
             </div>
         </div>
 
-        <div class="row g-4 mb-4">
+        <div class="row stats-row mb-4">
             <div class="col-md-4">
                 <div class="dashboard-stat-card reveal reveal-up">
                     <div class="stat-top">
@@ -1071,6 +1327,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="dashboard-stat-card reveal reveal-up">
                     <div class="stat-top">
@@ -1082,6 +1339,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="dashboard-stat-card reveal reveal-up">
                     <div class="stat-top">
@@ -1095,14 +1353,103 @@
             </div>
         </div>
 
+        <div class="patient-visual-panel mb-4 reveal reveal-up">
+            <div class="section-topbar">
+                <div>
+                    <h3 class="section-title">Health Activity Overview</h3>
+                    <p class="section-subtitle">
+                        A visual summary of your appointment activity, completed visits, pending consultations and membership discount.
+                    </p>
+                </div>
+
+                <span class="section-chip">
+                    <i class="bi bi-pie-chart"></i>
+                    Visual Analytics
+                </span>
+            </div>
+
+            <div class="visual-grid">
+                <div class="visual-donut-wrap">
+                    <div
+                        class="visual-donut"
+                        style="
+                            --completed-rate: {{ completed_percentage|default:0 }};
+                            --pending-rate: {% if total_appointments %}{% widthratio pending_appointments total_appointments 100 %}{% else %}0{% endif %};
+                        "
+                    >
+                        <div class="visual-donut-center">
+                            <strong>{{ completed_percentage }}%</strong>
+                            <span>Completed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="visual-bars">
+                        <div class="visual-progress-item">
+                            <div class="visual-progress-top">
+                                <span>Completed Visits</span>
+                                <strong>{{ completed_percentage }}%</strong>
+                            </div>
+                            <div class="visual-track">
+                                <div class="visual-fill fill-completed" style="width: {{ completed_percentage|default:0 }}%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="visual-progress-item">
+                            <div class="visual-progress-top">
+                                <span>Pending Consultations</span>
+                                <strong>{% if total_appointments %}{% widthratio pending_appointments total_appointments 100 %}{% else %}0{% endif %}%</strong>
+                            </div>
+                            <div class="visual-track">
+                                <div class="visual-fill fill-pending" style="width: {% if total_appointments %}{% widthratio pending_appointments total_appointments 100 %}{% else %}0{% endif %}%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="visual-progress-item">
+                            <div class="visual-progress-top">
+                                <span>Membership Discount</span>
+                                <strong>{{ discount_percent }}%</strong>
+                            </div>
+                            <div class="visual-track">
+                                <div class="visual-fill fill-discount" style="width: {{ discount_percent|default:0 }}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="visual-mini-grid">
+                        <div class="visual-mini-card">
+                            <h5>{{ total_appointments }}</h5>
+                            <p>Total Bookings</p>
+                        </div>
+
+                        <div class="visual-mini-card">
+                            <h5>{{ completed_appointments }}</h5>
+                            <p>Completed Care</p>
+                        </div>
+
+                        <div class="visual-mini-card">
+                            <h5>{{ level_name }}</h5>
+                            <p>Member Level</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="mb-4 reveal reveal-up">
             <div class="section-topbar">
                 <div>
-                    <h3 class="section-title mb-1">Quick Actions</h3>
-                    <p class="section-subtitle mb-0">
+                    <h3 class="section-title">Quick Actions</h3>
+                    <p class="section-subtitle">
                         Access the most important patient tools instantly from one organized dashboard area.
                     </p>
                 </div>
+
+                <span class="section-chip">
+                    <i class="bi bi-lightning-charge"></i>
+                    Fast Access
+                </span>
             </div>
 
             <div class="quick-action-grid">
@@ -1110,39 +1457,51 @@
                     <div class="quick-action-icon"><i class="bi bi-plus-circle"></i></div>
                     <h5>Book Appointment</h5>
                     <p>Schedule a new online or offline consultation with the right specialist doctor.</p>
-                    <a href="{% url 'book_appointment' %}" class="quick-btn">Book Now</a>
+                    <a href="{% url 'book_appointment' %}" class="quick-btn">
+                        <i class="bi bi-calendar-plus"></i>
+                        Book Now
+                    </a>
                 </div>
 
                 <div class="quick-action-card">
                     <div class="quick-action-icon"><i class="bi bi-clock-history"></i></div>
                     <h5>Appointment History</h5>
-                    <p>Review your previous bookings, consultation dates, and appointment progress.</p>
-                    <a href="{% url 'patient_history' %}" class="quick-btn">View History</a>
+                    <p>Review previous bookings, consultation dates and appointment progress.</p>
+                    <a href="{% url 'patient_history' %}" class="quick-btn">
+                        <i class="bi bi-eye"></i>
+                        View History
+                    </a>
                 </div>
 
                 <div class="quick-action-card">
                     <div class="quick-action-icon"><i class="bi bi-file-earmark-medical"></i></div>
                     <h5>My Prescriptions</h5>
-                    <p>Open your latest and previous prescriptions for better continuity of care.</p>
-                    <a href="{% url 'patient_prescriptions' %}" class="quick-btn">Open</a>
+                    <p>Open your latest and previous prescriptions for continuity of care.</p>
+                    <a href="{% url 'patient_prescriptions' %}" class="quick-btn">
+                        <i class="bi bi-folder2-open"></i>
+                        Open
+                    </a>
                 </div>
 
                 <div class="quick-action-card">
                     <div class="quick-action-icon"><i class="bi bi-person-badge"></i></div>
                     <h5>Manage Profile</h5>
-                    <p>Update your personal details, contact information, and account settings securely.</p>
-                    <a href="{% url 'patient_profile' %}" class="quick-btn">Open Profile</a>
+                    <p>Update personal details, contact information and account settings securely.</p>
+                    <a href="{% url 'patient_profile' %}" class="quick-btn">
+                        <i class="bi bi-person-gear"></i>
+                        Open Profile
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="medibot-highlight mb-4 reveal reveal-up">
-            <h4><i class="bi bi-robot me-2"></i>MediBot • Your Basic Digital Health Assistant</h4>
+            <h4><i class="bi bi-robot me-2"></i>MediBot • Basic Digital Health Assistant</h4>
             <p>
                 MediBot helps patients understand common symptoms, basic health concerns, and simple next-step guidance
-                before booking a consultation. It is designed to provide supportive, easy-to-understand information
-                for basic problems so patients can make smarter decisions before directly visiting a doctor.
+                before booking a consultation. It is supportive guidance only and does not replace professional medical care.
             </p>
+
             <ul class="medibot-list">
                 <li><span class="medibot-dot"></span> Get basic health guidance for common issues and minor symptoms.</li>
                 <li><span class="medibot-dot"></span> Reduce unnecessary immediate doctor visits for simple concerns.</li>
@@ -1151,11 +1510,20 @@
         </div>
 
         <div class="membership-shell mb-4 reveal reveal-up">
-            <h3 class="section-title">Membership Level & Benefits</h3>
-            <p class="section-subtitle">
-                Your completed consultations gradually unlock better patient benefits, improved discounts,
-                and a stronger long-term care experience within SmartCare HMS.
-            </p>
+            <div class="section-topbar">
+                <div>
+                    <h3 class="section-title">Membership Level & Benefits</h3>
+                    <p class="section-subtitle">
+                        Completed consultations unlock better patient benefits, improved discounts,
+                        and stronger long-term care experience.
+                    </p>
+                </div>
+
+                <span class="section-chip">
+                    <i class="bi bi-stars"></i>
+                    Benefit System
+                </span>
+            </div>
 
             <div class="row g-4">
                 <div class="col-lg-6">
@@ -1167,6 +1535,7 @@
                                 <h4>{{ level_name }}</h4>
                                 <p>Calculated from your completed appointments and active platform usage.</p>
                             </div>
+
                             <div class="discount-circle">
                                 {{ discount_percent }}%
                             </div>
@@ -1177,6 +1546,7 @@
                                 <h5>{{ completed_appointments }}</h5>
                                 <p>Completed Visits</p>
                             </div>
+
                             <div class="membership-mini-box">
                                 <h5>{{ discount_percent }}%</h5>
                                 <p>Current Discount</p>
@@ -1188,6 +1558,7 @@
                 <div class="col-lg-6">
                     <div class="membership-benefit-card">
                         <span class="membership-label"><i class="bi bi-stars"></i> Benefit Tiers</span>
+
                         <ul class="benefit-list">
                             <li><span class="benefit-dot"></span> Starter — 0% consultation discount</li>
                             <li><span class="benefit-dot"></span> Bronze — 5% discount after 3 completed visits</li>
@@ -1202,14 +1573,21 @@
         <div class="recent-shell mb-4 reveal reveal-up">
             <div class="section-topbar">
                 <div>
-                    <h3 class="section-title mb-1">Recent Appointments</h3>
-                    <p class="section-subtitle mb-0">
+                    <h3 class="section-title">Recent Appointments</h3>
+                    <p class="section-subtitle">
                         Stay informed about your latest consultation activity and booking updates.
                     </p>
                 </div>
+
                 <div class="d-flex align-items-center gap-2 flex-wrap">
-                    <span class="recent-chip">Latest 3 Records</span>
-                    <a href="{% url 'patient_history' %}" class="btn-section-view">View All</a>
+                    <span class="recent-chip">
+                        <i class="bi bi-clock-history"></i>
+                        Latest 3 Records
+                    </span>
+                    <a href="{% url 'patient_history' %}" class="btn-section-view">
+                        <i class="bi bi-arrow-right-circle"></i>
+                        View All
+                    </a>
                 </div>
             </div>
 
@@ -1225,31 +1603,38 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {% for a in recent_appointments|slice:":3" %}
-                            <tr>
-                                <td>Dr. {{ a.doctor.name }}</td>
-                                <td>{{ a.appointment_date }}</td>
-                                <td>{{ a.appointment_time }}</td>
-                                <td>{{ a.appointment_mode }}</td>
-                                <td>
-                                    {% if a.status == 'Completed' %}
-                                        <span class="status-badge status-completed">{{ a.status }}</span>
-                                    {% elif a.status == 'Booked' %}
-                                        <span class="status-badge status-booked">{{ a.status }}</span>
-                                    {% elif a.status == 'Missed' %}
-                                        <span class="status-badge status-missed">{{ a.status }}</span>
-                                    {% else %}
-                                        <span class="status-badge status-cancelled">{{ a.status }}</span>
-                                    {% endif %}
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Dr. {{ a.doctor.name }}</td>
+                                    <td>{{ a.appointment_date }}</td>
+                                    <td>
+                                        {% if a.appointment_time %}
+                                            {{ a.appointment_time }}
+                                        {% else %}
+                                            <span class="text-muted">No time</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ a.appointment_mode }}</td>
+                                    <td>
+                                        {% if a.status == 'Completed' %}
+                                            <span class="status-badge status-completed">{{ a.status }}</span>
+                                        {% elif a.status == 'Booked' %}
+                                            <span class="status-badge status-booked">{{ a.status }}</span>
+                                        {% elif a.status == 'Missed' %}
+                                            <span class="status-badge status-missed">{{ a.status }}</span>
+                                        {% else %}
+                                            <span class="status-badge status-cancelled">{{ a.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
                             {% empty %}
-                            <tr>
-                                <td colspan="5" class="text-center text-muted py-4">
-                                    No appointments found.
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        No appointments found.
+                                    </td>
+                                </tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -1261,18 +1646,21 @@
             <div class="col-lg-6">
                 <div class="wellness-card">
                     <h4>Smart Patient Tips</h4>
+
                     <ul class="wellness-list">
-                        <li><span class="wellness-dot"></span> Keep your contact information updated for booking and follow-up communication.</li>
-                        <li><span class="wellness-dot"></span> Use MediBot for basic guidance before booking a consultation for minor issues.</li>
-                        <li><span class="wellness-dot"></span> Review prescriptions and appointment history to maintain continuity of care.</li>
+                        <li><span class="wellness-dot"></span> Keep contact information updated for booking and follow-up communication.</li>
+                        <li><span class="wellness-dot"></span> Use MediBot for basic guidance before booking for minor issues.</li>
+                        <li><span class="wellness-dot"></span> Review prescriptions and history to maintain continuity of care.</li>
                     </ul>
                 </div>
             </div>
+
             <div class="col-lg-6">
                 <div class="wellness-card">
                     <h4>Suggested Next Steps</h4>
+
                     <ul class="wellness-list">
-                        <li><span class="wellness-dot"></span> Browse specialists and compare hospitals before making your next booking.</li>
+                        <li><span class="wellness-dot"></span> Browse specialists and compare hospitals before your next booking.</li>
                         <li><span class="wellness-dot"></span> Use your membership discount on upcoming completed consultations.</li>
                         <li><span class="wellness-dot"></span> Upload reports on time for follow-up review and continued medical advice.</li>
                     </ul>
@@ -1283,41 +1671,49 @@
         <div class="mb-4 reveal reveal-up">
             <div class="section-topbar">
                 <div>
-                    <h3 class="section-title mb-1">Our Doctors</h3>
-                    <p class="section-subtitle mb-0">
+                    <h3 class="section-title">Our Doctors</h3>
+                    <p class="section-subtitle">
                         Explore trusted specialists available for consultation, follow-up care, and treatment guidance.
                     </p>
                 </div>
-                <a href="{% url 'patient_doctors' %}" class="btn-section-view">View All</a>
+
+                <a href="{% url 'patient_doctors' %}" class="btn-section-view">
+                    <i class="bi bi-arrow-right-circle"></i>
+                    View All
+                </a>
             </div>
 
             <div class="row g-4">
                 {% for doctor in doctors|slice:":3" %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="doctor-card">
-                        {% if doctor.photo %}
-                            <img src="{{ doctor.photo.url }}" alt="{{ doctor.name }}" class="doctor-image">
-                        {% else %}
-                            <div class="doctor-placeholder">
-                                {{ doctor.name|slice:":1" }}
-                            </div>
-                        {% endif %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="doctor-card">
+                            {% if doctor.photo %}
+                                <img src="{{ doctor.photo.url }}" alt="{{ doctor.name }}" class="doctor-image">
+                            {% else %}
+                                <div class="doctor-placeholder">
+                                    {{ doctor.name|slice:":1" }}
+                                </div>
+                            {% endif %}
 
-                        <div class="doctor-content">
-                            <h5>Dr. {{ doctor.name }}</h5>
-                            <p><strong>Specialist:</strong> {{ doctor.specialist }}</p>
-                            <p><strong>Hospital:</strong> {{ doctor.hospital_name }}</p>
-                            <p><strong>Location:</strong> {{ doctor.location }}</p>
-                            <a href="{% url 'book_appointment' %}?doctor={{ doctor.id }}" class="btn-visit">Book Appointment</a>
+                            <div class="doctor-content">
+                                <h5>Dr. {{ doctor.name }}</h5>
+                                <p><strong>Specialist:</strong> {{ doctor.specialist }}</p>
+                                <p><strong>Hospital:</strong> {{ doctor.hospital_name }}</p>
+                                <p><strong>Location:</strong> {{ doctor.location }}</p>
+
+                                <a href="{% url 'book_appointment' %}?doctor={{ doctor.id }}" class="btn-visit">
+                                    <i class="bi bi-calendar-plus"></i>
+                                    Book Appointment
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {% empty %}
-                <div class="col-12">
-                    <div class="dashboard-card text-center p-4">
-                        <p class="mb-0 text-muted">No doctors available right now.</p>
+                    <div class="col-12">
+                        <div class="dashboard-card text-center p-4">
+                            <p class="mb-0 text-muted">No doctors available right now.</p>
+                        </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
@@ -1325,58 +1721,69 @@
         <div class="mb-4 reveal reveal-up">
             <div class="section-topbar">
                 <div>
-                    <h3 class="section-title mb-1">Our Hospitals</h3>
-                    <p class="section-subtitle mb-0">
+                    <h3 class="section-title">Our Hospitals</h3>
+                    <p class="section-subtitle">
                         Discover connected healthcare organizations, service branches, and hospital-based doctor availability.
                     </p>
                 </div>
-                <a href="{% url 'patient_hospitals' %}" class="btn-section-view">View All</a>
+
+                <a href="{% url 'patient_hospitals' %}" class="btn-section-view">
+                    <i class="bi bi-arrow-right-circle"></i>
+                    View All
+                </a>
             </div>
 
             <div class="row g-4">
                 {% for org in organizations|slice:":3" %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="hospital-showcase-card">
-                        <div class="hospital-cover">
-                            {% if org.organization_photo %}
-                                <img src="{{ org.organization_photo.url }}" alt="{{ org.organization_name }}" class="hospital-cover-image">
-                            {% endif %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="hospital-showcase-card">
+                            <div class="hospital-cover">
+                                {% if org.organization_photo %}
+                                    <img src="{{ org.organization_photo.url }}" alt="{{ org.organization_name }}" class="hospital-cover-image">
+                                {% endif %}
 
-                            <div class="hospital-cover-overlay"></div>
+                                <div class="hospital-cover-overlay"></div>
 
-                            <div class="hospital-letter">
-                                {{ org.organization_name|slice:":1" }}
-                            </div>
-                        </div>
-
-                        <div class="hospital-content-wrap">
-                            <span class="hospital-meta"><i class="bi bi-hospital"></i> Healthcare Organization</span>
-                            <h5>{{ org.organization_name }}</h5>
-
-                            <div class="hospital-detail-list">
-                                <div class="hospital-detail-item">
-                                    <strong>Branch Address:</strong> {{ org.branch_address|default:"Address not provided" }}
-                                </div>
-                                <div class="hospital-detail-item">
-                                    <strong>Opening Hours:</strong> 24/7 Available
-                                </div>
-                                <div class="hospital-detail-item">
-                                    <strong>Support Contact:</strong> {{ org.contact|default:"Not available" }}
+                                <div class="hospital-letter">
+                                    {{ org.organization_name|slice:":1" }}
                                 </div>
                             </div>
 
-                            <a href="{% url 'patient_hospital_doctors' org.organization_name %}" class="btn-view-modern">
-                                View Doctors
-                            </a>
+                            <div class="hospital-content-wrap">
+                                <span class="hospital-meta">
+                                    <i class="bi bi-hospital"></i>
+                                    Healthcare Organization
+                                </span>
+
+                                <h5>{{ org.organization_name }}</h5>
+
+                                <div class="hospital-detail-list">
+                                    <div class="hospital-detail-item">
+                                        <strong>Branch Address:</strong> {{ org.branch_address|default:"Address not provided" }}
+                                    </div>
+
+                                    <div class="hospital-detail-item">
+                                        <strong>Opening Hours:</strong> 24/7 Available
+                                    </div>
+
+                                    <div class="hospital-detail-item">
+                                        <strong>Support Contact:</strong> {{ org.contact|default:"Not available" }}
+                                    </div>
+                                </div>
+
+                                <a href="{% url 'patient_hospital_doctors' org.organization_name %}" class="btn-view-modern">
+                                    <i class="bi bi-people"></i>
+                                    View Doctors
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {% empty %}
-                <div class="col-12">
-                    <div class="dashboard-card text-center p-4">
-                        <p class="mb-0 text-muted">No hospital organization information available right now.</p>
+                    <div class="col-12">
+                        <div class="dashboard-card text-center p-4">
+                            <p class="mb-0 text-muted">No hospital organization information available right now.</p>
+                        </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
@@ -1385,7 +1792,7 @@
             <div class="col-lg-4">
                 <div class="hospital-info-card h-100">
                     <h4>About Our Healthcare Network</h4>
-                    <p class="text-muted mb-0" style="line-height: 1.9;">
+                    <p class="info-text">
                         SmartCare HMS connects patients with trusted hospitals, specialist doctors,
                         digital appointments, prescriptions, and structured follow-up support in one modern platform.
                     </p>
@@ -1395,6 +1802,7 @@
             <div class="col-lg-4">
                 <div class="hospital-info-card h-100">
                     <h4>Core Services</h4>
+
                     <ul class="service-list">
                         <li>Specialist Consultation & Follow-up Review</li>
                         <li>Online and Offline Appointment Booking</li>
@@ -1408,6 +1816,7 @@
             <div class="col-lg-4">
                 <div class="hospital-info-card h-100">
                     <h4>Support & Access</h4>
+
                     <ul class="location-list">
                         <li><strong>Opening Hours:</strong> 24/7 Platform Access</li>
                         <li><strong>Emergency Support:</strong> Priority Workflow Available</li>
@@ -1424,14 +1833,15 @@
 
 <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
 <script type="module">
-	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+    import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
-	createChat({
-		webhookUrl: 'https://kr032.app.n8n.cloud/webhook/b567db7c-077f-469e-9866-67610fc6244a/chat'
-	});
+    createChat({
+        webhookUrl: 'https://kr032.app.n8n.cloud/webhook/b567db7c-077f-469e-9866-67610fc6244a/chat'
+    });
 </script>
 
-{% comment %} <!-- Chatbot Floating Button -->
+{% comment %}
+<!-- Chatbot Floating Button -->
 <div id="chatbot-toggle">
     <i class="bi bi-chat-dots"></i>
 </div>
@@ -1451,7 +1861,8 @@
         <input type="text" id="chat-input" placeholder="Type your message..." />
         <button id="send-btn">Send</button>
     </div>
-</div> {% endcomment %}
+</div>
+{% endcomment %}
 
 {% endblock %}
 
@@ -1461,8 +1872,10 @@
 
     function patientDashboardRevealOnScroll() {
         const triggerBottom = window.innerHeight * 0.9;
+
         patientDashboardReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
                 setTimeout(() => el.classList.add('show'), index * 70);
             }
@@ -1473,7 +1886,8 @@
     window.addEventListener('load', patientDashboardRevealOnScroll);
 </script>
 
-{% comment %} <script>
+{% comment %}
+<script>
 const chatbotToggle = document.getElementById("chatbot-toggle");
 const chatbotBox = document.getElementById("chatbot-box");
 const chatClose = document.getElementById("chat-close");
@@ -1481,30 +1895,23 @@ const sendBtn = document.getElementById("send-btn");
 const chatInput = document.getElementById("chat-input");
 const chatBody = document.getElementById("chat-body");
 
-// Toggle open
 chatbotToggle.onclick = () => {
     chatbotBox.style.display = "flex";
 };
 
-// Close
 chatClose.onclick = () => {
     chatbotBox.style.display = "none";
 };
 
-// Send message
 sendBtn.onclick = async () => {
     const message = chatInput.value.trim();
     if (!message) return;
 
-    // Show user msg
     chatBody.innerHTML += `<div class="user-msg">${message}</div>`;
     chatInput.value = "";
-
-    // Scroll
     chatBody.scrollTop = chatBody.scrollHeight;
 
     try {
-        // 🔥 CHANGE THIS URL
         const response = await fetch("https://kr032.app.n8n.cloud/webhook/0db73cec-58a8-49c1-bd6d-391aaf53ec36", {
             method: "POST",
             headers: {
@@ -1517,7 +1924,6 @@ sendBtn.onclick = async () => {
 
         const data = await response.json();
 
-        // Show bot response
         chatBody.innerHTML += `<div class="bot-msg">${data.response || "No reply"}</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
@@ -1525,6 +1931,7 @@ sendBtn.onclick = async () => {
         chatBody.innerHTML += `<div class="bot-msg">Error connecting to server</div>`;
     }
 };
-</script> {% endcomment %}
+</script>
+{% endcomment %}
 
 {% endblock %}

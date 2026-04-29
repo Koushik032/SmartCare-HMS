@@ -4,383 +4,641 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --muted: #64748b;
-        --border: #dbe2ea;
-        --soft: #f8fbff;
-        --white: #ffffff;
-        --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.05);
-        --shadow-md: 0 16px 34px rgba(15, 23, 42, 0.08);
-        --shadow-lg: 0 24px 50px rgba(15, 23, 42, 0.12);
-        --transition: all 0.35s ease;
+        --lg-primary: #07111f;
+        --lg-dark: #0f172a;
+        --lg-blue: #2563eb;
+        --lg-blue-dark: #1d4ed8;
+        --lg-cyan: #06b6d4;
+        --lg-green: #16a34a;
+        --lg-orange: #f59e0b;
+        --lg-red: #dc2626;
+        --lg-muted: #64748b;
+        --lg-border: rgba(148, 163, 184, 0.24);
+        --lg-soft: #f8fbff;
+        --lg-white: #ffffff;
+
+        --lg-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --lg-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --lg-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --lg-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --lg-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --lg-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
     }
 
-    .auth-section {
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
+    }
+
+    .login-page {
         position: relative;
         overflow: hidden;
-        padding: 28px 0 56px;
-        background:
-            radial-gradient(circle at top left, rgba(29, 78, 216, 0.05), transparent 24%),
-            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.05), transparent 24%),
-            #f8fbff;
+        padding: 42px 0 82px;
+        min-height: calc(100vh - 90px);
     }
 
-    .auth-section::before {
+    .login-page::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.24), rgba(255,255,255,0));
+        width: 440px;
+        height: 440px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.11), transparent 68%);
+        left: -170px;
+        top: -185px;
         pointer-events: none;
     }
 
-    .auth-wrapper {
-        position: relative;
-        background: rgba(255,255,255,0.98);
-        border-radius: 28px;
-        overflow: hidden;
-        box-shadow: var(--shadow-lg);
-        border: 1px solid #e9eef5;
-    }
-
-    .auth-left {
-        position: relative;
-        background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(29, 78, 216, 0.86) 58%, rgba(56, 189, 248, 0.76) 100%),
-            url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: #ffffff;
-        padding: 48px 36px;
-        height: 100%;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        isolation: isolate;
-    }
-
-    .auth-left::before,
-    .auth-left::after {
+    .login-page::after {
         content: "";
         position: absolute;
+        width: 390px;
+        height: 390px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
-        z-index: 0;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.13), transparent 68%);
+        right: -155px;
+        bottom: -165px;
+        pointer-events: none;
     }
 
-    .auth-left::before {
-        width: 240px;
-        height: 240px;
-        top: -90px;
-        right: -60px;
+    .login-shell {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--lg-border);
+        border-radius: 34px;
+        box-shadow: var(--lg-shadow-lg);
+        backdrop-filter: blur(18px);
     }
 
-    .auth-left::after {
-        width: 170px;
-        height: 170px;
-        bottom: -60px;
-        left: -40px;
+    .login-shell::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.16), transparent);
+        z-index: 1;
     }
 
-    .auth-left > * {
+    .login-shell > .row {
         position: relative;
         z-index: 2;
     }
 
-    .auth-badge {
+    .login-left {
+        position: relative;
+        min-height: 690px;
+        padding: 54px 42px;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        isolation: isolate;
+        background:
+            var(--lg-gradient-dark),
+            url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+    }
+
+    .login-left::before {
+        content: "";
+        position: absolute;
+        width: 440px;
+        height: 440px;
+        top: -170px;
+        right: -160px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
+    }
+
+    .login-left::after {
+        content: "";
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        left: -95px;
+        bottom: -100px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .auth-chip,
+    .auth-highlight,
+    .auth-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .auth-chip {
+        width: fit-content;
+        padding: 8px 15px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
+        margin-bottom: 14px;
+    }
+
+    .auth-highlight {
+        width: fit-content;
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
+        margin-bottom: 16px;
+    }
+
+    .login-left h2 {
+        font-size: clamp(2.1rem, 3.4vw, 3rem);
+        font-weight: 950;
+        line-height: 1.06;
+        letter-spacing: -0.9px;
+        margin-bottom: 14px;
+        max-width: 520px;
+    }
+
+    .login-left p {
+        color: rgba(255,255,255,0.91);
+        line-height: 1.82;
+        max-width: 520px;
+        margin-bottom: 22px;
+        font-size: 0.98rem;
+    }
+
+    .auth-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .auth-pill {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
+        font-weight: 700;
+    }
+
+    .auth-feature-list {
+        display: grid;
+        gap: 11px;
+        margin-bottom: 24px;
+    }
+
+    .auth-feature {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 13px 14px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.13);
+        backdrop-filter: blur(10px);
+        color: rgba(255,255,255,0.93);
+        line-height: 1.6;
+        font-size: 0.9rem;
+        transition: var(--lg-transition);
+    }
+
+    .auth-feature:hover {
+        transform: translateX(4px);
+        background: rgba(255,255,255,0.14);
+    }
+
+    .auth-feature-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: rgba(255,255,255,0.15);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 13px;
+    }
+
+    .secure-note-card {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.14);
+        backdrop-filter: blur(10px);
+        max-width: 520px;
+    }
+
+    .secure-note-card h5 {
+        color: #ffffff;
+        font-size: 1.02rem;
+        font-weight: 950;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .secure-note-card p {
+        margin: 0;
+        color: rgba(255,255,255,0.90);
+        font-size: 0.9rem;
+        line-height: 1.75;
+    }
+
+    .login-right {
+        position: relative;
+        min-height: 690px;
+        padding: 48px 42px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background:
+            radial-gradient(circle at top right, rgba(37,99,235,0.05), transparent 28%),
+            linear-gradient(135deg, #ffffff, #f8fbff);
+    }
+
+    .form-top-badge {
         display: inline-flex;
         align-items: center;
         gap: 8px;
         width: fit-content;
-        padding: 8px 16px;
+        padding: 8px 15px;
         border-radius: 999px;
-        background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
-        font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 16px;
-        backdrop-filter: blur(10px);
+        background: #eff6ff;
+        color: var(--lg-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 12.5px;
+        font-weight: 850;
+        margin-bottom: 14px;
     }
 
-    .auth-left h2 {
-        font-size: 2.1rem;
-        font-weight: 900;
+    .login-right h3 {
+        color: var(--lg-primary);
+        font-size: clamp(1.8rem, 2.6vw, 2.35rem);
+        font-weight: 950;
         line-height: 1.1;
-        margin-bottom: 14px;
         letter-spacing: -0.6px;
-        text-shadow: 0 10px 24px rgba(0,0,0,0.18);
-    }
-
-    .auth-left p {
-        color: rgba(255,255,255,0.92);
-        line-height: 1.85;
-        margin-bottom: 20px;
-        max-width: 440px;
-    }
-
-    .auth-points {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 22px;
-    }
-
-    .auth-points li {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-        color: rgba(255,255,255,0.94);
-        font-weight: 500;
-    }
-
-    .auth-check {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.14);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        flex-shrink: 0;
-    }
-
-    .auth-mini-card {
-        background: rgba(255,255,255,0.10);
-        border: 1px solid rgba(255,255,255,0.14);
-        border-radius: 18px;
-        padding: 16px 16px;
-        backdrop-filter: blur(8px);
-        max-width: 430px;
-    }
-
-    .auth-mini-card h6 {
-        margin: 0 0 6px;
-        font-size: 0.98rem;
-        font-weight: 800;
-        color: #ffffff;
-    }
-
-    .auth-mini-card p {
-        margin: 0;
-        font-size: 0.92rem;
-        line-height: 1.75;
-        color: rgba(255,255,255,0.90);
-    }
-
-    .auth-right {
-        padding: 42px 36px;
-        background: linear-gradient(to bottom right, #ffffff, #fbfdff);
-    }
-
-    .form-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        border-radius: 999px;
-        background: #eaf4ff;
-        color: var(--secondary);
-        font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 14px;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .auth-form-title {
-        font-size: 1.95rem;
-        font-weight: 800;
-        color: var(--primary);
         margin-bottom: 10px;
-        letter-spacing: -0.4px;
     }
 
-    .auth-form-subtitle {
-        color: var(--muted);
+    .form-subtitle {
+        color: var(--lg-muted);
+        line-height: 1.75;
+        max-width: 560px;
         margin-bottom: 24px;
-        line-height: 1.8;
-        max-width: 520px;
-    }
-
-    .auth-form-shell {
-        background: #ffffff;
-        border: 1px solid #e8eef7;
-        border-radius: 20px;
-        padding: 22px;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .auth-right .form-label {
-        font-weight: 700;
-        color: #334155;
-        margin-bottom: 8px;
         font-size: 0.94rem;
     }
 
-    .auth-right .form-control,
-    .auth-right input,
-    .auth-right select,
-    .auth-right textarea {
-        min-height: 50px;
-        border-radius: 12px;
-        background: #f8fafc;
-        border: 1px solid var(--border);
-        box-shadow: none !important;
-        transition: var(--transition);
-        width: 100%;
-        padding: 11px 13px;
+    .auth-form-card,
+    .helper-card,
+    .register-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--lg-border);
+        border-radius: 26px;
+        box-shadow: var(--lg-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--lg-transition);
     }
 
-    .auth-right .form-control:focus,
-    .auth-right input:focus,
-    .auth-right select:focus,
-    .auth-right textarea:focus {
+    .auth-form-card::before,
+    .helper-card::before,
+    .register-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
+    }
+
+    .auth-form-card > *,
+    .helper-card > *,
+    .register-card > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .auth-form-card:hover,
+    .helper-card:hover,
+    .register-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--lg-shadow-md);
+        border-color: rgba(37,99,235,0.28);
+    }
+
+    .auth-form-card {
+        padding: 24px;
+    }
+
+    .field-wrap {
+        padding: 14px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        transition: var(--lg-transition);
+        margin-bottom: 15px;
+    }
+
+    .field-wrap:hover {
+        background: #ffffff;
+        border-color: rgba(37,99,235,0.24);
+        box-shadow: var(--lg-shadow-sm);
+        transform: translateY(-2px);
+    }
+
+    .login-right .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #334155;
+        font-size: 0.9rem;
+        font-weight: 950;
+        margin-bottom: 9px;
+    }
+
+    .label-icon {
+        width: 29px;
+        height: 29px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: var(--lg-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    .login-right .form-control,
+    .login-right input,
+    .login-right select,
+    .login-right textarea {
+        min-height: 52px;
+        border-radius: 15px;
+        border: 1px solid #dbe3ee;
+        background: #ffffff;
+        box-shadow: none !important;
+        padding: 12px 14px;
+        width: 100%;
+        transition: var(--lg-transition);
+        color: #334155;
+        font-size: 0.92rem;
+    }
+
+    .login-right textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .login-right .form-control:focus,
+    .login-right input:focus,
+    .login-right select:focus,
+    .login-right textarea:focus {
         background: #ffffff;
         border-color: #2563eb;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08) !important;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10) !important;
         outline: none;
     }
 
-    .auth-right ul.errorlist {
+    /* Password eye button */
+    .password-input-wrap {
+        position: relative;
+        width: 100%;
+    }
+
+    .password-input-wrap input {
+        padding-right: 54px !important;
+    }
+
+    .password-toggle-btn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 38px;
+        height: 38px;
+        border: none;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: var(--lg-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--lg-transition);
+        z-index: 5;
+    }
+
+    .password-toggle-btn:hover {
+        background: var(--lg-gradient-main);
+        color: #ffffff;
+        transform: translateY(-50%) scale(1.04);
+    }
+
+    .password-toggle-btn i {
+        font-size: 16px;
+    }
+
+    .field-error,
+    .login-right ul.errorlist li {
+        display: block;
+        margin-top: 7px;
+        color: var(--lg-red);
+        font-size: 0.84rem;
+        font-weight: 850;
+        line-height: 1.55;
+    }
+
+    .login-right ul.errorlist {
         list-style: none;
         padding: 0;
-        margin: 8px 0 0;
+        margin: 7px 0 0;
     }
 
-    .auth-right ul.errorlist li,
-    .field-error {
-        color: #dc2626;
-        font-size: 0.88rem;
-        font-weight: 600;
-    }
-
-    .btn-auth {
+    .btn-auth-login {
+        width: 100%;
+        min-height: 52px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 999px;
+        background: var(--lg-gradient-main);
+        color: #ffffff;
+        font-weight: 950;
+        box-shadow: 0 10px 22px rgba(37,99,235,0.18);
+        transition: var(--lg-transition);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
-        color: #ffffff;
-        border: none;
-        border-radius: 12px;
-        padding: 13px 20px;
-        font-weight: 700;
-        width: 100%;
-        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
-        transition: var(--transition);
-        margin-top: 8px;
+        white-space: nowrap;
+        margin-top: 4px;
     }
 
-    .btn-auth:hover {
+    .btn-auth-login:hover {
         color: #ffffff;
         transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(37,99,235,0.22);
     }
 
-    .auth-helper-row {
+    .helper-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-        margin-top: 18px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
     }
 
-    .auth-helper-box {
-        background: #f8fbff;
-        border: 1px solid #e8eef7;
-        border-radius: 16px;
-        padding: 14px 14px;
+    .helper-card {
+        padding: 16px;
+        border-radius: 20px;
     }
 
-    .auth-helper-box h6 {
-        margin: 0 0 6px;
-        color: #0f172a;
-        font-size: 0.95rem;
-        font-weight: 800;
+    .helper-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        background: #eff6ff;
+        color: var(--lg-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        margin-bottom: 10px;
     }
 
-    .auth-helper-box p {
-        margin: 0;
-        color: #64748b;
-        font-size: 0.9rem;
-        line-height: 1.7;
+    .helper-card h6 {
+        color: var(--lg-primary);
+        font-size: 0.96rem;
+        font-weight: 950;
+        margin-bottom: 6px;
+        line-height: 1.3;
     }
 
-    .auth-bottom-text {
+    .helper-card p {
+        color: var(--lg-muted);
+        line-height: 1.65;
+        margin-bottom: 0;
+        font-size: 0.86rem;
+    }
+
+    .register-card {
+        margin-top: 16px;
+        padding: 17px 18px;
+        border-radius: 20px;
         text-align: center;
-        margin-top: 18px;
-        color: var(--muted);
+        color: var(--lg-muted);
         line-height: 1.7;
-        padding: 16px 18px;
-        border-radius: 16px;
-        background: #f8fbff;
-        border: 1px solid #e5eefb;
+        font-size: 0.91rem;
     }
 
-    .auth-bottom-text a {
-        color: #1d4ed8;
-        font-weight: 700;
+    .register-card a {
+        color: var(--lg-blue-dark);
+        font-weight: 950;
         text-decoration: none;
     }
 
-    .auth-bottom-text a:hover {
+    .register-card a:hover {
         text-decoration: underline;
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
-    .reveal-left { transform: translateX(-60px); }
-    .reveal-right { transform: translateX(60px); }
+    .reveal-left {
+        transform: translateX(-42px);
+    }
+
+    .reveal-right {
+        transform: translateX(42px);
+    }
+
+    .reveal-up {
+        transform: translateY(32px);
+    }
 
     .reveal.show {
         opacity: 1;
-        transform: translateX(0);
+        transform: translate(0, 0);
     }
 
     @media (max-width: 991px) {
-        .auth-left,
-        .auth-right {
-            padding: 32px 22px;
+        .login-page {
+            padding: 30px 0 64px;
         }
 
-        .auth-left h2 {
-            font-size: 1.9rem;
+        .login-left,
+        .login-right {
+            min-height: auto;
+            padding: 42px 28px;
         }
 
-        .auth-form-title {
-            font-size: 1.7rem;
+        .login-left {
+            border-radius: 0;
         }
 
-        .auth-helper-row {
+        .helper-grid {
             grid-template-columns: 1fr;
         }
     }
 
     @media (max-width: 768px) {
-        .auth-section {
-            padding: 24px 0 48px;
+        .login-shell {
+            border-radius: 26px;
         }
 
-        .auth-wrapper {
-            border-radius: 24px;
+        .login-left,
+        .login-right {
+            padding: 36px 22px;
         }
 
-        .auth-left h2 {
-            font-size: 1.75rem;
+        .login-left h2 {
+            font-size: 1.86rem;
+        }
+
+        .login-left p,
+        .form-subtitle {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .auth-form-card,
+        .helper-card,
+        .register-card {
+            border-radius: 22px;
+        }
+
+        .auth-form-card {
+            padding: 20px;
         }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="auth-section">
-    <div class="container">
-        <div class="auth-wrapper">
+<section class="login-page">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="login-shell">
             <div class="row g-0">
+
                 <div class="col-lg-5">
-                    <div class="auth-left reveal reveal-left show">
-                        <span class="auth-badge">
+                    <div class="login-left reveal reveal-left show">
+                        <span class="auth-chip">
                             {% if role == 'Patient' %}
                                 <i class="bi bi-person-circle"></i>
                             {% elif role == 'Doctor' %}
@@ -392,8 +650,13 @@
                             {% else %}
                                 <i class="bi bi-box-arrow-in-right"></i>
                             {% endif %}
-                            {{ role }} Portal
+                            SmartCare HMS • {{ role }} Portal
                         </span>
+
+                        <div class="auth-highlight">
+                            <i class="bi bi-shield-lock"></i>
+                            Secure role-based access panel
+                        </div>
 
                         <h2>
                             {% if role == 'Patient' %}
@@ -401,7 +664,7 @@
                             {% elif role == 'Doctor' %}
                                 Doctor Login
                             {% elif role == 'Receptionist' %}
-                                Reception Login
+                                Receptionist Login
                             {% elif role == 'Admin' %}
                                 Admin Login
                             {% else %}
@@ -411,37 +674,56 @@
 
                         <p>
                             {% if role == 'Patient' %}
-                                Access your patient portal to manage appointments, browse doctors, view medical information, and continue your healthcare journey with confidence.
+                                Access your patient portal to manage appointments, view doctors, check messages, and continue your healthcare journey with confidence.
                             {% elif role == 'Doctor' %}
-                                Access your doctor portal to manage schedules, appointments, patient workflow, and role-specific hospital activities securely.
+                                Access your doctor portal to manage appointments, patient workflow, schedules, reports, and daily clinical activities securely.
                             {% elif role == 'Receptionist' %}
-                                Access your reception portal to coordinate front-desk activities, patient intake, appointments, and service operations smoothly.
+                                Access your reception portal to coordinate appointments, patient intake, doctor availability, reports, and front-desk operations smoothly.
                             {% elif role == 'Admin' %}
-                                Access your administrative portal to monitor system activities, manage users, and oversee hospital operations securely.
+                                Access your administrative portal to manage users, monitor activity, review system operations, and keep SmartCare HMS organized.
                             {% else %}
-                                Access your secure hospital portal with a clean, modern, and professional digital experience.
+                                Access your secure hospital portal with a clean, modern, and professional healthcare experience.
                             {% endif %}
                         </p>
 
-                        <ul class="auth-points">
-                            <li><span class="auth-check">✓</span> Secure role-based login experience</li>
-                            <li><span class="auth-check">✓</span> Professional healthcare workflow access</li>
-                            <li><span class="auth-check">✓</span> Clean dashboard and account control</li>
-                            <li><span class="auth-check">✓</span> Reliable and modern portal interface</li>
-                        </ul>
+                        <div class="auth-pills">
+                            <span class="auth-pill"><i class="bi bi-shield-check"></i> Secure Login</span>
+                            <span class="auth-pill"><i class="bi bi-person-lock"></i> Role Based</span>
+                            <span class="auth-pill"><i class="bi bi-speedometer2"></i> Dashboard Access</span>
+                        </div>
 
-                        <div class="auth-mini-card">
-                            <h6>Secure Access Notice</h6>
+                        <div class="auth-feature-list">
+                            <div class="auth-feature">
+                                <span class="auth-feature-icon"><i class="bi bi-check2-circle"></i></span>
+                                <span>Protected access for authorized SmartCare HMS users only.</span>
+                            </div>
+
+                            <div class="auth-feature">
+                                <span class="auth-feature-icon"><i class="bi bi-kanban"></i></span>
+                                <span>Clean dashboard workflow based on your selected user role.</span>
+                            </div>
+
+                            <div class="auth-feature">
+                                <span class="auth-feature-icon"><i class="bi bi-heart-pulse"></i></span>
+                                <span>Designed for organized hospital, doctor, patient, and reception activities.</span>
+                            </div>
+                        </div>
+
+                        <div class="secure-note-card">
+                            <h5>
+                                <i class="bi bi-info-circle"></i>
+                                Secure Access Notice
+                            </h5>
                             <p>
-                                Please use your authorized credentials only. This portal is designed to keep hospital operations organized, efficient, and securely managed.
+                                Please use your authorized credentials only. Keep your account information safe and log out after finishing your work.
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-7">
-                    <div class="auth-right reveal reveal-right show">
-                        <span class="form-badge">
+                    <div class="login-right reveal reveal-right show">
+                        <span class="form-top-badge">
                             {% if role == 'Patient' %}
                                 <i class="bi bi-person-heart"></i>
                             {% elif role == 'Doctor' %}
@@ -456,25 +738,56 @@
                             {{ role }} Access Panel
                         </span>
 
-                        <h3 class="auth-form-title">Welcome Back</h3>
-                        <p class="auth-form-subtitle">
+                        <h3>Welcome Back</h3>
+
+                        <p class="form-subtitle">
                             Enter your credentials to access your {{ role|lower }} account securely and continue your workflow without interruption.
                         </p>
 
-                        <div class="auth-form-shell">
+                        <div class="auth-form-card">
                             <form method="post">
                                 {% csrf_token %}
+
                                 {% for field in form %}
-                                    <div class="mb-3">
-                                        <label class="form-label">{{ field.label }}</label>
-                                        {{ field }}
+                                    <div class="field-wrap">
+                                        <label class="form-label" for="{{ field.id_for_label }}">
+                                            <span class="label-icon">
+                                                {% if 'password' in field.name %}
+                                                    <i class="bi bi-key"></i>
+                                                {% elif 'username' in field.name or 'email' in field.name %}
+                                                    <i class="bi bi-person-badge"></i>
+                                                {% else %}
+                                                    <i class="bi bi-pencil-square"></i>
+                                                {% endif %}
+                                            </span>
+                                            {{ field.label }}
+                                        </label>
+
+                                        {% if 'password' in field.name %}
+                                            <div class="password-input-wrap">
+                                                {{ field }}
+
+                                                <button type="button" class="password-toggle-btn" aria-label="Show password">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                            </div>
+                                        {% else %}
+                                            {{ field }}
+                                        {% endif %}
+
                                         {% if field.errors %}
                                             <small class="field-error">{{ field.errors|striptags }}</small>
                                         {% endif %}
                                     </div>
                                 {% endfor %}
 
-                                <button type="submit" class="btn-auth">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        {{ form.non_field_errors|striptags }}
+                                    </div>
+                                {% endif %}
+
+                                <button type="submit" class="btn-auth-login">
                                     <i class="bi bi-box-arrow-in-right"></i>
                                     {% if role == 'Patient' %}
                                         Login as Patient
@@ -489,27 +802,35 @@
                                     {% endif %}
                                 </button>
                             </form>
+                        </div>
 
-                            <div class="auth-helper-row">
-                                <div class="auth-helper-box">
-                                    <h6>Fast Access</h6>
-                                    <p>Sign in quickly to continue appointments, patient management, and daily hospital activities.</p>
-                                </div>
-                                <div class="auth-helper-box">
-                                    <h6>Protected Account</h6>
-                                    <p>Your portal access is intended for authorized users and structured operational use only.</p>
-                                </div>
+                        <div class="helper-grid">
+                            <div class="helper-card reveal reveal-up">
+                                <span class="helper-icon">
+                                    <i class="bi bi-lightning-charge"></i>
+                                </span>
+                                <h6>Fast Access</h6>
+                                <p>Sign in quickly and continue your role-specific healthcare workflow.</p>
+                            </div>
+
+                            <div class="helper-card reveal reveal-up">
+                                <span class="helper-icon">
+                                    <i class="bi bi-shield-lock"></i>
+                                </span>
+                                <h6>Protected Account</h6>
+                                <p>Your portal is intended for authorized users and secure operational access.</p>
                             </div>
                         </div>
 
                         {% if register_url %}
-                            <div class="auth-bottom-text">
+                            <div class="register-card reveal reveal-up">
                                 Don’t have an account?
                                 <a href="{% url register_url %}">Create account</a>
                             </div>
                         {% endif %}
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -518,16 +839,39 @@
 
 {% block extra_js %}
 <script>
-    const authReveal = document.querySelectorAll('.reveal');
+    const loginReveal = document.querySelectorAll('.reveal');
 
-    function authRevealOnLoad() {
-        authReveal.forEach((el, index) => {
+    function loginRevealOnLoad() {
+        loginReveal.forEach((el, index) => {
             setTimeout(() => {
                 el.classList.add('show');
-            }, index * 120);
+            }, index * 80);
         });
     }
 
-    window.addEventListener('load', authRevealOnLoad);
+    window.addEventListener('load', loginRevealOnLoad);
+
+    const passwordToggleButtons = document.querySelectorAll('.password-toggle-btn');
+
+    passwordToggleButtons.forEach((button) => {
+        button.addEventListener('click', function () {
+            const input = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
+
+            if (!input) return;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+                this.setAttribute('aria-label', 'Hide password');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+                this.setAttribute('aria-label', 'Show password');
+            }
+        });
+    });
 </script>
 {% endblock %}

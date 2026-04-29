@@ -1,0 +1,884 @@
+{% extends 'hms/base.html' %}
+{% block title %}Patient Messages{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --msg-primary: #07111f;
+        --msg-dark: #0f172a;
+        --msg-blue: #2563eb;
+        --msg-blue-dark: #1d4ed8;
+        --msg-cyan: #06b6d4;
+        --msg-green: #16a34a;
+        --msg-orange: #f59e0b;
+        --msg-red: #dc2626;
+        --msg-muted: #64748b;
+        --msg-border: rgba(148, 163, 184, 0.24);
+        --msg-soft: #f8fbff;
+        --msg-white: #ffffff;
+
+        --msg-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --msg-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --msg-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --msg-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --msg-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --msg-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
+    }
+
+    .message-page {
+        position: relative;
+        overflow: hidden;
+        padding: 36px 0 76px;
+    }
+
+    .message-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
+        pointer-events: none;
+    }
+
+    .message-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
+        pointer-events: none;
+    }
+
+    .message-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 32px;
+        padding: 54px 46px;
+        margin-bottom: 20px;
+        background:
+            var(--msg-gradient-dark),
+            url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--msg-shadow-lg);
+        isolation: isolate;
+    }
+
+    .message-hero::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -170px;
+        right: -140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
+    }
+
+    .message-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .message-badge,
+    .hero-highlight,
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .message-badge {
+        padding: 8px 15px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
+        margin-bottom: 12px;
+    }
+
+    .hero-highlight {
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
+        margin-bottom: 14px;
+    }
+
+    .message-hero h2 {
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
+        line-height: 1.08;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 980px;
+    }
+
+    .message-hero p {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 940px;
+        margin-bottom: 0;
+        font-size: 1rem;
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .hero-pill {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
+        font-weight: 700;
+    }
+
+    .summary-card,
+    .message-card,
+    .empty-card,
+    .info-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--msg-border);
+        border-radius: 28px;
+        box-shadow: var(--msg-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--msg-transition);
+    }
+
+    .summary-card::before,
+    .message-card::before,
+    .empty-card::before,
+    .info-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
+    }
+
+    .summary-card > *,
+    .message-card > *,
+    .empty-card > *,
+    .info-card > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .summary-card:hover,
+    .message-card:hover,
+    .empty-card:hover,
+    .info-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--msg-shadow-md);
+        border-color: rgba(37,99,235,0.28);
+    }
+
+    .message-summary-row {
+        --bs-gutter-x: 10px;
+        --bs-gutter-y: 10px;
+        margin-bottom: 24px;
+    }
+
+    .message-summary-row > [class*="col-"] {
+        display: flex;
+    }
+
+    .summary-card {
+        width: 100%;
+        min-height: 136px;
+        padding: 19px 17px;
+        border-radius: 21px;
+    }
+
+    .summary-card::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 4px;
+        width: 100%;
+        background: var(--msg-gradient-main);
+    }
+
+    .summary-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 100%;
+    }
+
+    .summary-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--msg-blue-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+        box-shadow: inset 0 1px 0 #ffffff, 0 8px 18px rgba(15,23,42,0.06);
+        flex-shrink: 0;
+    }
+
+    .summary-card h3 {
+        color: var(--msg-blue-dark);
+        font-size: 1.42rem;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+        margin-bottom: 5px;
+        line-height: 1.15;
+        max-width: 175px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .summary-card p {
+        margin: 0;
+        color: var(--msg-muted);
+        font-weight: 800;
+        font-size: 0.84rem;
+        line-height: 1.38;
+    }
+
+    .message-list {
+        display: grid;
+        gap: 16px;
+    }
+
+    .message-card {
+        padding: 24px;
+        border-radius: 26px;
+    }
+
+    .message-card::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 5px;
+        height: 100%;
+        background: var(--msg-gradient-main);
+    }
+
+    .message-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .message-title-wrap {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .message-title {
+        font-size: 1.12rem;
+        font-weight: 950;
+        color: var(--msg-primary);
+        margin-bottom: 7px;
+        letter-spacing: -0.2px;
+        line-height: 1.35;
+    }
+
+    .message-subtitle {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        color: var(--msg-muted);
+        line-height: 1.6;
+        margin-bottom: 0;
+        font-size: 0.92rem;
+        font-weight: 700;
+    }
+
+    .doctor-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--msg-gradient-main);
+        display: inline-block;
+    }
+
+    .message-time-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--msg-blue-dark);
+        border: 1px solid #dbeafe;
+        font-weight: 900;
+        font-size: 12.5px;
+        white-space: nowrap;
+    }
+
+    .message-body {
+        padding: 18px;
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at top right, rgba(37,99,235,0.06), transparent 32%),
+            linear-gradient(135deg, #f8fbff, #ffffff);
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.8;
+        font-size: 0.92rem;
+        margin-bottom: 16px;
+        overflow-wrap: anywhere;
+    }
+
+    .message-body strong {
+        color: var(--msg-primary);
+        font-weight: 950;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 8px;
+    }
+
+    .message-meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .meta-chip {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 12px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        font-size: 0.84rem;
+        font-weight: 800;
+        min-width: 0;
+        transition: var(--msg-transition);
+    }
+
+    .meta-chip:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--msg-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .meta-chip i {
+        color: var(--msg-blue-dark);
+        flex-shrink: 0;
+    }
+
+    .meta-chip span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .status-chip {
+        background: #dbeafe;
+        color: var(--msg-blue-dark);
+        border-color: #bfdbfe;
+    }
+
+    .status-chip.status-completed {
+        background: #dcfce7;
+        color: #166534;
+        border-color: #bbf7d0;
+    }
+
+    .status-chip.status-cancelled {
+        background: #fee2e2;
+        color: #991b1b;
+        border-color: #fecaca;
+    }
+
+    .status-chip.status-missed {
+        background: #fef3c7;
+        color: #92400e;
+        border-color: #fde68a;
+    }
+
+    .empty-card {
+        padding: 54px 24px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 76px;
+        height: 76px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--msg-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        margin-bottom: 18px;
+        box-shadow: var(--msg-shadow-sm);
+    }
+
+    .empty-card h4 {
+        font-weight: 950;
+        color: var(--msg-primary);
+        margin-bottom: 8px;
+    }
+
+    .empty-card p {
+        color: var(--msg-muted);
+        line-height: 1.8;
+        margin-bottom: 0;
+        max-width: 620px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-message-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: var(--msg-gradient-main);
+        color: #fff;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 10px 22px rgba(37,99,235,0.18);
+        transition: var(--msg-transition);
+        margin-top: 22px;
+    }
+
+    .btn-message-back:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(37,99,235,0.22);
+    }
+
+    .info-card {
+        padding: 26px;
+        margin-top: 24px;
+    }
+
+    .info-card h4 {
+        font-weight: 950;
+        color: var(--msg-primary);
+        margin-bottom: 8px;
+        font-size: 1.32rem;
+        letter-spacing: -0.35px;
+        line-height: 1.28;
+    }
+
+    .info-card p {
+        color: var(--msg-muted);
+        margin-bottom: 18px;
+        line-height: 1.75;
+        font-size: 0.92rem;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .info-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 13px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.62;
+        transition: var(--msg-transition);
+        font-size: 0.88rem;
+    }
+
+    .info-list li:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--msg-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .info-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--msg-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 900;
+        flex-shrink: 0;
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .reveal-up {
+        transform: translateY(40px);
+    }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+
+    @media (max-width: 1199px) {
+        .message-meta {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 991px) {
+        .message-page {
+            padding: 30px 0 62px;
+        }
+
+        .message-hero {
+            padding: 44px 28px;
+            border-radius: 28px;
+        }
+
+        .message-hero h2 {
+            font-size: 2rem;
+        }
+
+        .message-summary-row > [class*="col-"] {
+            display: block;
+        }
+
+        .info-list {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .message-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .message-hero h2 {
+            font-size: 1.78rem;
+        }
+
+        .message-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .summary-card,
+        .message-card,
+        .empty-card,
+        .info-card {
+            border-radius: 22px;
+        }
+
+        .message-card {
+            padding: 22px;
+        }
+
+        .message-meta {
+            grid-template-columns: 1fr;
+        }
+
+        .message-time-badge {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-message-back {
+            width: 100%;
+        }
+    }
+</style>
+
+<section class="message-page">
+    <div class="container position-relative" style="z-index: 2;">
+
+        <div class="message-hero reveal reveal-up show">
+            <span class="message-badge">
+                <i class="bi bi-chat-dots"></i>
+                SmartCare HMS • Patient Messages
+            </span>
+
+            <div class="hero-highlight">
+                <i class="bi bi-inbox"></i>
+                Receptionist updates and appointment time confirmation
+            </div>
+
+            <h2>Your Appointment Messages</h2>
+
+            <p>
+                View receptionist messages, approximate appointment times, hospital details, doctor information,
+                and important booking updates related to your appointment requests.
+            </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-chat-left-text"></i> Receptionist Message</span>
+                <span class="hero-pill"><i class="bi bi-clock-history"></i> Time Update</span>
+                <span class="hero-pill"><i class="bi bi-hospital"></i> Hospital Info</span>
+                <span class="hero-pill"><i class="bi bi-calendar2-check"></i> Booking Status</span>
+            </div>
+        </div>
+
+        <div class="row message-summary-row">
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>{{ total_messages }}</h3>
+                            <p>Total Messages</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-chat-left-text"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>{{ patient.first_name }}</h3>
+                            <p>Patient Name</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-person-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>Inbox</h3>
+                            <p>Receptionist Updates</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-inbox"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if messages_list %}
+            <div class="message-list">
+                {% for appointment in messages_list %}
+                    <div class="message-card reveal reveal-up">
+                        <div class="message-top">
+                            <div class="message-title-wrap">
+                                <h4 class="message-title">
+                                    Appointment Update from {{ appointment.doctor.hospital_name }}
+                                </h4>
+
+                                <p class="message-subtitle">
+                                    <span>Dr. {{ appointment.doctor.name }}</span>
+
+                                    {% if appointment.doctor.specialist %}
+                                        <span class="doctor-dot"></span>
+                                        <span>{{ appointment.doctor.specialist }}</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+
+                            <span class="message-time-badge">
+                                <i class="bi bi-clock-history"></i>
+                                {% if appointment.appointment_time %}
+                                    {{ appointment.appointment_time|time:"h:i A" }}
+                                {% else %}
+                                    Time Pending
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="message-body">
+                            <strong>
+                                <i class="bi bi-chat-left-quote"></i>
+                                Receptionist Message
+                            </strong>
+                            <br>
+                            {{ appointment.receptionist_message }}
+                        </div>
+
+                        <div class="message-meta">
+                            <div class="meta-chip">
+                                <i class="bi bi-calendar-event"></i>
+                                <span>{{ appointment.appointment_date|date:"M d, Y" }}</span>
+                            </div>
+
+                            <div class="meta-chip">
+                                <i class="bi bi-person-badge"></i>
+                                <span>Dr. {{ appointment.doctor.name }}</span>
+                            </div>
+
+                            <div class="meta-chip">
+                                <i class="bi bi-hospital"></i>
+                                <span>{{ appointment.doctor.hospital_name }}</span>
+                            </div>
+
+                            <div class="meta-chip">
+                                <i class="bi bi-clipboard2-pulse"></i>
+                                <span>{{ appointment.problem_category }}</span>
+                            </div>
+
+                            <div class="meta-chip">
+                                <i class="bi bi-activity"></i>
+                                <span>{{ appointment.urgency_level }}</span>
+                            </div>
+
+                            {% if appointment.status == 'Completed' %}
+                                <div class="meta-chip status-chip status-completed">
+                                    <i class="bi bi-check2-circle"></i>
+                                    <span>{{ appointment.status }}</span>
+                                </div>
+                            {% elif appointment.status == 'Cancelled' %}
+                                <div class="meta-chip status-chip status-cancelled">
+                                    <i class="bi bi-x-circle"></i>
+                                    <span>{{ appointment.status }}</span>
+                                </div>
+                            {% elif appointment.status == 'Missed' %}
+                                <div class="meta-chip status-chip status-missed">
+                                    <i class="bi bi-clock-history"></i>
+                                    <span>{{ appointment.status }}</span>
+                                </div>
+                            {% else %}
+                                <div class="meta-chip status-chip">
+                                    <i class="bi bi-info-circle"></i>
+                                    <span>{{ appointment.status }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-card reveal reveal-up">
+                <div class="empty-icon">
+                    <i class="bi bi-chat-square-dots"></i>
+                </div>
+
+                <h4>No Messages Yet</h4>
+
+                <p>
+                    When receptionist assigns your appointment time and sends a message,
+                    it will appear here automatically.
+                </p>
+
+                <a href="{% url 'patient_dashboard' %}" class="btn-message-back">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="info-card reveal reveal-up">
+            <h4>Message Center Guide</h4>
+
+            <p>
+                This message center helps you track appointment updates sent by the receptionist after your booking request is reviewed.
+            </p>
+
+            <ul class="info-list">
+                <li>
+                    <span class="info-dot"><i class="bi bi-clock-history"></i></span>
+                    <span>Receptionist can assign your approximate appointment time and send it here.</span>
+                </li>
+
+                <li>
+                    <span class="info-dot"><i class="bi bi-hospital"></i></span>
+                    <span>You can review hospital and doctor information from each appointment message.</span>
+                </li>
+
+                <li>
+                    <span class="info-dot"><i class="bi bi-calendar2-check"></i></span>
+                    <span>Appointment date and status are shown clearly for better booking tracking.</span>
+                </li>
+
+                <li>
+                    <span class="info-dot"><i class="bi bi-shield-check"></i></span>
+                    <span>Keeping messages organized helps patients follow appointment instructions properly.</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const messageReveal = document.querySelectorAll('.reveal');
+
+    function messageRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.9;
+
+        messageReveal.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+
+            if (top < triggerBottom) {
+                setTimeout(() => el.classList.add('show'), index * 70);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', messageRevealOnScroll);
+    window.addEventListener('load', messageRevealOnScroll);
+</script>
+{% endblock %}

@@ -4,145 +4,209 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --primary-2: #1e293b;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --accent-2: #0ea5e9;
+        --primary: #07111f;
+        --primary-2: #0f172a;
+        --secondary: #2563eb;
+        --secondary-dark: #1d4ed8;
+        --accent: #06b6d4;
+        --accent-soft: #38bdf8;
         --muted: #64748b;
-        --border: #e5edf5;
-        --soft: #f8fbff;
+        --border: rgba(148, 163, 184, 0.24);
+        --soft: #f6faff;
         --white: #ffffff;
-        --success: #10b981;
+        --success: #16a34a;
         --warning: #f59e0b;
-        --danger: #ef4444;
-        --info: #0ea5e9;
-        --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.06);
-        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
-        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
-        --shadow-blue: 0 18px 45px rgba(29, 78, 216, 0.22);
-        --transition: all 0.35s ease;
-        --gradient-blue: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        --danger: #dc2626;
+        --info: #0284c7;
+        --shadow-sm: 0 10px 26px rgba(15, 23, 42, 0.07);
+        --shadow-md: 0 20px 52px rgba(15, 23, 42, 0.11);
+        --shadow-lg: 0 32px 86px rgba(15, 23, 42, 0.16);
+        --gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.84), rgba(6, 182, 212, 0.64));
+        --transition: all 0.35s cubic-bezier(.2,.8,.2,1);
     }
 
     body {
         background:
-            radial-gradient(circle at top left, rgba(56, 189, 248, 0.06), transparent 28%),
-            radial-gradient(circle at bottom right, rgba(29, 78, 216, 0.05), transparent 24%),
-            #f8fbff;
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
     }
 
     .appointment-page {
-        padding: 34px 0 74px;
+        position: relative;
+        overflow: hidden;
+        padding: 42px 0 86px;
+    }
+
+    .appointment-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        top: -160px;
+        left: -140px;
+        pointer-events: none;
+    }
+
+    .appointment-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        bottom: -150px;
+        right: -140px;
+        pointer-events: none;
     }
 
     .page-hero {
         position: relative;
         overflow: hidden;
+        border-radius: 38px;
+        padding: 68px 52px;
+        margin-bottom: 28px;
         background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(29, 78, 216, 0.86) 58%, rgba(56, 189, 248, 0.72) 100%),
-            url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            var(--gradient-dark),
+            url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
         color: #ffffff;
-        border-radius: 32px;
-        padding: 56px 42px;
-        margin-bottom: 26px;
+        border: 1px solid rgba(255,255,255,0.18);
         box-shadow: var(--shadow-lg);
         isolation: isolate;
-        border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .page-hero::before,
-    .page-hero::after {
-        content: "";
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.08);
-        z-index: -1;
     }
 
     .page-hero::before {
-        width: 250px;
-        height: 250px;
-        top: -80px;
-        right: -70px;
+        content: "";
+        position: absolute;
+        width: 460px;
+        height: 460px;
+        border-radius: 50%;
+        top: -190px;
+        right: -150px;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
     }
 
     .page-hero::after {
-        width: 170px;
-        height: 170px;
-        bottom: -45px;
-        left: -25px;
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        left: -90px;
+        bottom: -100px;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
     }
 
-    .hero-chip {
+    .hero-chip,
+    .hero-highlight {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 16px;
         border-radius: 999px;
-        background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
+        color: #ffffff;
+        backdrop-filter: blur(14px);
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 850;
+    }
+
+    .hero-chip {
+        padding: 9px 16px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.20);
         margin-bottom: 16px;
-        backdrop-filter: blur(10px);
     }
 
     .hero-highlight {
-        display: inline-block;
-        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
         border: 1px solid rgba(255,255,255,0.14);
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 14px;
-        backdrop-filter: blur(8px);
+        margin-bottom: 18px;
     }
 
     .page-hero h2 {
-        font-size: 2.3rem;
-        font-weight: 900;
-        margin-bottom: 10px;
-        letter-spacing: -0.5px;
+        font-size: clamp(2.1rem, 4vw, 3.15rem);
+        font-weight: 950;
+        line-height: 1.06;
+        letter-spacing: -1px;
+        margin-bottom: 14px;
     }
 
     .page-hero p {
         color: rgba(255,255,255,0.92);
-        margin-bottom: 0;
         line-height: 1.9;
-        max-width: 760px;
+        max-width: 850px;
+        margin-bottom: 0;
+        font-size: 1rem;
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 15px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        backdrop-filter: blur(10px);
     }
 
     .stats-row {
-        margin-bottom: 28px;
+        margin-bottom: 30px;
     }
 
     .stats-card {
-        background: rgba(255,255,255,0.97);
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        padding: 28px 22px;
-        box-shadow: var(--shadow-md);
         height: 100%;
-        text-align: center;
-        transition: var(--transition);
         position: relative;
         overflow: hidden;
-    }
-
-    .stats-card:hover {
-        transform: translateY(-7px);
-        box-shadow: var(--shadow-lg);
+        background: rgba(255,255,255,0.94);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 28px 22px;
+        box-shadow: var(--shadow-sm);
+        text-align: center;
+        transition: var(--transition);
+        backdrop-filter: blur(16px);
     }
 
     .stats-card::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(29, 78, 216, 0.02), rgba(56, 189, 248, 0.05));
+        background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(6,182,212,0.06));
         opacity: 0;
         transition: var(--transition);
+    }
+
+    .stats-card::after {
+        content: "";
+        position: absolute;
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        right: -52px;
+        bottom: -52px;
+        background: radial-gradient(circle, rgba(6,182,212,0.16), transparent 70%);
+    }
+
+    .stats-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-md);
+        border-color: rgba(37,99,235,0.28);
     }
 
     .stats-card:hover::before {
@@ -150,45 +214,54 @@
     }
 
     .stats-icon {
-        width: 58px;
-        height: 58px;
-        border-radius: 18px;
-        margin: 0 auto 14px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: var(--secondary);
+        position: relative;
+        z-index: 2;
+        width: 62px;
+        height: 62px;
+        border-radius: 20px;
+        margin: 0 auto 15px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--secondary-dark);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
-        box-shadow: var(--shadow-sm);
-        position: relative;
-        z-index: 2;
+        font-size: 25px;
+        box-shadow: inset 0 1px 0 #ffffff, var(--shadow-sm);
     }
 
     .stats-card h3 {
-        font-size: 1.95rem;
-        font-weight: 900;
-        color: var(--secondary);
-        margin-bottom: 8px;
         position: relative;
         z-index: 2;
+        font-size: 2rem;
+        font-weight: 950;
+        color: var(--secondary-dark);
+        margin-bottom: 8px;
+        letter-spacing: -0.6px;
     }
 
     .stats-card p {
-        margin: 0;
-        color: var(--muted);
-        font-weight: 700;
         position: relative;
         z-index: 2;
+        margin: 0;
+        color: var(--muted);
+        font-weight: 800;
     }
 
     .search-shell {
-        background: rgba(255,255,255,0.98);
+        position: relative;
+        background: rgba(255,255,255,0.94);
         border: 1px solid var(--border);
-        border-radius: 26px;
-        padding: 24px;
+        border-radius: 30px;
+        padding: 28px;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 32px;
+        backdrop-filter: blur(16px);
+        transition: var(--transition);
+    }
+
+    .search-shell:hover {
+        transform: translateY(-4px);
         box-shadow: var(--shadow-md);
-        margin-bottom: 30px;
     }
 
     .search-header {
@@ -196,21 +269,23 @@
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        margin-bottom: 18px;
+        margin-bottom: 20px;
         flex-wrap: wrap;
     }
 
     .search-title {
         margin: 0;
         color: var(--primary);
-        font-size: 1.1rem;
-        font-weight: 800;
+        font-size: 1.18rem;
+        font-weight: 950;
+        letter-spacing: -0.3px;
     }
 
     .search-subtitle {
-        margin: 4px 0 0;
+        margin: 5px 0 0;
         color: var(--muted);
         font-size: 0.95rem;
+        line-height: 1.75;
     }
 
     .search-badge {
@@ -218,66 +293,108 @@
         align-items: center;
         gap: 7px;
         background: #eff6ff;
-        color: var(--secondary);
+        color: var(--secondary-dark);
         border-radius: 999px;
         padding: 8px 14px;
         font-size: 12px;
-        font-weight: 800;
+        font-weight: 850;
+        border: 1px solid #dbeafe;
     }
 
     .search-shell .form-control {
         min-height: 58px;
-        border-radius: 16px;
-        background: #f8fafc;
-        border: 1px solid #dbe2ea;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid rgba(148,163,184,0.30);
         box-shadow: none;
         padding-left: 16px;
+        transition: var(--transition);
     }
 
     .search-shell .form-control:focus {
         background: #ffffff;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+        border-color: rgba(37,99,235,0.55);
+        box-shadow: 0 0 0 5px rgba(37,99,235,0.10);
     }
 
     .btn-search-modern {
         min-height: 58px;
-        border-radius: 16px;
+        border-radius: 18px;
         border: none;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        background: var(--gradient-main);
         color: #ffffff;
-        font-weight: 800;
-        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+        font-weight: 900;
+        box-shadow: 0 16px 34px rgba(37,99,235,0.24);
         transition: var(--transition);
     }
 
     .btn-search-modern:hover {
         color: #ffffff;
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+        box-shadow: 0 22px 48px rgba(37,99,235,0.30);
+    }
+
+    .appointment-grid-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+    .appointment-grid-title h3 {
+        margin: 0;
+        color: var(--primary);
+        font-size: 1.35rem;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+    }
+
+    .appointment-grid-title p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        line-height: 1.75;
+    }
+
+    .result-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 850;
+        box-shadow: var(--shadow-sm);
     }
 
     .appointment-card {
-        background: rgba(255,255,255,0.98);
-        border: 1px solid var(--border);
-        border-radius: 26px;
-        box-shadow: var(--shadow-md);
         height: 100%;
-        overflow: hidden;
-        transition: var(--transition);
         position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--border);
+        border-radius: 30px;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        backdrop-filter: blur(16px);
     }
 
     .appointment-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--shadow-lg);
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-md);
+        border-color: rgba(37,99,235,0.32);
     }
 
     .appointment-image-wrap {
         position: relative;
         width: 100%;
-        height: 220px;
+        height: 222px;
         overflow: hidden;
-        background: #e2e8f0;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
     }
 
     .appointment-image {
@@ -288,19 +405,21 @@
     }
 
     .appointment-card:hover .appointment-image {
-        transform: scale(1.05);
+        transform: scale(1.06);
     }
 
     .appointment-placeholder {
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        background:
+            radial-gradient(circle at top left, rgba(255,255,255,0.45), transparent 28%),
+            linear-gradient(135deg, #dbeafe, #ccfbf1);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #1d4ed8;
-        font-size: 2.6rem;
-        font-weight: 900;
+        color: var(--secondary-dark);
+        font-size: 2.7rem;
+        font-weight: 950;
         letter-spacing: -1px;
     }
 
@@ -308,18 +427,32 @@
         position: absolute;
         top: 16px;
         left: 16px;
-        background: rgba(15, 23, 42, 0.82);
+        background: rgba(7,17,31,0.78);
         color: #ffffff;
         font-size: 12px;
-        font-weight: 700;
-        padding: 7px 12px;
+        font-weight: 850;
+        padding: 8px 13px;
         border-radius: 999px;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
+    }
+
+    .appointment-date-floating {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        padding: 9px 13px;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.92);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 900;
+        box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(10px);
     }
 
     .appointment-top {
         background: linear-gradient(135deg, #eff6ff, #f8fbff);
-        padding: 20px 22px;
+        padding: 22px 24px;
         border-bottom: 1px solid #e8eef7;
     }
 
@@ -328,34 +461,35 @@
         align-items: center;
         gap: 6px;
         background: #dbeafe;
-        color: #1d4ed8;
+        color: var(--secondary-dark);
         border-radius: 999px;
-        padding: 6px 12px;
+        padding: 7px 13px;
         font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 10px;
+        font-weight: 850;
+        margin-bottom: 11px;
     }
 
     .appointment-top h4 {
-        font-size: 1.22rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 6px;
+        font-size: 1.25rem;
+        font-weight: 950;
+        color: var(--primary);
+        margin-bottom: 7px;
+        letter-spacing: -0.3px;
     }
 
     .appointment-top p {
-        color: #64748b;
+        color: var(--muted);
         margin-bottom: 0;
         line-height: 1.7;
     }
 
     .appointment-body {
-        padding: 22px;
+        padding: 24px;
     }
 
     .appointment-meta-list {
         display: grid;
-        gap: 10px;
+        gap: 11px;
     }
 
     .appointment-meta {
@@ -365,20 +499,40 @@
         display: flex;
         gap: 10px;
         align-items: flex-start;
+        padding: 11px 13px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        border-radius: 16px;
     }
 
     .appointment-meta i {
-        color: var(--secondary);
+        color: var(--secondary-dark);
         margin-top: 4px;
+        flex-shrink: 0;
     }
 
     .appointment-meta strong {
-        color: #0f172a;
+        color: var(--primary);
+    }
+
+    .receptionist-note {
+        margin-top: 12px;
+        padding: 13px 14px;
+        border-radius: 18px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #334155;
+        line-height: 1.75;
+        font-size: 0.94rem;
+    }
+
+    .receptionist-note strong {
+        color: var(--secondary-dark);
     }
 
     .appointment-footer {
         margin-top: 18px;
-        padding-top: 16px;
+        padding-top: 17px;
         border-top: 1px solid #edf2f7;
         display: flex;
         align-items: center;
@@ -387,102 +541,106 @@
         flex-wrap: wrap;
     }
 
-    .status-badge {
+    .status-badge,
+    .mode-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 8px 12px;
+        gap: 7px;
+        padding: 8px 13px;
         border-radius: 999px;
         font-size: 12px;
-        font-weight: 800;
+        font-weight: 900;
     }
 
     .status-pending {
         background: #fef3c7;
-        color: #b45309;
+        color: #92400e;
+        border: 1px solid #fde68a;
     }
 
     .status-confirmed,
-    .status-approved {
-        background: #dcfce7;
-        color: #15803d;
+    .status-approved,
+    .status-booked {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
     }
 
     .status-completed {
-        background: #dbeafe;
-        color: #1d4ed8;
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
     }
 
     .status-cancelled,
-    .status-rejected {
+    .status-rejected,
+    .status-missed {
         background: #fee2e2;
-        color: #b91c1c;
+        color: #991b1b;
+        border: 1px solid #fecaca;
     }
 
     .status-default {
         background: #eff6ff;
         color: #1d4ed8;
+        border: 1px solid #bfdbfe;
     }
 
     .mode-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 700;
-        background: #f8fafc;
+        background: #ffffff;
         color: #475569;
         border: 1px solid #e2e8f0;
     }
 
     .empty-state-card {
-        background: rgba(255,255,255,0.98);
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
         border: 1px solid var(--border);
-        border-radius: 26px;
-        box-shadow: var(--shadow-md);
-        padding: 54px 22px;
+        border-radius: 30px;
+        box-shadow: var(--shadow-sm);
+        padding: 58px 24px;
         text-align: center;
+        backdrop-filter: blur(16px);
     }
 
     .empty-icon {
-        width: 78px;
-        height: 78px;
-        border-radius: 22px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
+        width: 82px;
+        height: 82px;
+        border-radius: 26px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--secondary-dark);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 30px;
+        font-size: 34px;
         margin: 0 auto 18px;
         box-shadow: var(--shadow-sm);
     }
 
     .empty-state-card h4 {
-        color: #0f172a;
-        font-weight: 800;
+        color: var(--primary);
+        font-weight: 950;
         margin-bottom: 10px;
     }
 
     .empty-state-card p {
-        color: #64748b;
+        color: var(--muted);
         margin-bottom: 0;
-        line-height: 1.8;
-        max-width: 620px;
+        line-height: 1.85;
+        max-width: 640px;
         margin-left: auto;
         margin-right: auto;
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
-    .reveal-left { transform: translateX(-60px); }
-    .reveal-right { transform: translateX(60px); }
-    .reveal-up { transform: translateY(50px); }
+    .reveal-left { transform: translateX(-58px); }
+    .reveal-right { transform: translateX(58px); }
+    .reveal-up { transform: translateY(52px); }
 
     .reveal.show {
         opacity: 1;
@@ -490,29 +648,43 @@
     }
 
     @media (max-width: 991px) {
+        .appointment-page {
+            padding: 30px 0 68px;
+        }
+
         .page-hero {
-            padding: 40px 24px;
+            padding: 48px 28px;
+            border-radius: 30px;
+        }
+
+        .search-shell {
+            padding: 24px;
         }
 
         .page-hero h2 {
-            font-size: 2rem;
+            font-size: 2.1rem;
         }
     }
 
     @media (max-width: 768px) {
         .page-hero {
-            padding: 34px 20px;
-            border-radius: 24px;
+            padding: 40px 22px;
+            border-radius: 26px;
         }
 
         .page-hero h2 {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
         }
 
-        .search-shell,
         .appointment-card,
+        .search-shell,
+        .stats-card,
         .empty-state-card {
-            border-radius: 22px;
+            border-radius: 24px;
+        }
+
+        .appointment-image-wrap {
+            height: 205px;
         }
     }
 </style>
@@ -520,7 +692,7 @@
 
 {% block content %}
 <section class="section-space appointment-page">
-    <div class="container">
+    <div class="container position-relative" style="z-index: 2;">
 
         <div class="page-hero reveal reveal-up show">
             <span class="hero-chip">
@@ -529,14 +701,23 @@
             </span>
 
             <div class="hero-highlight">
+                <i class="bi bi-clipboard2-pulse"></i>
                 Review and manage appointments through a modern healthcare dashboard
             </div>
 
             <h2>All Appointments</h2>
+
             <p>
                 Search appointments by doctor, patient, or hospital and review the full appointment list
-                through a clean, professional, and visually organized interface.
+                through a clean, professional, and visually organized SmartCare HMS interface.
             </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-calendar2-check"></i> Appointment Records</span>
+                <span class="hero-pill"><i class="bi bi-search"></i> Smart Search</span>
+                <span class="hero-pill"><i class="bi bi-activity"></i> Status Tracking</span>
+                <span class="hero-pill"><i class="bi bi-hospital"></i> Hospital Overview</span>
+            </div>
         </div>
 
         <div class="row g-4 stats-row">
@@ -547,6 +728,7 @@
                     <p>Visible Appointments</p>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="stats-card reveal reveal-up">
                     <div class="stats-icon"><i class="bi bi-search-heart"></i></div>
@@ -554,6 +736,7 @@
                     <p>Appointment Search</p>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="stats-card reveal reveal-right">
                     <div class="stats-icon"><i class="bi bi-clipboard2-pulse"></i></div>
@@ -566,9 +749,15 @@
         <div class="search-shell reveal reveal-up">
             <div class="search-header">
                 <div>
-                    <h3 class="search-title">Search Appointments</h3>
-                    <p class="search-subtitle">Find appointment records by doctor, patient, hospital, or related details.</p>
+                    <h3 class="search-title">
+                        <i class="bi bi-search me-1"></i>
+                        Search Appointments
+                    </h3>
+                    <p class="search-subtitle">
+                        Find appointment records by doctor, patient, hospital, contact, or related details.
+                    </p>
                 </div>
+
                 <span class="search-badge">
                     <i class="bi bi-hospital"></i>
                     Appointment Directory
@@ -582,11 +771,12 @@
                         name="q"
                         class="form-control"
                         value="{{ query }}"
-                        placeholder="Search by doctor, patient, hospital, or email"
+                        placeholder="Search by doctor, patient, hospital, contact, or email"
                     >
                 </div>
+
                 <div class="col-md-2">
-                    <button class="btn btn-search-modern w-100">
+                    <button class="btn btn-search-modern w-100" type="submit">
                         <i class="bi bi-search me-1"></i>
                         Search
                     </button>
@@ -594,89 +784,194 @@
             </form>
         </div>
 
+        <div class="appointment-grid-title reveal reveal-up">
+            <div>
+                <h3>Appointment Directory</h3>
+                <p>All visible appointment records are shown below in a clean card-based layout.</p>
+            </div>
+
+            <span class="result-chip">
+                <i class="bi bi-list-check"></i>
+                Results: {{ appointments|length }}
+            </span>
+        </div>
+
         <div class="row g-4">
             {% for a in appointments %}
-            <div class="col-md-6 col-lg-4">
-                <div class="appointment-card reveal reveal-up">
+                <div class="col-md-6 col-lg-4">
+                    <div class="appointment-card reveal reveal-up">
 
-                    <div class="appointment-image-wrap">
-                        {% if a.patient.photo %}
-                            <img src="{{ a.patient.photo.url }}" alt="{{ a.patient.first_name }}" class="appointment-image">
-                        {% else %}
-                            <div class="appointment-placeholder">
-                                {{ a.patient.first_name|slice:":1" }}{{ a.patient.last_name|slice:":1" }}
+                        <div class="appointment-image-wrap">
+                            {% if a.patient.photo %}
+                                <img src="{{ a.patient.photo.url }}" alt="{{ a.patient.first_name }}" class="appointment-image">
+                            {% else %}
+                                <div class="appointment-placeholder">
+                                    {{ a.patient.first_name|slice:":1" }}{{ a.patient.last_name|slice:":1" }}
+                                </div>
+                            {% endif %}
+
+                            <span class="appointment-top-badge">
+                                <i class="bi bi-person-heart me-1"></i>
+                                Patient Profile
+                            </span>
+
+                            <span class="appointment-date-floating">
+                                {% if a.appointment_date %}
+                                    {{ a.appointment_date|date:"M d, Y" }}
+                                {% else %}
+                                    No Date
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="appointment-top">
+                            <span class="appointment-chip">
+                                <i class="bi bi-calendar2-check"></i>
+                                Appointment Record
+                            </span>
+
+                            <h4>{{ a.patient.first_name }} {{ a.patient.last_name }}</h4>
+
+                            <p>
+                                Doctor:
+                                <strong>Dr. {{ a.doctor.name }}</strong>
+                            </p>
+                        </div>
+
+                        <div class="appointment-body">
+                            <div class="appointment-meta-list">
+
+                                <p class="appointment-meta">
+                                    <i class="bi bi-calendar-event"></i>
+                                    <span>
+                                        <strong>Date:</strong>
+                                        {% if a.appointment_date %}
+                                            {{ a.appointment_date|date:"M d, Y" }}
+                                        {% else %}
+                                            Not selected
+                                        {% endif %}
+                                    </span>
+                                </p>
+
+                                <p class="appointment-meta">
+                                    <i class="bi bi-clock"></i>
+                                    <span>
+                                        <strong>Time:</strong>
+                                        {% if a.appointment_time %}
+                                            {{ a.appointment_time|time:"h:i A" }}
+                                        {% else %}
+                                            <span class="text-warning fw-bold">Time Pending</span>
+                                        {% endif %}
+                                    </span>
+                                </p>
+
+                                <p class="appointment-meta">
+                                    <i class="bi bi-building"></i>
+                                    <span>
+                                        <strong>Hospital:</strong>
+                                        {{ a.doctor.hospital_name|default:"Not provided" }}
+                                    </span>
+                                </p>
+
+                                <p class="appointment-meta">
+                                    <i class="bi bi-telephone"></i>
+                                    <span>
+                                        <strong>Contact:</strong>
+                                        {{ a.patient.contact|default:"Not available" }}
+                                    </span>
+                                </p>
+
+                                <p class="appointment-meta">
+                                    <i class="bi bi-broadcast"></i>
+                                    <span>
+                                        <strong>Mode:</strong>
+                                        {{ a.appointment_mode|default:"Not specified" }}
+                                    </span>
+                                </p>
+
+                                <p class="appointment-meta">
+                                    <i class="bi bi-heart-pulse"></i>
+                                    <span>
+                                        <strong>Symptoms:</strong>
+                                        {{ a.symptoms|default:"No symptoms added." }}
+                                    </span>
+                                </p>
+
                             </div>
-                        {% endif %}
-                        <span class="appointment-top-badge">Patient Profile</span>
-                    </div>
 
-                    <div class="appointment-top">
-                        <span class="appointment-chip">
-                            <i class="bi bi-calendar2-check"></i>
-                            Appointment Record
-                        </span>
-                        <h4>{{ a.patient.first_name }} {{ a.patient.last_name }}</h4>
-                        <p>Doctor: {{ a.doctor.name }}</p>
-                    </div>
+                            {% if a.receptionist_message %}
+                                <div class="receptionist-note">
+                                    <strong>
+                                        <i class="bi bi-chat-dots me-1"></i>
+                                        Receptionist Message:
+                                    </strong>
+                                    <br>
+                                    {{ a.receptionist_message }}
+                                </div>
+                            {% endif %}
 
-                    <div class="appointment-body">
-                        <div class="appointment-meta-list">
-                            <p class="appointment-meta">
-                                <i class="bi bi-calendar-event"></i>
-                                <span><strong>Date:</strong> {{ a.appointment_date }}</span>
-                            </p>
+                            <div class="appointment-footer">
 
-                            <p class="appointment-meta">
-                                <i class="bi bi-clock"></i>
-                                <span><strong>Time:</strong> {{ a.appointment_time }}</span>
-                            </p>
+                                {% if a.status == 'Pending Receptionist' %}
+                                    <span class="status-badge status-pending">
+                                        <i class="bi bi-hourglass-split"></i>
+                                        Pending Receptionist
+                                    </span>
+                                {% elif a.status == 'Booked' %}
+                                    <span class="status-badge status-booked">
+                                        <i class="bi bi-calendar-check"></i>
+                                        Booked
+                                    </span>
+                                {% elif a.status == 'Completed' %}
+                                    <span class="status-badge status-completed">
+                                        <i class="bi bi-check2-circle"></i>
+                                        Completed
+                                    </span>
+                                {% elif a.status == 'Missed' %}
+                                    <span class="status-badge status-missed">
+                                        <i class="bi bi-exclamation-circle"></i>
+                                        Missed
+                                    </span>
+                                {% elif a.status == 'Cancelled by Patient' or a.status == 'Cancelled by Doctor' %}
+                                    <span class="status-badge status-cancelled">
+                                        <i class="bi bi-x-circle"></i>
+                                        {{ a.status }}
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-default">
+                                        <i class="bi bi-activity"></i>
+                                        {{ a.status }}
+                                    </span>
+                                {% endif %}
 
-                            <p class="appointment-meta">
-                                <i class="bi bi-building"></i>
-                                <span><strong>Hospital:</strong> {{ a.doctor.hospital_name|default:"Not provided" }}</span>
-                            </p>
+                                <span class="mode-badge">
+                                    {% if a.appointment_mode == 'Online' %}
+                                        <i class="bi bi-camera-video"></i>
+                                    {% else %}
+                                        <i class="bi bi-hospital"></i>
+                                    {% endif %}
+                                    {{ a.appointment_mode|default:"Not specified" }}
+                                </span>
 
-                            <p class="appointment-meta">
-                                <i class="bi bi-telephone"></i>
-                                <span><strong>Contact:</strong> {{ a.patient.contact|default:"Not available" }}</span>
-                            </p>
-
-                            <p class="appointment-meta">
-                                <i class="bi bi-heart-pulse"></i>
-                                <span><strong>Symptoms:</strong> {{ a.symptoms|default:"-" }}</span>
-                            </p>
-                        </div>
-
-                        <div class="appointment-footer">
-                            <span class="status-badge
-                                {% if a.status|lower == 'pending' %}status-pending
-                                {% elif a.status|lower == 'confirmed' or a.status|lower == 'approved' %}status-confirmed
-                                {% elif a.status|lower == 'completed' %}status-completed
-                                {% elif a.status|lower == 'cancelled' or a.status|lower == 'rejected' %}status-cancelled
-                                {% else %}status-default{% endif %}">
-                                <i class="bi bi-activity"></i>
-                                {{ a.status }}
-                            </span>
-
-                            <span class="mode-badge">
-                                <i class="bi bi-display"></i>
-                                {{ a.appointment_mode|default:"Not specified" }}
-                            </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% empty %}
-            <div class="col-12">
-                <div class="empty-state-card reveal reveal-up">
-                    <div class="empty-icon"><i class="bi bi-calendar-x"></i></div>
-                    <h4>No Appointments Found</h4>
-                    <p>
-                        No appointments matched your current search or selected filters.
-                        Try another keyword to explore the appointment directory.
-                    </p>
+                <div class="col-12">
+                    <div class="empty-state-card reveal reveal-up">
+                        <div class="empty-icon">
+                            <i class="bi bi-calendar-x"></i>
+                        </div>
+
+                        <h4>No Appointments Found</h4>
+
+                        <p>
+                            No appointments matched your current search or selected filters.
+                            Try another keyword to explore the appointment directory.
+                        </p>
+                    </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
 
@@ -690,12 +985,14 @@
 
     function appointmentRevealOnScroll() {
         const triggerBottom = window.innerHeight * 0.88;
+
         appointmentReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
                 setTimeout(() => {
                     el.classList.add('show');
-                }, index * 50);
+                }, index * 45);
             }
         });
     }

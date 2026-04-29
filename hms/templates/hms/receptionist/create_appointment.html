@@ -4,115 +4,148 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --muted: #64748b;
-        --border: #e6edf5;
-        --soft: #f8fbff;
-        --white: #ffffff;
-        --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.05);
-        --shadow-md: 0 16px 34px rgba(15, 23, 42, 0.08);
-        --shadow-lg: 0 24px 50px rgba(15, 23, 42, 0.12);
-        --transition: all 0.35s ease;
+        --ca-primary: #07111f;
+        --ca-dark: #0f172a;
+        --ca-blue: #2563eb;
+        --ca-blue-dark: #1d4ed8;
+        --ca-cyan: #06b6d4;
+        --ca-green: #16a34a;
+        --ca-orange: #f59e0b;
+        --ca-red: #dc2626;
+        --ca-muted: #64748b;
+        --ca-border: rgba(148, 163, 184, 0.24);
+        --ca-soft: #f8fbff;
+        --ca-white: #ffffff;
+
+        --ca-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --ca-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --ca-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --ca-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --ca-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --ca-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
     }
 
     .create-appointment-page {
         position: relative;
         overflow: hidden;
-        padding: 28px 0 56px;
-        background:
-            radial-gradient(circle at top left, rgba(29, 78, 216, 0.05), transparent 24%),
-            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.05), transparent 24%),
-            #f8fbff;
+        padding: 36px 0 76px;
     }
 
     .create-appointment-page::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.24), rgba(255,255,255,0));
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
         pointer-events: none;
     }
 
-    .create-shell {
-        background: #ffffff;
-        border: 1px solid #e9eef5;
-        border-radius: 28px;
-        box-shadow: var(--shadow-lg);
-        overflow: hidden;
-        position: relative;
-    }
-
-    .create-top {
-        background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 64, 175, 0.86) 55%, rgba(56, 189, 248, 0.76) 100%),
-            url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: #ffffff;
-        padding: 42px 36px;
-        position: relative;
-        overflow: hidden;
-        isolation: isolate;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .create-top::before,
-    .create-top::after {
+    .create-appointment-page::after {
         content: "";
         position: absolute;
+        width: 380px;
+        height: 380px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
-        z-index: 0;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
+        pointer-events: none;
     }
 
-    .create-top::before {
-        width: 220px;
-        height: 220px;
-        top: -70px;
-        right: -60px;
-    }
-
-    .create-top::after {
-        width: 150px;
-        height: 150px;
-        bottom: -45px;
-        left: -25px;
-    }
-
-    .create-top > * {
+    .create-hero {
         position: relative;
-        z-index: 2;
+        overflow: hidden;
+        border-radius: 32px;
+        padding: 54px 46px;
+        margin-bottom: 20px;
+        background:
+            var(--ca-gradient-dark),
+            url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--ca-shadow-lg);
+        isolation: isolate;
     }
 
-    .create-badge {
+    .create-hero::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -170px;
+        right: -140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
+    }
+
+    .create-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .hero-chip,
+    .hero-highlight,
+    .hero-pill {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 7px 14px;
+        gap: 7px;
         border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .hero-chip {
+        padding: 8px 15px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
-        font-size: 12px;
-        font-weight: 700;
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
         margin-bottom: 12px;
-        backdrop-filter: blur(10px);
     }
 
-    .create-top h2 {
-        margin: 0 0 8px;
-        font-size: 2rem;
-        font-weight: 900;
-        letter-spacing: -0.4px;
+    .hero-highlight {
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
+        margin-bottom: 14px;
+    }
+
+    .create-hero h2 {
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
         line-height: 1.08;
-        text-shadow: 0 10px 24px rgba(0,0,0,0.18);
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 980px;
     }
 
-    .create-top p {
-        margin: 0;
-        color: rgba(255,255,255,0.94);
-        line-height: 1.8;
-        max-width: 840px;
-        text-shadow: 0 4px 12px rgba(0,0,0,0.14);
+    .create-hero p {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 980px;
+        margin-bottom: 0;
+        font-size: 1rem;
     }
 
     .hero-pills {
@@ -123,197 +156,369 @@
     }
 
     .hero-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.10);
-        border: 1px solid rgba(255,255,255,0.14);
-        color: #fff;
-        font-size: 12px;
-        font-weight: 600;
-        backdrop-filter: blur(6px);
-    }
-
-    .create-body {
-        padding: 24px;
-        background: linear-gradient(to bottom right, #ffffff, #fbfdff);
-    }
-
-    .section-label {
-        font-size: 0.82rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        color: #2563eb;
-        text-transform: uppercase;
-        margin-bottom: 16px;
-    }
-
-    .form-label {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
         font-weight: 700;
-        color: #334155;
-        margin-bottom: 7px;
-        font-size: 0.94rem;
     }
 
-    .create-body .form-control,
-    .create-body .form-select,
-    .create-body input,
-    .create-body select,
-    .create-body textarea {
-        min-height: 50px;
-        border-radius: 12px;
-        border: 1px solid #dbe3ee;
-        background: #fbfdff;
-        box-shadow: none;
-        padding: 11px 13px;
-        width: 100%;
-        transition: var(--transition);
+    .summary-card,
+    .pricing-card,
+    .form-card,
+    .form-section-card,
+    .guide-card,
+    .access-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--ca-border);
+        border-radius: 28px;
+        box-shadow: var(--ca-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--ca-transition);
     }
 
-    .create-body textarea.form-control,
-    .create-body textarea {
-        min-height: 120px;
-        padding-top: 12px;
+    .summary-card::before,
+    .pricing-card::before,
+    .form-card::before,
+    .form-section-card::before,
+    .guide-card::before,
+    .access-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
     }
 
-    .create-body .form-control:focus,
-    .create-body .form-select:focus,
-    .create-body input:focus,
-    .create-body select:focus,
-    .create-body textarea:focus {
-        background: #ffffff;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-        outline: none;
+    .summary-card > *,
+    .pricing-card > *,
+    .form-card > *,
+    .form-section-card > *,
+    .guide-card > *,
+    .access-card > * {
+        position: relative;
+        z-index: 2;
     }
 
-    .summary-strip {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-bottom: 24px;
-    }
-
-    .summary-box,
-    .pricing-panel,
-    .radio-box,
-    .info-panel {
-        background: #ffffff;
-        border: 1px solid #e8eef7;
-        border-radius: 20px;
-        transition: var(--transition);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .summary-box,
-    .pricing-panel,
-    .radio-box,
-    .info-panel {
-        padding: 20px;
-    }
-
-    .summary-box:hover,
-    .pricing-panel:hover,
-    .radio-box:hover,
-    .info-panel:hover {
+    .summary-card:hover,
+    .pricing-card:hover,
+    .form-card:hover,
+    .form-section-card:hover,
+    .guide-card:hover,
+    .access-card:hover {
         transform: translateY(-4px);
-        box-shadow: var(--shadow-md);
+        box-shadow: var(--ca-shadow-md);
+        border-color: rgba(37,99,235,0.28);
     }
 
-    .summary-icon,
-    .pricing-icon {
-        width: 52px;
-        height: 52px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
+    .summary-row {
+        --bs-gutter-x: 10px;
+        --bs-gutter-y: 10px;
+        margin-bottom: 20px;
+    }
+
+    .summary-row > [class*="col-"] {
+        display: flex;
+    }
+
+    .summary-card {
+        width: 100%;
+        min-height: 136px;
+        padding: 19px 17px;
+        border-radius: 21px;
+    }
+
+    .summary-card::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 4px;
+        width: 100%;
+        background: var(--ca-gradient-main);
+    }
+
+    .summary-top {
         display: flex;
         align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        box-shadow: var(--shadow-sm);
+        justify-content: space-between;
+        gap: 12px;
+        height: 100%;
     }
 
     .summary-icon {
-        margin-bottom: 14px;
-    }
-
-    .summary-box h5 {
-        margin: 0 0 6px;
-        font-size: 1rem;
-        font-weight: 800;
-        color: #0f172a;
-    }
-
-    .summary-box p {
-        margin: 0;
-        color: #64748b;
-        font-size: 0.94rem;
-        line-height: 1.7;
-    }
-
-    .pricing-panel {
-        margin-bottom: 24px;
-        background: linear-gradient(180deg, #ffffff, #f8fbff);
-    }
-
-    .pricing-header {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--ca-blue-dark);
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: center;
+        font-size: 21px;
+        box-shadow: inset 0 1px 0 #ffffff, 0 8px 18px rgba(15,23,42,0.06);
+        flex-shrink: 0;
+    }
+
+    .summary-card h3 {
+        color: var(--ca-blue-dark);
+        font-size: 1.32rem;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+        margin-bottom: 5px;
+        line-height: 1.15;
+        max-width: 190px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .summary-card p {
+        margin: 0;
+        color: var(--ca-muted);
+        font-weight: 800;
+        font-size: 0.84rem;
+        line-height: 1.38;
+    }
+
+    .create-layout {
+        display: grid;
+        grid-template-columns: 1.18fr 0.82fr;
+        gap: 22px;
+        align-items: start;
+    }
+
+    .form-card,
+    .pricing-card,
+    .guide-card,
+    .access-card {
+        padding: 24px;
+    }
+
+    .right-stack {
+        display: grid;
+        gap: 18px;
+        position: sticky;
+        top: 20px;
+    }
+
+    .section-topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
         margin-bottom: 18px;
     }
 
-    .pricing-header h5 {
-        margin: 0;
-        font-size: 1.08rem;
-        font-weight: 800;
-        color: #0f172a;
+    .section-title {
+        font-size: 1.32rem;
+        font-weight: 950;
+        color: var(--ca-primary);
+        margin-bottom: 6px;
+        letter-spacing: -0.35px;
+        line-height: 1.28;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
-    .pricing-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
+    .section-title i {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        background: #eff6ff;
+        color: var(--ca-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
     }
 
-    .price-box {
-        background: #f8fbff;
-        border: 1px solid #e7edf5;
-        border-radius: 16px;
+    .section-subtitle {
+        color: var(--ca-muted);
+        margin-bottom: 0;
+        line-height: 1.68;
+        font-size: 0.92rem;
+    }
+
+    .section-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--ca-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
+    }
+
+    .form-section-card {
         padding: 18px;
-        transition: var(--transition);
+        margin-bottom: 18px;
+        border-radius: 24px;
+        background:
+            radial-gradient(circle at top right, rgba(37,99,235,0.04), transparent 32%),
+            linear-gradient(135deg, #ffffff, #f8fbff);
     }
 
-    .price-box:hover {
+    .mini-section-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--ca-primary);
+        font-size: 1.02rem;
+        font-weight: 950;
+        margin-bottom: 16px;
+        letter-spacing: -0.2px;
+    }
+
+    .mini-section-title i {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: var(--ca-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .field-box {
+        padding: 14px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        height: 100%;
+        transition: var(--ca-transition);
+    }
+
+    .field-box:hover {
         background: #ffffff;
+        border-color: rgba(37,99,235,0.24);
+        box-shadow: var(--ca-shadow-sm);
         transform: translateY(-2px);
     }
 
-    .price-box h6 {
-        margin: 0 0 6px;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #475569;
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #334155;
+        font-size: 0.9rem;
+        font-weight: 950;
+        margin-bottom: 9px;
     }
 
-    .price-box p {
-        margin: 0;
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: #0f172a;
+    .field-icon {
+        width: 29px;
+        height: 29px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: var(--ca-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        flex-shrink: 0;
     }
 
-    .price-highlight p {
-        color: #1d4ed8;
+    .create-appointment-page .form-control,
+    .create-appointment-page .form-select,
+    .create-appointment-page input,
+    .create-appointment-page select,
+    .create-appointment-page textarea {
+        min-height: 52px;
+        border-radius: 15px;
+        border: 1px solid #dbe3ee;
+        background: #ffffff;
+        box-shadow: none !important;
+        padding: 12px 14px;
+        width: 100%;
+        transition: var(--ca-transition);
+        color: #334155;
+        font-size: 0.92rem;
+    }
+
+    .create-appointment-page textarea.form-control,
+    .create-appointment-page textarea {
+        min-height: 130px;
+        padding-top: 12px;
+        resize: vertical;
+    }
+
+    .create-appointment-page .form-control:focus,
+    .create-appointment-page .form-select:focus,
+    .create-appointment-page input:focus,
+    .create-appointment-page select:focus,
+    .create-appointment-page textarea:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10) !important;
+        outline: none;
+    }
+
+    .readonly-fee {
+        background: #eff6ff !important;
+        color: var(--ca-blue-dark) !important;
+        font-weight: 950;
+        border-color: #dbeafe !important;
+    }
+
+    .helper-text {
+        display: block;
+        margin-top: 7px;
+        color: var(--ca-muted);
+        font-size: 0.83rem;
+        line-height: 1.55;
+    }
+
+    .required-note {
+        display: block;
+        margin-top: 7px;
+        color: var(--ca-red);
+        font-size: 0.84rem;
+        font-weight: 850;
+        line-height: 1.55;
+    }
+
+    .text-danger {
+        display: block;
+        margin-top: 7px;
+        color: var(--ca-red) !important;
+        font-size: 0.84rem;
+        font-weight: 850;
+        line-height: 1.55;
+    }
+
+    .radio-box {
+        padding: 16px;
+        border-radius: 20px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        height: 100%;
+        transition: var(--ca-transition);
+    }
+
+    .radio-box:hover {
+        background: #ffffff;
+        border-color: rgba(37,99,235,0.24);
+        box-shadow: var(--ca-shadow-sm);
+        transform: translateY(-2px);
     }
 
     .radio-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 10px;
     }
 
     .radio-item {
@@ -321,19 +526,30 @@
         align-items: center;
         gap: 8px;
         color: #334155;
-        font-weight: 600;
-        background: #f8fbff;
-        border: 1px solid #e8eef7;
-        padding: 9px 12px;
-        border-radius: 12px;
-        font-size: 0.94rem;
+        font-weight: 850;
+        background: #ffffff;
+        border: 1px solid #dbe3ee;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-size: 0.88rem;
+        transition: var(--ca-transition);
+        cursor: pointer;
+    }
+
+    .radio-item:hover {
+        background: #eff6ff;
+        border-color: rgba(37,99,235,0.28);
+        transform: translateY(-1px);
     }
 
     .radio-item input[type="radio"] {
-        width: 18px;
-        height: 18px;
+        width: 18px !important;
+        height: 18px !important;
+        min-height: auto !important;
+        padding: 0 !important;
         accent-color: #2563eb;
         cursor: pointer;
+        flex-shrink: 0;
     }
 
     .radio-item label {
@@ -341,94 +557,303 @@
         margin: 0;
     }
 
-    .info-panel h5 {
-        margin: 0 0 10px;
-        font-size: 1rem;
-        font-weight: 800;
-        color: #0f172a;
+    .pricing-card {
+        background:
+            radial-gradient(circle at top right, rgba(22,163,74,0.08), transparent 32%),
+            linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248,251,255,0.96));
     }
 
-    .info-panel p {
-        margin: 0 0 8px;
-        color: #64748b;
-        line-height: 1.7;
-        font-size: 0.94rem;
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
     }
 
-    .info-panel p:last-child {
+    .price-box {
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        border-radius: 18px;
+        padding: 14px;
+        transition: var(--ca-transition);
+    }
+
+    .price-box:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--ca-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .price-box h6 {
+        margin: 0 0 6px;
+        font-size: 0.78rem;
+        font-weight: 900;
+        color: var(--ca-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .price-box p {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 950;
+        color: var(--ca-primary);
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
+
+    .price-highlight {
+        background: linear-gradient(135deg, #eff6ff, #ecfeff);
+        border-color: #bfdbfe;
+    }
+
+    .price-highlight p {
+        color: var(--ca-blue-dark);
+        font-size: 1.28rem;
+    }
+
+    .access-card {
+        background:
+            radial-gradient(circle at top right, rgba(245,158,11,0.08), transparent 32%),
+            linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,251,235,0.76));
+    }
+
+    .info-line {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 16px;
+        background: #ffffff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.6;
+        margin-bottom: 10px;
+        font-size: 0.88rem;
+    }
+
+    .info-line:last-child {
         margin-bottom: 0;
+    }
+
+    .info-line i {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--ca-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .info-line strong {
+        color: var(--ca-primary);
+        font-weight: 950;
+    }
+
+    .guide-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+    }
+
+    .guide-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 13px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.62;
+        transition: var(--ca-transition);
+        font-size: 0.88rem;
+    }
+
+    .guide-list li:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--ca-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .guide-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--ca-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 900;
+        flex-shrink: 0;
+    }
+
+    .submit-panel {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 22px;
+        background:
+            radial-gradient(circle at top right, rgba(37,99,235,0.06), transparent 30%),
+            linear-gradient(135deg, #ffffff, #f8fbff);
+        border: 1px solid #e5edf7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .submit-note {
+        color: var(--ca-muted);
+        line-height: 1.65;
+        font-size: 0.9rem;
+        margin: 0;
+        max-width: 560px;
+    }
+
+    .submit-note strong {
+        color: var(--ca-primary);
     }
 
     .btn-create-submit {
         min-height: 48px;
-        padding: 11px 24px;
+        padding: 10px 22px;
         border: none;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        border-radius: 999px;
+        background: var(--ca-gradient-main);
         color: #ffffff;
-        font-weight: 800;
-        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
-        transition: 0.25s ease;
+        font-weight: 900;
+        box-shadow: 0 10px 22px rgba(37,99,235,0.18);
+        transition: var(--ca-transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        white-space: nowrap;
     }
 
     .btn-create-submit:hover {
         color: #ffffff;
         transform: translateY(-2px);
-        box-shadow: 0 18px 34px rgba(29, 78, 216, 0.22);
-    }
-
-    .small-note {
-        color: #64748b;
-        font-size: 0.92rem;
-        line-height: 1.7;
-        margin-top: 8px;
-    }
-
-    .required-note {
-        color: #dc2626;
-        font-size: 0.88rem;
-        font-weight: 600;
-        margin-top: 8px;
-    }
-
-    .text-danger {
-        font-size: 0.85rem;
-        font-weight: 600;
+        box-shadow: 0 14px 28px rgba(37,99,235,0.22);
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
     .reveal-up {
-        transform: translateY(35px);
+        transform: translateY(40px);
+    }
+
+    .reveal-left {
+        transform: translateX(-42px);
+    }
+
+    .reveal-right {
+        transform: translateX(42px);
     }
 
     .reveal.show {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate(0, 0);
     }
 
     @media (max-width: 991px) {
-        .summary-strip,
+        .create-appointment-page {
+            padding: 30px 0 62px;
+        }
+
+        .create-hero {
+            padding: 44px 28px;
+            border-radius: 28px;
+        }
+
+        .create-hero h2 {
+            font-size: 2rem;
+        }
+
+        .summary-row > [class*="col-"] {
+            display: block;
+        }
+
+        .create-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .right-stack {
+            position: static;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .create-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .create-hero h2 {
+            font-size: 1.78rem;
+        }
+
+        .create-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .summary-card,
+        .pricing-card,
+        .form-card,
+        .form-section-card,
+        .guide-card,
+        .access-card {
+            border-radius: 22px;
+        }
+
+        .form-card,
+        .pricing-card,
+        .guide-card,
+        .access-card {
+            padding: 22px;
+        }
+
         .pricing-grid {
             grid-template-columns: 1fr;
         }
 
-        .create-top,
-        .create-body {
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
-        .create-top h2 {
-            font-size: 1.85rem;
-        }
-
         .radio-list {
             flex-direction: column;
-            gap: 12px;
+            align-items: stretch;
+        }
+
+        .radio-item {
+            width: 100%;
+        }
+
+        .submit-panel {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-create-submit {
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 1.18rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.86rem;
         }
     }
 </style>
@@ -439,201 +864,401 @@
 {{ patient_data|json_script:"patient-data-json" }}
 
 <section class="create-appointment-page">
-    <div class="container">
-        <div class="create-shell">
-            <div class="create-top reveal reveal-up show">
-                <span class="create-badge">
-                    <i class="bi bi-calendar-plus"></i>
-                    SmartCare HMS • Receptionist Appointment Desk
-                </span>
-                <h2>Create Appointment</h2>
-                <p>
-                    Create a new appointment for a patient, assign the appropriate doctor, choose the consultation mode, and organize patient details through a clean, modern, and efficient booking workflow.
-                </p>
+    <div class="container position-relative" style="z-index: 2;">
 
-                <div class="hero-pills">
-                    <span class="hero-pill"><i class="bi bi-person-check"></i> Patient Selection</span>
-                    <span class="hero-pill"><i class="bi bi-person-badge"></i> Doctor Assignment</span>
-                    <span class="hero-pill"><i class="bi bi-cash-stack"></i> Fee Summary</span>
-                    <span class="hero-pill"><i class="bi bi-journal-text"></i> Visit Notes</span>
-                </div>
+        <div class="create-hero reveal reveal-up show">
+            <span class="hero-chip">
+                <i class="bi bi-calendar-plus"></i>
+                SmartCare HMS • Receptionist Appointment Desk
+            </span>
+
+            <div class="hero-highlight">
+                <i class="bi bi-person-workspace"></i>
+                Create appointment, assign doctor, calculate fee and organize visit details
             </div>
 
-            <div class="create-body">
-                <div class="summary-strip">
-                    <div class="summary-box reveal reveal-up">
-                        <div class="summary-icon"><i class="bi bi-person-check"></i></div>
-                        <h5>Select Patient</h5>
-                        <p>Choose a registered patient from the system before scheduling the consultation.</p>
-                    </div>
-                    <div class="summary-box reveal reveal-up">
-                        <div class="summary-icon"><i class="bi bi-person-badge"></i></div>
-                        <h5>Select Doctor</h5>
-                        <p>Assign the appropriate doctor based on consultation type and availability.</p>
-                    </div>
-                    <div class="summary-box reveal reveal-up">
-                        <div class="summary-icon"><i class="bi bi-lightning-charge"></i></div>
-                        <h5>Create Efficiently</h5>
-                        <p>Complete booking details, symptoms, urgency, and consultation mode in one flow.</p>
-                    </div>
-                </div>
+            <h2>Create Appointment</h2>
 
-                <div class="pricing-panel reveal reveal-up">
-                    <div class="pricing-header">
-                        <div class="pricing-icon"><i class="bi bi-cash-stack"></i></div>
-                        <h5>Consultation Fee Summary</h5>
-                    </div>
+            <p>
+                Create a new appointment for a patient, assign the appropriate doctor,
+                choose consultation mode, calculate fees automatically, and organize patient details
+                through a clean, modern, and efficient booking workflow.
+            </p>
 
-                    <div class="pricing-grid">
-                        <div class="price-box">
-                            <h6>Doctor Fee</h6>
-                            <p id="doctor-fee">0.00</p>
-                        </div>
-                        <div class="price-box">
-                            <h6>Discount</h6>
-                            <p id="discount-percent">0%</p>
-                        </div>
-                        <div class="price-box">
-                            <h6>You Save</h6>
-                            <p id="discount-amount">0.00</p>
-                        </div>
-                        <div class="price-box price-highlight">
-                            <h6>Final Payable</h6>
-                            <p id="final-fee">0.00</p>
-                        </div>
-                    </div>
-                </div>
-
-                <form method="post">
-                    {% csrf_token %}
-
-                    <div class="section-label">Patient & Appointment Details</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label">Patient</label>
-                            <select name="patient" id="patient-select" class="form-select" required>
-                                <option value="">Select patient</option>
-                                {% for patient in patients %}
-                                    <option value="{{ patient.id }}">
-                                        {{ patient.first_name }} {{ patient.last_name }} - {{ patient.contact }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">{{ form.doctor.label }}</label>
-                            {{ form.doctor }}
-                            {% if form.doctor.errors %}
-                                <small class="text-danger">{{ form.doctor.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label">{{ form.appointment_date.label }}</label>
-                            {{ form.appointment_date }}
-                            {% if form.appointment_date.errors %}
-                                <small class="text-danger">{{ form.appointment_date.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label">{{ form.appointment_time.label }}</label>
-                            {{ form.appointment_time }}
-                            {% if form.appointment_time.errors %}
-                                <small class="text-danger">{{ form.appointment_time.errors|striptags }}</small>
-                            {% endif %}
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label">{{ form.problem_category.label }}</label>
-                            {{ form.problem_category }}
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Consultancy Fee</label>
-                            <input type="text" id="doctor-fee-inline" class="form-control" placeholder="Auto shown" readonly>
-                        </div>
-                    </div>
-
-                    <div class="section-label">Consultation Preferences</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <div class="radio-box">
-                                <label class="form-label d-block">{{ form.appointment_mode.label }}</label>
-                                <div class="radio-list">
-                                    {% for choice in form.appointment_mode %}
-                                        <div class="radio-item">
-                                            {{ choice.tag }}
-                                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="radio-box">
-                                <label class="form-label d-block">{{ form.urgency_level.label }}</label>
-                                <div class="radio-list">
-                                    {% for choice in form.urgency_level %}
-                                        <div class="radio-item">
-                                            {{ choice.tag }}
-                                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="section-label">Patient Symptoms</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-12">
-                            <label class="form-label">{{ form.symptoms.label }}</label>
-                            {{ form.symptoms }}
-                            <div class="small-note">
-                                Add the patient’s symptoms, current condition, or a short complaint summary for better consultation preparation.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="section-label">Consultation Access</div>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6" id="meeting-link-box">
-                            <div class="info-panel">
-                                <label class="form-label">{{ form.meeting_link.label }}</label>
-                                {{ form.meeting_link }}
-                                <div class="required-note" id="meeting-link-note">
-                                    Meeting link is required for online appointments.
-                                </div>
-                                {% if form.meeting_link.errors %}
-                                    <small class="text-danger">{{ form.meeting_link.errors|striptags }}</small>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="col-md-6" id="offline-info-box">
-                            <div class="info-panel">
-                                <h5>Hospital Information</h5>
-                                <p><strong>Hospital:</strong> <span id="doctor-hospital">Select a doctor</span></p>
-                                <p><strong>Location:</strong> <span id="doctor-location">Select a doctor</span></p>
-                            </div>
-                        </div>
-
-                        <div class="col-12" id="visit-note-box">
-                            <label class="form-label">{{ form.visit_note.label }}</label>
-                            {{ form.visit_note }}
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn-create-submit">
-                        <i class="bi bi-check2-circle"></i>
-                        Create Appointment
-                    </button>
-                </form>
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-person-check"></i> Patient Selection</span>
+                <span class="hero-pill"><i class="bi bi-person-badge"></i> Doctor Assignment</span>
+                <span class="hero-pill"><i class="bi bi-cash-stack"></i> Fee Summary</span>
+                <span class="hero-pill"><i class="bi bi-journal-text"></i> Visit Notes</span>
             </div>
         </div>
+
+        <div class="row summary-row">
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>Patient</h3>
+                            <p>Select registered patient</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-person-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>Doctor</h3>
+                            <p>Assign consultation doctor</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>Fee</h3>
+                            <p>Automatic payable summary</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="create-layout">
+                <div class="form-card reveal reveal-left">
+                    <div class="section-topbar">
+                        <div>
+                            <h3 class="section-title">
+                                <i class="bi bi-clipboard2-pulse"></i>
+                                Appointment Information
+                            </h3>
+                            <p class="section-subtitle">
+                                Fill patient, doctor, date, time, symptoms, urgency and consultation mode carefully.
+                            </p>
+                        </div>
+
+                        <span class="section-chip">
+                            <i class="bi bi-pencil-square"></i>
+                            Create
+                        </span>
+                    </div>
+
+                    <div class="form-section-card">
+                        <h4 class="mini-section-title">
+                            <i class="bi bi-person-lines-fill"></i>
+                            Patient & Doctor Details
+                        </h4>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-person-check"></i></span>
+                                        Patient
+                                    </label>
+                                    <select name="patient" id="patient-select" class="form-select" required>
+                                        <option value="">Select patient</option>
+                                        {% for patient in patients %}
+                                            <option value="{{ patient.id }}">
+                                                {{ patient.first_name }} {{ patient.last_name }} - {{ patient.contact }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <small class="helper-text">Choose a registered patient from the system.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-person-badge"></i></span>
+                                        {{ form.doctor.label }}
+                                    </label>
+                                    {{ form.doctor }}
+                                    <small class="helper-text">Choose the doctor for this appointment.</small>
+                                    {% if form.doctor.errors %}
+                                        <small class="text-danger">{{ form.doctor.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-calendar-event"></i></span>
+                                        {{ form.appointment_date.label }}
+                                    </label>
+                                    {{ form.appointment_date }}
+                                    {% if form.appointment_date.errors %}
+                                        <small class="text-danger">{{ form.appointment_date.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-clock"></i></span>
+                                        {{ form.appointment_time.label }}
+                                    </label>
+                                    {{ form.appointment_time }}
+                                    {% if form.appointment_time.errors %}
+                                        <small class="text-danger">{{ form.appointment_time.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-cash"></i></span>
+                                        Consultancy Fee
+                                    </label>
+                                    <input type="text" id="doctor-fee-inline" class="form-control readonly-fee" placeholder="Auto shown" readonly>
+                                    <small class="helper-text">Final payable fee after discount.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section-card">
+                        <h4 class="mini-section-title">
+                            <i class="bi bi-sliders2"></i>
+                            Consultation Preferences
+                        </h4>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="radio-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-camera-video"></i></span>
+                                        {{ form.appointment_mode.label }}
+                                    </label>
+                                    <div class="radio-list">
+                                        {% for choice in form.appointment_mode %}
+                                            <div class="radio-item">
+                                                {{ choice.tag }}
+                                                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="radio-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-activity"></i></span>
+                                        {{ form.urgency_level.label }}
+                                    </label>
+                                    <div class="radio-list">
+                                        {% for choice in form.urgency_level %}
+                                            <div class="radio-item">
+                                                {{ choice.tag }}
+                                                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-clipboard2-pulse"></i></span>
+                                        {{ form.problem_category.label }}
+                                    </label>
+                                    {{ form.problem_category }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-chat-left-text"></i></span>
+                                        {{ form.visit_note.label }}
+                                    </label>
+                                    <div id="visit-note-box">
+                                        {{ form.visit_note }}
+                                    </div>
+                                    <small class="helper-text">Use this note for offline visit instructions if needed.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section-card">
+                        <h4 class="mini-section-title">
+                            <i class="bi bi-journal-medical"></i>
+                            Symptoms & Consultation Access
+                        </h4>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-journal-text"></i></span>
+                                        {{ form.symptoms.label }}
+                                    </label>
+                                    {{ form.symptoms }}
+                                    <small class="helper-text">
+                                        Add patient symptoms, current condition, or a short complaint summary for better consultation preparation.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12" id="meeting-link-box">
+                                <div class="field-box">
+                                    <label class="form-label">
+                                        <span class="field-icon"><i class="bi bi-link-45deg"></i></span>
+                                        {{ form.meeting_link.label }}
+                                    </label>
+                                    {{ form.meeting_link }}
+                                    <small class="required-note" id="meeting-link-note">
+                                        Meeting link is required for online appointments.
+                                    </small>
+                                    {% if form.meeting_link.errors %}
+                                        <small class="text-danger">{{ form.meeting_link.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-panel">
+                        <p class="submit-note">
+                            <strong>Before creating:</strong>
+                            Confirm patient, doctor, date, time, mode, urgency and final fee carefully.
+                        </p>
+
+                        <button type="submit" class="btn-create-submit">
+                            <i class="bi bi-check2-circle"></i>
+                            Create Appointment
+                        </button>
+                    </div>
+                </div>
+
+                <aside class="right-stack reveal reveal-right">
+                    <div class="pricing-card">
+                        <div class="section-topbar">
+                            <div>
+                                <h3 class="section-title">
+                                    <i class="bi bi-cash-stack"></i>
+                                    Fee Summary
+                                </h3>
+                                <p class="section-subtitle">
+                                    Doctor fee and patient discount update automatically after selection.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pricing-grid">
+                            <div class="price-box">
+                                <h6>Doctor Fee</h6>
+                                <p id="doctor-fee">0.00</p>
+                            </div>
+
+                            <div class="price-box">
+                                <h6>Discount</h6>
+                                <p id="discount-percent">0%</p>
+                            </div>
+
+                            <div class="price-box">
+                                <h6>You Save</h6>
+                                <p id="discount-amount">0.00</p>
+                            </div>
+
+                            <div class="price-box price-highlight">
+                                <h6>Final Payable</h6>
+                                <p id="final-fee">0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="access-card" id="offline-info-box">
+                        <div class="section-topbar">
+                            <div>
+                                <h3 class="section-title">
+                                    <i class="bi bi-hospital"></i>
+                                    Hospital Information
+                                </h3>
+                                <p class="section-subtitle">
+                                    Offline appointment location details will show after doctor selection.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="info-line">
+                            <i class="bi bi-building"></i>
+                            <span>
+                                <strong>Hospital:</strong><br>
+                                <span id="doctor-hospital">Select a doctor</span>
+                            </span>
+                        </div>
+
+                        <div class="info-line">
+                            <i class="bi bi-geo-alt"></i>
+                            <span>
+                                <strong>Location:</strong><br>
+                                <span id="doctor-location">Select a doctor</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="guide-card">
+                        <div class="section-topbar">
+                            <div>
+                                <h3 class="section-title">
+                                    <i class="bi bi-info-circle"></i>
+                                    Booking Guide
+                                </h3>
+                                <p class="section-subtitle">
+                                    Follow these steps for a clean receptionist booking workflow.
+                                </p>
+                            </div>
+                        </div>
+
+                        <ul class="guide-list">
+                            <li>
+                                <span class="guide-dot"><i class="bi bi-person-check"></i></span>
+                                <span>Select the correct patient before creating the appointment.</span>
+                            </li>
+
+                            <li>
+                                <span class="guide-dot"><i class="bi bi-person-badge"></i></span>
+                                <span>Choose the doctor carefully so fee and hospital details update correctly.</span>
+                            </li>
+
+                            <li>
+                                <span class="guide-dot"><i class="bi bi-camera-video"></i></span>
+                                <span>For online appointments, add a valid meeting link before submitting.</span>
+                            </li>
+
+                            <li>
+                                <span class="guide-dot"><i class="bi bi-activity"></i></span>
+                                <span>Set urgency level properly to help doctors and reception handle priority cases.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </form>
     </div>
 </section>
 {% endblock %}
@@ -692,6 +1317,7 @@
             meetingLinkBox.style.display = 'block';
             offlineInfoBox.style.display = 'none';
             visitNoteBox.style.display = 'none';
+
             if (meetingLinkInput) {
                 meetingLinkInput.setAttribute('required', 'required');
             }
@@ -699,6 +1325,7 @@
             meetingLinkBox.style.display = 'none';
             offlineInfoBox.style.display = 'block';
             visitNoteBox.style.display = 'block';
+
             if (meetingLinkInput) {
                 meetingLinkInput.removeAttribute('required');
             }
@@ -709,10 +1336,12 @@
 
     function appointmentRevealOnScroll() {
         const triggerBottom = window.innerHeight * 0.9;
+
         appointmentReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
-                setTimeout(() => el.classList.add('show'), index * 70);
+                setTimeout(() => el.classList.add('show'), index * 60);
             }
         });
     }

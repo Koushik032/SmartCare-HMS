@@ -10,21 +10,28 @@
 
     <style>
         :root {
-            --primary: #0f172a;
-            --primary-2: #1e293b;
+            --primary: #07111f;
+            --primary-2: #0f172a;
             --secondary: #2563eb;
-            --accent: #38bdf8;
-            --soft: #f8fbff;
+            --accent: #14b8a6;
+            --accent-blue: #38bdf8;
+            --soft: #f6faff;
+            --soft-2: #eef6ff;
             --muted: #64748b;
-            --border: #e2e8f0;
+            --border: rgba(148, 163, 184, 0.24);
             --white: #ffffff;
-            --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.06);
-            --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.10);
-            --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
-            --radius-xl: 28px;
-            --radius-lg: 22px;
-            --radius-md: 16px;
-            --transition: all 0.35s ease;
+
+            --shadow-sm: 0 12px 28px rgba(15, 23, 42, 0.07);
+            --shadow-md: 0 22px 55px rgba(15, 23, 42, 0.11);
+            --shadow-lg: 0 34px 90px rgba(15, 23, 42, 0.16);
+
+            --radius-xl: 34px;
+            --radius-lg: 26px;
+            --radius-md: 18px;
+
+            --transition: all 0.35s cubic-bezier(.2,.8,.2,1);
+            --gradient-main: linear-gradient(135deg, #2563eb, #14b8a6);
+            --gradient-dark: linear-gradient(135deg, #07111f, #0f172a);
         }
 
         html {
@@ -32,31 +39,42 @@
         }
 
         body {
-            background: linear-gradient(to bottom, #f8fbff 0%, #eef6ff 100%);
+            background:
+                radial-gradient(circle at 10% 5%, rgba(37, 99, 235, 0.10), transparent 28%),
+                radial-gradient(circle at 90% 15%, rgba(20, 184, 166, 0.13), transparent 28%),
+                radial-gradient(circle at 50% 100%, rgba(56, 189, 248, 0.08), transparent 28%),
+                linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%);
             font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--primary);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
         }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* ================= NAVBAR ================= */
 
         .main-navbar {
             position: sticky;
             top: 0;
             z-index: 1030;
-            background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
-            padding: 14px 0;
+            padding: 12px 0;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+            box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
         }
 
         .navbar-brand-custom {
-            color: #ffffff !important;
+            color: var(--primary) !important;
             font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: -0.3px;
+            font-weight: 950;
+            letter-spacing: -0.5px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -64,113 +82,248 @@
         }
 
         .brand-mark {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
+            width: 46px;
+            height: 46px;
+            border-radius: 17px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            background: var(--gradient-main);
             color: #fff;
-            font-size: 18px;
-            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.30);
+            font-size: 19px;
+            box-shadow: 0 16px 34px rgba(37, 99, 235, 0.26);
+            flex-shrink: 0;
         }
 
         .navbar-toggler {
             border: none !important;
             box-shadow: none !important;
+            background: var(--primary);
+            border-radius: 14px;
+            padding: 8px 10px;
+        }
+
+        .navbar-toggler-icon {
+            filter: brightness(0) invert(1);
         }
 
         .navbar-nav .nav-link {
-            color: rgba(255,255,255,0.86) !important;
-            font-weight: 600;
-            margin-left: 6px;
-            margin-right: 6px;
+            color: #334155 !important;
+            font-weight: 750;
+            margin-left: 3px;
+            margin-right: 3px;
             transition: var(--transition);
             position: relative;
-            border-radius: 12px;
-            padding: 9px 14px !important;
+            border-radius: 999px;
+            padding: 9px 16px !important;
         }
 
         .navbar-nav .nav-link:hover,
         .navbar-nav .nav-link.active {
             color: #ffffff !important;
-            background: rgba(255,255,255,0.08);
-        }
-
-        .navbar-nav .nav-link.active::after,
-        .navbar-nav .nav-link:hover::after {
-            content: "";
-            position: absolute;
-            left: 14px;
-            right: 14px;
-            bottom: 4px;
-            height: 2px;
-            background: linear-gradient(90deg, #60a5fa, #38bdf8);
-            border-radius: 999px;
+            background: var(--gradient-main);
+            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.22);
+            transform: translateY(-1px);
         }
 
         .navbar-user-badge {
-            color: #ffffff;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--primary);
+            background: rgba(255,255,255,0.78);
+            border: 1px solid var(--border);
             border-radius: 999px;
             padding: 8px 14px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-nav-primary {
-            background: #ffffff;
-            color: var(--primary) !important;
-            border-radius: 12px;
-            padding: 9px 18px;
-            font-weight: 700;
+            background: var(--gradient-main);
+            color: #ffffff !important;
+            border-radius: 999px;
+            padding: 10px 20px;
+            font-weight: 850;
             text-decoration: none;
             border: none;
             transition: var(--transition);
+            box-shadow: 0 16px 34px rgba(37, 99, 235, 0.24);
         }
 
         .btn-nav-primary:hover {
-            background: #e2e8f0;
-            color: var(--primary) !important;
-            transform: translateY(-1px);
+            color: #ffffff !important;
+            transform: translateY(-2px);
         }
 
         .btn-nav-outline {
-            border: 1px solid rgba(255,255,255,0.24);
-            color: #ffffff !important;
-            border-radius: 12px;
-            padding: 9px 18px;
-            font-weight: 600;
+            background: #ffffff;
+            color: var(--primary) !important;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 10px 20px;
+            font-weight: 750;
             text-decoration: none;
             transition: var(--transition);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-nav-outline:hover {
-            background: rgba(255,255,255,0.08);
-            color: #ffffff !important;
-            transform: translateY(-1px);
+            color: var(--secondary) !important;
+            background: #eff6ff;
+            transform: translateY(-2px);
         }
 
+        .receptionist-dropdown-btn,
+        .navbar-avatar-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            border-radius: 999px;
+            padding: 8px 15px;
+            font-weight: 750;
+            font-size: 14px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .receptionist-dropdown-btn:hover,
+        .receptionist-dropdown-btn:focus,
+        .receptionist-dropdown-btn.show,
+        .navbar-avatar-btn:hover,
+        .navbar-avatar-btn:focus,
+        .navbar-avatar-btn.show {
+            background: #eff6ff;
+            color: var(--secondary);
+            border-color: rgba(37, 99, 235, 0.25);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-2px);
+        }
+
+        .navbar-avatar-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--gradient-main);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
+        }
+
+        .receptionist-dropdown-menu {
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 22px;
+            padding: 12px;
+            min-width: 245px;
+            box-shadow: 0 25px 65px rgba(15, 23, 42, 0.14);
+        }
+
+        .receptionist-dropdown-menu .dropdown-item {
+            border-radius: 14px;
+            padding: 11px 14px;
+            font-weight: 700;
+            color: #334155;
+            transition: var(--transition);
+        }
+
+        .receptionist-dropdown-menu .dropdown-item:hover {
+            background: #eff6ff;
+            color: var(--secondary);
+            transform: translateX(3px);
+        }
+
+        .receptionist-dropdown-menu .dropdown-divider {
+            margin: 8px 0;
+        }
+
+        /* ================= COMMON ================= */
+
         .section-space {
-            padding: 60px 0;
+            padding: 52px 0 92px;
             flex: 1;
         }
 
+        .section-title {
+            color: var(--primary);
+            font-size: clamp(1.9rem, 4vw, 2.75rem);
+            font-weight: 950;
+            letter-spacing: -1px;
+            line-height: 1.12;
+            margin-bottom: 13px;
+        }
+
+        .section-subtitle {
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.9;
+            max-width: 780px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .mini-badge,
+        .badge-soft,
+        .hero-highlight {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 850;
+            margin-bottom: 15px;
+        }
+
+        .mini-badge {
+            padding: 9px 16px;
+            background: #eaf4ff;
+            color: var(--secondary);
+            border: 1px solid rgba(37, 99, 235, 0.10);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .badge-soft,
+        .hero-highlight {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.18);
+            color: #ffffff;
+            backdrop-filter: blur(14px);
+        }
+
+        .icon-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.18);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
         .card-modern {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow-sm);
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
         }
 
         .btn-main {
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            background: var(--gradient-main);
             color: #fff;
             border: none;
-            border-radius: 12px;
-            font-weight: 700;
+            border-radius: 999px;
+            font-weight: 850;
             transition: var(--transition);
+            box-shadow: 0 16px 34px rgba(37, 99, 235, 0.22);
         }
 
         .btn-main:hover {
@@ -178,19 +331,23 @@
             transform: translateY(-2px);
         }
 
-        .flash-message {
-            border: none;
-            border-radius: 16px;
-            box-shadow: var(--shadow-sm);
+        .flash-message,
+        .alert-modern,
+        .alert {
+            border: none !important;
+            border-radius: 18px !important;
+            box-shadow: var(--shadow-sm) !important;
         }
+
+        /* ================= FOOTER ================= */
 
         .footer-section {
             background:
-                linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.96)),
-                url('https://images.unsplash.com/photo-1579684453423-f84349ef60b0?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+                linear-gradient(135deg, rgba(7, 17, 31, 0.97), rgba(15, 23, 42, 0.96)),
+                url('https://images.unsplash.com/photo-1579684453423-f84349ef60b0?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
             color: #cbd5e1;
             margin-top: auto;
-            padding: 70px 0 24px;
+            padding: 76px 0 26px;
             position: relative;
             overflow: hidden;
         }
@@ -198,29 +355,29 @@
         .footer-section::before {
             content: "";
             position: absolute;
-            width: 280px;
-            height: 280px;
+            width: 320px;
+            height: 320px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-            top: -90px;
-            right: -80px;
+            background: radial-gradient(circle, rgba(20,184,166,0.14), transparent 70%);
+            top: -110px;
+            right: -90px;
         }
 
         .footer-section::after {
             content: "";
             position: absolute;
-            width: 220px;
-            height: 220px;
+            width: 260px;
+            height: 260px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.04);
-            bottom: -80px;
-            left: -50px;
+            background: radial-gradient(circle, rgba(37,99,235,0.14), transparent 70%);
+            bottom: -90px;
+            left: -70px;
         }
 
         .footer-brand {
             color: #ffffff;
             font-size: 1.35rem;
-            font-weight: 800;
+            font-weight: 950;
             margin-bottom: 14px;
             display: inline-flex;
             align-items: center;
@@ -230,7 +387,7 @@
         .footer-title {
             color: #ffffff;
             margin-bottom: 18px;
-            font-weight: 700;
+            font-weight: 850;
             font-size: 1.05rem;
         }
 
@@ -238,7 +395,7 @@
         .footer-section p,
         .footer-section li,
         .footer-section a {
-            color: rgba(255,255,255,0.78);
+            color: rgba(255,255,255,0.76);
             text-decoration: none;
             font-size: 14px;
             line-height: 1.9;
@@ -246,6 +403,7 @@
 
         .footer-section a {
             transition: var(--transition);
+            display: inline-block;
         }
 
         .footer-section a:hover {
@@ -263,11 +421,11 @@
             gap: 8px;
             padding: 7px 12px;
             border-radius: 999px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.09);
+            border: 1px solid rgba(255,255,255,0.12);
             color: #fff;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 650;
             margin-right: 8px;
             margin-bottom: 10px;
         }
@@ -275,11 +433,11 @@
         .footer-social a {
             width: 42px;
             height: 42px;
-            border-radius: 12px;
+            border-radius: 16px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.09);
             color: #fff;
             text-decoration: none;
             margin-right: 8px;
@@ -287,7 +445,7 @@
         }
 
         .footer-social a:hover {
-            background: rgba(255,255,255,0.16);
+            background: var(--gradient-main);
             color: #fff;
             transform: translateY(-3px);
         }
@@ -301,92 +459,46 @@
             color: rgba(255,255,255,0.62);
         }
 
-        .receptionist-dropdown-btn {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.14);
-            color: #ffffff;
-            border-radius: 999px;
-            padding: 8px 16px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: var(--transition);
+        /* ================= REVEAL ANIMATION ================= */
+
+        .reveal {
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(.2,.8,.2,1);
         }
 
-        .receptionist-dropdown-btn:hover,
-        .receptionist-dropdown-btn:focus,
-        .receptionist-dropdown-btn.show {
-            background: rgba(255,255,255,0.14);
-            color: #ffffff;
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: none;
+        .reveal-left {
+            transform: translateX(-60px);
         }
 
-        .receptionist-dropdown-menu {
-            border: none;
-            border-radius: 18px;
-            padding: 10px;
-            min-width: 230px;
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+        .reveal-right {
+            transform: translateX(60px);
         }
 
-        .receptionist-dropdown-menu .dropdown-item {
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-weight: 600;
-            color: #334155;
+        .reveal-up {
+            transform: translateY(52px);
         }
 
-        .receptionist-dropdown-menu .dropdown-item:hover {
-            background: #f1f5f9;
-            color: #0f172a;
+        .reveal.show {
+            opacity: 1;
+            transform: translate(0, 0);
         }
 
-        .receptionist-dropdown-menu .dropdown-divider {
-            margin: 8px 0;
-        }
-
-        .navbar-avatar-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.14);
-            color: #ffffff;
-            border-radius: 999px;
-            padding: 8px 14px 8px 10px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .navbar-avatar-btn:hover,
-        .navbar-avatar-btn:focus,
-        .navbar-avatar-btn.show {
-            background: rgba(255,255,255,0.14);
-            color: #ffffff;
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: none;
-        }
-
-        .navbar-avatar-circle {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #38bdf8, #1d4ed8);
-            color: #ffffff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 14px;
-            flex-shrink: 0;
-            box-shadow: 0 10px 22px rgba(29, 78, 216, 0.28);
-        }
+        .delay-1 { transition-delay: 0.08s; }
+        .delay-2 { transition-delay: 0.16s; }
+        .delay-3 { transition-delay: 0.24s; }
+        .delay-4 { transition-delay: 0.32s; }
 
         @media (max-width: 991px) {
+            .main-navbar {
+                background: rgba(255,255,255,0.94);
+            }
+
             .navbar-nav {
-                padding-top: 14px;
-                padding-bottom: 14px;
+                background: rgba(255,255,255,0.86);
+                border: 1px solid rgba(148, 163, 184, 0.22);
+                border-radius: 24px;
+                padding: 14px !important;
+                margin-top: 14px;
             }
 
             .navbar-nav .nav-link {
@@ -398,17 +510,36 @@
                 margin-top: 12px;
             }
         }
+
+        @media (max-width: 768px) {
+            .section-space {
+                padding: 32px 0 72px;
+            }
+
+            .brand-mark {
+                width: 42px;
+                height: 42px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark main-navbar">
+    <nav class="navbar navbar-expand-lg main-navbar">
         <div class="container">
             <a class="navbar-brand-custom" href="{% url 'home' %}">
                 <span class="brand-mark"><i class="bi bi-hospital"></i></span>
-                HMS
+                SmartCare HMS
             </a>
 
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
@@ -434,10 +565,10 @@
                             <a class="nav-link" href="{% url 'patient_history' %}">History</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                            <a class="nav-link {% if 'about' in request.path %}active{% endif %}" href="{% url 'about' %}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                            <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
                         </li>
                     </ul>
 
@@ -446,147 +577,140 @@
                             {{ request.user.patient.first_name }} {{ request.user.patient.last_name }}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end receptionist-dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'patient_profile' %}">Profile</a></li>
+
+                            <!-- NEW PATIENT MESSAGE SECTION -->
                             <li>
-                                <a class="dropdown-item" href="{% url 'patient_profile' %}">Profile</a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="{% url 'patient_messages' %}">
+                                        Messages
+                                    {% if unread_patient_message_count > 0 %}
+                                        <span class="badge bg-danger rounded-pill">
+                                            {{ unread_patient_message_count }}
+                                        </span>
+                                    {% endif %}
+                                </a>
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="{% url 'book_appointment' %}">Book Appointment</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{% url 'patient_report_show' %}">Appointment Report</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{% url 'patient_prescriptions' %}">Prescriptions</a>
-                            </li>
+
+                            <li><a class="dropdown-item" href="{% url 'book_appointment' %}">Book Appointment</a></li>
+                            <li><a class="dropdown-item" href="{% url 'patient_report_show' %}">Appointment Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'patient_prescriptions' %}">Prescriptions</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a>
-                            </li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
                         </ul>
                     </div>
 
                     {% elif request.user.doctor %}
-                        <ul class="navbar-nav mx-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'doctor_dashboard' %}">Overview</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'doctor_appointments' %}">Appointments</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'doctor_pending_appointments' %}">Pending Appointments</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'doctor_report_show_list' %}">Report Show</a>
-                            </li>
-                        </ul>
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'doctor_dashboard' %}">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'doctor_appointments' %}">Appointments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'doctor_pending_appointments' %}">Pending Appointments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'doctor_report_show_list' %}">Report Show</a>
+                        </li>
+                    </ul>
 
-                        <div class="dropdown ms-auto">
-                            <button class="btn dropdown-toggle navbar-avatar-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="navbar-avatar-circle">
-                                    {{ request.user.doctor.name|slice:":1"|upper }}
-                                </span>
-                                <span>Dr. {{ request.user.doctor.name }}</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end receptionist-dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'doctor_profile' %}">Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'doctor_patients' %}">Patients</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
-                            </ul>
-                        </div>
+                    <div class="dropdown ms-auto">
+                        <button class="btn dropdown-toggle navbar-avatar-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="navbar-avatar-circle">
+                                {{ request.user.doctor.name|slice:":1"|upper }}
+                            </span>
+                            <span>Dr. {{ request.user.doctor.name }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end receptionist-dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'doctor_profile' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'doctor_patients' %}">Patients</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </div>
 
                     {% elif request.user.receptionist %}
-                        <ul class="navbar-nav mx-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'receptionist_dashboard' %}">Overview</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'receptionist_doctors' %}">Doctors</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'receptionist_patients' %}">Patients</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'receptionist_all_appointments' %}">All Appointments</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'receptionist_all_test_reports' %}">All Test Reports</a>
-                            </li>
-                        </ul>
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'receptionist_dashboard' %}">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'receptionist_doctors' %}">Doctors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'receptionist_patients' %}">Patients</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'receptionist_all_appointments' %}">All Appointments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'receptionist_all_test_reports' %}">All Test Reports</a>
+                        </li>
+                    </ul>
 
-                        <div class="dropdown ms-auto">
-                            <button class="btn dropdown-toggle receptionist-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ request.user.receptionist.organization_name }}
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end receptionist-dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'receptionist_profile' %}">Profile</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'receptionist_create_appointment' %}">Create Appointment</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'receptionist_walkin_with_appointment' %}">Walk-in + Appointment</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'receptionist_create_test_report' %}">Create Test Report</a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="dropdown ms-auto">
+                        <button class="btn dropdown-toggle receptionist-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ request.user.receptionist.organization_name }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end receptionist-dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'receptionist_profile' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'receptionist_create_appointment' %}">Create Appointment</a></li>
+                            <li><a class="dropdown-item" href="{% url 'receptionist_walkin_with_appointment' %}">Walk-in + Appointment</a></li>
+                            <li><a class="dropdown-item" href="{% url 'receptionist_create_test_report' %}">Create Test Report</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </div>
 
                     {% elif request.user.is_staff %}
-                        <ul class="navbar-nav mx-auto">
-                            <li class="nav-item">
-                                <a class="nav-link {% if request.path == '/admin/dashboard/' %}active{% endif %}" href="{% url 'admin_dashboard' %}">Overview</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {% if 'admin/patients' in request.path %}active{% endif %}" href="{% url 'admin_patient_list' %}">Patients</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {% if 'admin/doctors' in request.path %}active{% endif %}" href="{% url 'admin_doctor_list' %}">Doctors</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {% if 'admin/appointments' in request.path %}active{% endif %}" href="{% url 'admin_appointment_list' %}">Appointments</a>
-                            </li>
-                        </ul>
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/admin/dashboard/' %}active{% endif %}" href="{% url 'admin_dashboard' %}">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'admin/patients' in request.path %}active{% endif %}" href="{% url 'admin_patient_list' %}">Patients</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'admin/doctors' in request.path %}active{% endif %}" href="{% url 'admin_doctor_list' %}">Doctors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'admin/appointments' in request.path %}active{% endif %}" href="{% url 'admin_appointment_list' %}">Appointments</a>
+                        </li>
+                    </ul>
 
-                        <div class="dropdown ms-auto">
-                            <button class="btn dropdown-toggle navbar-avatar-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="navbar-avatar-circle">
-                                    {{ request.user.username|slice:":1"|upper }}
-                                </span>
-                                <span>Admin {{ request.user.username }}</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end receptionist-dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'admin_profile' %}">Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'admin_add_doctor' %}">Add Doctor</a></li>
-                                <li><a class="dropdown-item" href="{% url 'admin_add_receptionist' %}">Add Receptionist</a></li>
-                                <li><a class="dropdown-item" href="{% url 'admin_add_patient' %}">Add Patient</a></li>
-                                <li><a class="dropdown-item" href="{% url 'admin_doctor_requests' %}">Doctor Requests</a></li>
-                                <li><a class="dropdown-item" href="{% url 'admin_messages' %}">Messages</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
-                            </ul>
-                        </div>
+                    <div class="dropdown ms-auto">
+                        <button class="btn dropdown-toggle navbar-avatar-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="navbar-avatar-circle">
+                                {{ request.user.username|slice:":1"|upper }}
+                            </span>
+                            <span>Admin {{ request.user.username }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end receptionist-dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'admin_profile' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_add_doctor' %}">Add Doctor</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_add_receptionist' %}">Add Receptionist</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_add_patient' %}">Add Patient</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_doctor_requests' %}">Doctor Requests</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_messages' %}">Messages</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </div>
                     {% endif %}
 
                 {% else %}
-                    <ul class="navbar-nav ms-auto align-items-lg-center">
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if 'about' in request.path %}active{% endif %}" href="{% url 'about' %}">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
-                        </li>
-                    </ul>
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'about' in request.path %}active{% endif %}" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                </ul>
                 {% endif %}
 
             </div>
@@ -607,7 +731,7 @@
                 <div class="col-lg-4">
                     <div class="footer-brand">
                         <span class="brand-mark"><i class="bi bi-heart-pulse"></i></span>
-                        Hospital Management System
+                        SmartCare HMS
                     </div>
                     <p class="footer-text">
                         A modern digital healthcare platform for patients, doctors, receptionists, and administrators to manage hospital services efficiently and professionally.
@@ -637,30 +761,34 @@
                 </div>
 
                 <div class="col-md-4 col-lg-3">
-                    <h5 class="footer-title">Services</h5>
+                    <h5 class="footer-title">Portals</h5>
                     <ul class="list-unstyled footer-links">
-                        <li><a href="#">Doctor Consultation</a></li>
-                        <li><a href="#">Patient Appointments</a></li>
-                        <li><a href="#">Hospital Management</a></li>
-                        <li><a href="#">Reception Support</a></li>
+                        <li><a href="{% url 'admin_login' %}">Admin Portal</a></li>
+                        <li><a href="{% url 'doctor_login' %}">Doctor Portal</a></li>
+                        <li><a href="{% url 'patient_login' %}">Patient Portal</a></li>
+                        <li><a href="{% url 'receptionist_login' %}">Receptionist Portal</a></li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 col-lg-3">
-                    <h5 class="footer-title">Contact Info</h5>
-                    <p><i class="bi bi-envelope me-2"></i>support@hospital.com</p>
-                    <p><i class="bi bi-telephone me-2"></i>+880 1234-567890</p>
-                    <p><i class="bi bi-geo-alt me-2"></i>Dhaka, Bangladesh</p>
+                    <h5 class="footer-title">Healthcare Features</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><i class="bi bi-check-circle me-2"></i>Appointment Management</li>
+                        <li><i class="bi bi-check-circle me-2"></i>Doctor Coordination</li>
+                        <li><i class="bi bi-check-circle me-2"></i>Patient Reports</li>
+                        <li><i class="bi bi-check-circle me-2"></i>MediBot Guidance</li>
+                    </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                &copy; 2026 Hospital Management System. All rights reserved.
+                © {% now "Y" %} SmartCare HMS. All rights reserved. Designed for modern digital healthcare.
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

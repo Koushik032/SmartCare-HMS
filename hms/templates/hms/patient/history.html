@@ -3,225 +3,600 @@
 
 {% block content %}
 <style>
+    :root {
+        --hist-primary: #07111f;
+        --hist-dark: #0f172a;
+        --hist-blue: #2563eb;
+        --hist-blue-dark: #1d4ed8;
+        --hist-cyan: #06b6d4;
+        --hist-green: #16a34a;
+        --hist-orange: #f59e0b;
+        --hist-red: #dc2626;
+        --hist-purple: #7c3aed;
+        --hist-muted: #64748b;
+        --hist-border: rgba(148, 163, 184, 0.24);
+        --hist-soft: #f8fbff;
+        --hist-white: #ffffff;
+
+        --hist-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --hist-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --hist-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --hist-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --hist-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --hist-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
+    }
+
     .history-page {
-        padding: 34px 0 70px;
+        position: relative;
+        overflow: hidden;
+        padding: 36px 0 76px;
+    }
+
+    .history-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
+        pointer-events: none;
+    }
+
+    .history-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
+        pointer-events: none;
     }
 
     .history-hero {
-        background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(29, 78, 216, 0.84) 55%, rgba(56, 189, 248, 0.74) 100%),
-            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: #ffffff;
-        border-radius: 30px;
-        padding: 56px 40px;
-        margin-bottom: 30px;
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
         position: relative;
         overflow: hidden;
+        border-radius: 32px;
+        padding: 54px 46px;
+        margin-bottom: 20px;
+        background:
+            var(--hist-gradient-dark),
+            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--hist-shadow-lg);
         isolation: isolate;
     }
 
-    .history-hero::before,
-    .history-hero::after {
+    .history-hero::before {
         content: "";
         position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -170px;
+        right: -140px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
         z-index: -1;
     }
 
-    .history-hero::before {
-        width: 220px;
-        height: 220px;
-        top: -70px;
-        right: -60px;
+    .history-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
     }
 
-    .history-hero::after {
-        width: 150px;
-        height: 150px;
-        bottom: -45px;
-        left: -25px;
+    .history-chip,
+    .hero-highlight,
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
     }
 
     .history-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        border-radius: 999px;
+        padding: 8px 15px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 16px;
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
+        margin-bottom: 12px;
+    }
+
+    .hero-highlight {
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
+        margin-bottom: 14px;
     }
 
     .history-hero h2 {
-        font-size: 2.2rem;
-        font-weight: 900;
-        margin-bottom: 10px;
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
+        line-height: 1.08;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 980px;
     }
 
     .history-hero p {
-        color: rgba(255,255,255,0.9);
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 940px;
         margin-bottom: 0;
-        line-height: 1.85;
-        max-width: 760px;
+        font-size: 1rem;
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .hero-pill {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
+        font-weight: 700;
     }
 
     .summary-card,
-    .history-table-card {
-        background: #ffffff;
-        border: 1px solid #e7edf5;
-        border-radius: 24px;
-        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+    .history-table-card,
+    .history-visual-card,
+    .info-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--hist-border);
+        border-radius: 28px;
+        box-shadow: var(--hist-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--hist-transition);
+    }
+
+    .summary-card::before,
+    .history-table-card::before,
+    .history-visual-card::before,
+    .info-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
+    }
+
+    .summary-card > *,
+    .history-table-card > *,
+    .history-visual-card > *,
+    .info-card > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .summary-card:hover,
+    .history-table-card:hover,
+    .history-visual-card:hover,
+    .info-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--hist-shadow-md);
+        border-color: rgba(37,99,235,0.28);
+    }
+
+    .summary-row {
+        --bs-gutter-x: 10px;
+        --bs-gutter-y: 10px;
+        margin-bottom: 20px;
+    }
+
+    .summary-row > [class*="col-"] {
+        display: flex;
     }
 
     .summary-card {
-        padding: 24px 20px;
-        text-align: center;
-        height: 100%;
-        transition: 0.35s ease;
-        position: relative;
-        overflow: hidden;
+        width: 100%;
+        min-height: 136px;
+        padding: 19px 17px;
+        border-radius: 21px;
     }
 
     .summary-card::after {
         content: "";
         position: absolute;
-        right: -30px;
-        bottom: -30px;
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(56,189,248,0.12), transparent 70%);
+        left: 0;
+        top: 0;
+        height: 4px;
+        width: 100%;
+        background: var(--hist-gradient-main);
     }
 
-    .summary-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 22px 44px rgba(15, 23, 42, 0.12);
+    .summary-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 100%;
     }
 
     .summary-icon {
-        width: 56px;
-        height: 56px;
+        width: 52px;
+        height: 52px;
         border-radius: 16px;
-        margin: 0 auto 14px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--hist-blue-dark);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
+        font-size: 21px;
+        box-shadow: inset 0 1px 0 #ffffff, 0 8px 18px rgba(15,23,42,0.06);
+        flex-shrink: 0;
     }
 
     .summary-card h3 {
-        font-size: 2rem;
-        font-weight: 800;
-        color: #1d4ed8;
-        margin-bottom: 8px;
+        color: var(--hist-blue-dark);
+        font-size: 1.48rem;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+        margin-bottom: 5px;
+        line-height: 1.12;
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .summary-card p {
-        margin-bottom: 0;
-        color: #64748b;
-        font-weight: 600;
+        margin: 0;
+        color: var(--hist-muted);
+        font-weight: 800;
+        font-size: 0.84rem;
+        line-height: 1.38;
     }
 
-    .history-table-card {
-        padding: 28px;
+    .section-topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 18px;
     }
 
     .section-title {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 8px;
+        font-size: 1.32rem;
+        font-weight: 950;
+        color: var(--hist-primary);
+        margin-bottom: 6px;
+        letter-spacing: -0.35px;
+        line-height: 1.28;
     }
 
     .section-subtitle {
-        color: #64748b;
+        color: var(--hist-muted);
+        margin-bottom: 0;
+        line-height: 1.68;
+        font-size: 0.92rem;
+    }
+
+    .section-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--hist-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
+    }
+
+    .history-visual-card {
+        padding: 24px;
         margin-bottom: 24px;
-        line-height: 1.8;
+    }
+
+    .visual-grid {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 18px;
+        align-items: center;
+    }
+
+    .visual-donut-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .visual-donut {
+        width: 190px;
+        height: 190px;
+        border-radius: 50%;
+        background:
+            conic-gradient(
+                #16a34a 0deg calc(var(--completed-rate, 0) * 3.6deg),
+                #dc2626 calc(var(--completed-rate, 0) * 3.6deg) calc((var(--completed-rate, 0) + var(--cancelled-rate, 0)) * 3.6deg),
+                #e5edf7 calc((var(--completed-rate, 0) + var(--cancelled-rate, 0)) * 3.6deg) 360deg
+            );
+        position: relative;
+        box-shadow: inset 0 0 0 1px rgba(148,163,184,0.20), 0 16px 34px rgba(15,23,42,0.10);
+    }
+
+    .visual-donut::before {
+        content: "";
+        position: absolute;
+        inset: 31px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: inset 0 0 0 1px #e5edf7;
+    }
+
+    .visual-donut-center {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .visual-donut-center strong {
+        color: var(--hist-primary);
+        font-size: 1.65rem;
+        font-weight: 950;
+        line-height: 1;
+    }
+
+    .visual-donut-center span {
+        color: var(--hist-muted);
+        font-size: 0.78rem;
+        font-weight: 850;
+        margin-top: 6px;
+    }
+
+    .visual-bars {
+        display: grid;
+        gap: 14px;
+    }
+
+    .visual-progress-item {
+        padding: 14px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+    }
+
+    .visual-progress-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+
+    .visual-progress-top span {
+        color: #334155;
+        font-weight: 900;
+        font-size: 0.9rem;
+    }
+
+    .visual-progress-top strong {
+        color: var(--hist-blue-dark);
+        font-weight: 950;
+        font-size: 0.9rem;
+    }
+
+    .visual-track {
+        height: 12px;
+        border-radius: 999px;
+        background: #e5edf7;
+        overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(15,23,42,0.06);
+    }
+
+    .visual-fill {
+        height: 100%;
+        border-radius: 999px;
+        min-width: 4px;
+    }
+
+    .fill-completed {
+        background: linear-gradient(135deg, #16a34a, #22c55e);
+    }
+
+    .fill-cancelled {
+        background: linear-gradient(135deg, #dc2626, #fb7185);
+    }
+
+    .fill-active {
+        background: linear-gradient(135deg, #2563eb, #38bdf8);
+    }
+
+    .history-table-card {
+        padding: 24px;
+    }
+
+    .table-modern-wrap {
+        overflow: hidden;
+        border-radius: 22px;
+        border: 1px solid #e5edf7;
+        background: #ffffff;
     }
 
     .history-table {
         margin-bottom: 0;
         vertical-align: middle;
+        min-width: 1220px;
     }
 
     .history-table thead th {
         background: #f8fafc;
-        color: #0f172a;
-        font-weight: 700;
-        border-bottom: none;
-        padding: 14px 12px;
+        color: var(--hist-primary);
+        font-weight: 900;
+        border-bottom: 1px solid #e5edf7;
+        padding: 13px 11px;
         white-space: nowrap;
+        font-size: 0.86rem;
+    }
+
+    .history-table tbody td {
+        padding: 13px 11px;
+        color: #475569;
+        border-color: #eef2f7;
+        line-height: 1.48;
+        vertical-align: middle;
+        font-size: 0.88rem;
     }
 
     .history-table tbody tr {
-        --transition: all 0.35s ease;
+        transition: var(--hist-transition);
     }
 
     .history-table tbody tr:hover {
         background: #f8fbff;
     }
 
-    .history-table tbody td {
-        padding: 14px 12px;
-        color: #475569;
-        border-color: #eef2f7;
+    .doctor-cell {
+        min-width: 190px;
     }
 
-    .status-badge,
+    .doctor-name-main {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--hist-primary);
+        font-weight: 950;
+    }
+
+    .doctor-avatar-mini {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: var(--hist-gradient-main);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 950;
+        flex-shrink: 0;
+        box-shadow: 0 8px 16px rgba(37,99,235,0.16);
+    }
+
+    .date-pill,
+    .time-pill,
     .mode-badge,
-    .urgency-badge {
-        display: inline-block;
-        padding: 7px 12px;
+    .urgency-badge,
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 7px 11px;
         border-radius: 999px;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
+    }
+
+    .date-pill {
+        background: #eff6ff;
+        color: var(--hist-blue-dark);
+        border: 1px solid #dbeafe;
+    }
+
+    .time-pill {
+        background: #ecfdf5;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+
+    .mode-badge {
+        background: #f8fafc;
+        color: #334155;
+        border: 1px solid #e5edf7;
     }
 
     .status-booked {
         background: #dbeafe;
-        color: #1d4ed8;
+        color: var(--hist-blue-dark);
+        border: 1px solid #bfdbfe;
     }
 
     .status-completed {
         background: #dcfce7;
         color: #166534;
+        border: 1px solid #bbf7d0;
     }
 
     .status-cancelled {
         background: #fee2e2;
-        color: #b91c1c;
+        color: #991b1b;
+        border: 1px solid #fecaca;
     }
 
     .status-missed {
         background: #fef3c7;
-        color: #b45309;
-    }
-
-    .mode-badge {
-        background: #eff6ff;
-        color: #1d4ed8;
+        color: #92400e;
+        border: 1px solid #fde68a;
     }
 
     .urgency-normal {
         background: #e2e8f0;
         color: #334155;
+        border: 1px solid #cbd5e1;
     }
 
     .urgency-urgent {
-        background: #fde68a;
+        background: #fef3c7;
         color: #92400e;
+        border: 1px solid #fde68a;
     }
 
     .urgency-emergency {
-        background: #fecaca;
-        color: #b91c1c;
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+
+    .symptoms-text {
+        max-width: 220px;
+        color: #475569;
+        line-height: 1.55;
+    }
+
+    .action-stack {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 150px;
     }
 
     .btn-cancel-modern,
@@ -229,61 +604,146 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 6px;
         min-height: 38px;
-        padding: 8px 14px;
-        border-radius: 10px;
+        padding: 8px 13px;
+        border-radius: 999px;
         text-decoration: none;
-        font-weight: 700;
-        transition: 0.25s ease;
+        font-weight: 900;
+        font-size: 0.80rem;
+        transition: var(--hist-transition);
         white-space: nowrap;
     }
 
     .btn-cancel-modern {
-        background: #dc2626;
-        color: #ffffff;
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
     }
 
     .btn-cancel-modern:hover {
+        background: #dc2626;
         color: #ffffff;
-        background: #b91c1c;
+        border-color: #dc2626;
+        transform: translateY(-2px);
     }
 
     .btn-prescription-modern {
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        background: var(--hist-gradient-main);
         color: #ffffff;
+        box-shadow: 0 10px 22px rgba(37,99,235,0.16);
+        border: none;
     }
 
     .btn-prescription-modern:hover {
         color: #ffffff;
-        opacity: 0.96;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(37,99,235,0.20);
+    }
+
+    .no-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #f8fafc;
+        color: var(--hist-muted);
+        border: 1px solid #e5edf7;
+        font-size: 0.80rem;
+        font-weight: 850;
+        white-space: nowrap;
     }
 
     .empty-state {
         text-align: center;
-        color: #64748b;
-        padding: 34px 10px;
+        color: var(--hist-muted);
+        padding: 46px 20px;
     }
 
     .empty-state-icon {
-        width: 72px;
-        height: 72px;
-        border-radius: 20px;
+        width: 74px;
+        height: 74px;
+        border-radius: 24px;
         margin: 0 auto 14px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--hist-blue-dark);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 30px;
+        box-shadow: var(--hist-shadow-sm);
+    }
+
+    .empty-state h5 {
+        color: var(--hist-primary);
+        font-weight: 950;
+        margin-bottom: 8px;
+    }
+
+    .empty-state p {
+        margin-bottom: 0;
+        line-height: 1.7;
+        font-size: 0.92rem;
+    }
+
+    .info-card {
+        padding: 26px;
+        margin-top: 24px;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .info-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 13px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.62;
+        transition: var(--hist-transition);
+        font-size: 0.88rem;
+    }
+
+    .info-list li:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--hist-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .info-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--hist-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 900;
+        flex-shrink: 0;
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
     .reveal-up {
-        transform: translateY(45px);
+        transform: translateY(40px);
     }
 
     .reveal.show {
@@ -292,141 +752,390 @@
     }
 
     @media (max-width: 991px) {
+        .history-page {
+            padding: 30px 0 62px;
+        }
+
         .history-hero {
-            padding: 40px 24px;
+            padding: 44px 28px;
+            border-radius: 28px;
         }
 
         .history-hero h2 {
-            font-size: 1.9rem;
+            font-size: 2rem;
+        }
+
+        .summary-row > [class*="col-"] {
+            display: block;
+        }
+
+        .visual-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .info-list {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .history-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .history-hero h2 {
+            font-size: 1.78rem;
+        }
+
+        .history-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .summary-card,
+        .history-table-card,
+        .history-visual-card,
+        .info-card {
+            border-radius: 22px;
+        }
+
+        .visual-donut {
+            width: 165px;
+            height: 165px;
+        }
+
+        .visual-donut::before {
+            inset: 27px;
         }
     }
 </style>
 
-<section class="section-space history-page">
-  <div class="container">
+<section class="history-page">
+    <div class="container position-relative" style="z-index: 2;">
 
-    <div class="history-hero reveal reveal-up show">
-      <span class="history-chip">
-        <i class="bi bi-clock-history"></i>
-        Patient Portal
-      </span>
-      <h2>Appointment History</h2>
-      <p>
-        Review your complete appointment history, including doctor details, consultation type,
-        urgency level, booking status, and symptoms submitted during appointment booking.
-      </p>
-    </div>
+        <div class="history-hero reveal reveal-up show">
+            <span class="history-chip">
+                <i class="bi bi-clock-history"></i>
+                SmartCare HMS • Patient Portal
+            </span>
 
-    <div class="row g-4 mb-4">
-      <div class="col-md-4">
-        <div class="summary-card reveal reveal-up">
-          <div class="summary-icon"><i class="bi bi-calendar2-check"></i></div>
-          <h3>{{ total_appointments }}</h3>
-          <p>Total Appointments</p>
+            <div class="hero-highlight">
+                <i class="bi bi-clipboard2-pulse"></i>
+                Appointment records, prescriptions and booking status
+            </div>
+
+            <h2>Appointment History</h2>
+
+            <p>
+                Review your complete appointment history, including doctor details, consultation type,
+                urgency level, booking status, symptoms and available action options.
+            </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-calendar2-check"></i> Booking Records</span>
+                <span class="hero-pill"><i class="bi bi-file-earmark-medical"></i> Prescriptions</span>
+                <span class="hero-pill"><i class="bi bi-activity"></i> Status Tracking</span>
+                <span class="hero-pill"><i class="bi bi-shield-check"></i> Secure History</span>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="summary-card reveal reveal-up">
-          <div class="summary-icon"><i class="bi bi-check2-circle"></i></div>
-          <h3>{{ completed_count }}</h3>
-          <p>Completed Records</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="summary-card reveal reveal-up">
-          <div class="summary-icon"><i class="bi bi-x-circle"></i></div>
-          <h3>{{ cancelled_count }}</h3>
-          <p>Cancelled Records</p>
-        </div>
-      </div>
-    </div>
 
-    <div class="history-table-card reveal reveal-up">
-      <h3 class="section-title">Your Appointment Records</h3>
-      <p class="section-subtitle">
-        All your bookings and consultation records are shown below in a structured medical history table.
-      </p>
-
-      <div class="table-responsive">
-        <table class="table history-table">
-          <thead>
-            <tr>
-              <th>Doctor Name</th>
-              <th>Consultancy Fee</th>
-              <th>Appointment Date</th>
-              <th>Appointment Time</th>
-              <th>Status</th>
-              <th>Mode</th>
-              <th>Category</th>
-              <th>Urgency</th>
-              <th>Symptoms</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for a in appointments %}
-            <tr>
-              <td>Dr. {{ a.doctor.name }}</td>
-              <td>{{ a.consultancy_fee }}</td>
-              <td>{{ a.appointment_date }}</td>
-              <td>{{ a.appointment_time }}</td>
-              <td>
-                {% if a.display_status == 'Booked' %}
-                  <span class="status-badge status-booked">{{ a.display_status }}</span>
-                {% elif a.display_status == 'Completed' %}
-                  <span class="status-badge status-completed">{{ a.display_status }}</span>
-                {% elif a.display_status == 'Missed' %}
-                  <span class="status-badge status-missed">{{ a.display_status }}</span>
-                {% else %}
-                  <span class="status-badge status-cancelled">{{ a.display_status }}</span>
-                {% endif %}
-              </td>
-              <td>
-                <span class="mode-badge">{{ a.appointment_mode }}</span>
-              </td>
-              <td>{{ a.problem_category }}</td>
-              <td>
-                {% if a.urgency_level == 'Emergency' %}
-                  <span class="urgency-badge urgency-emergency">{{ a.urgency_level }}</span>
-                {% elif a.urgency_level == 'Urgent' %}
-                  <span class="urgency-badge urgency-urgent">{{ a.urgency_level }}</span>
-                {% else %}
-                  <span class="urgency-badge urgency-normal">{{ a.urgency_level }}</span>
-                {% endif %}
-              </td>
-              <td>{{ a.symptoms|truncatewords:8 }}</td>
-              <td>
-                {% if a.has_prescription %}
-                  <a href="{% url 'patient_view_prescription' a.id %}" class="btn-prescription-modern">
-                    View Prescription
-                  </a>
-                {% elif a.can_cancel %}
-                  <a href="{% url 'patient_cancel_appointment' a.id %}" class="btn-cancel-modern">
-                    Cancel
-                  </a>
-                {% else %}
-                  <span class="text-muted fw-semibold">No Action</span>
-                {% endif %}
-              </td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="10">
-                <div class="empty-state">
-                  <div class="empty-state-icon">
-                    <i class="bi bi-calendar-x"></i>
-                  </div>
-                  No appointments found in your history.
+        <div class="row summary-row">
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>{{ total_appointments }}</h3>
+                            <p>Total Appointments</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-calendar2-check"></i>
+                        </div>
+                    </div>
                 </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
+            </div>
 
-  </div>
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>{{ completed_count }}</h3>
+                            <p>Completed Records</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="summary-card reveal reveal-up">
+                    <div class="summary-top">
+                        <div>
+                            <h3>{{ cancelled_count }}</h3>
+                            <p>Cancelled Records</p>
+                        </div>
+                        <div class="summary-icon">
+                            <i class="bi bi-x-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-visual-card reveal reveal-up">
+            <div class="section-topbar">
+                <div>
+                    <h3 class="section-title">Appointment Activity Overview</h3>
+                    <p class="section-subtitle">
+                        Visual summary of completed, cancelled and active appointment records.
+                    </p>
+                </div>
+
+                <span class="section-chip">
+                    <i class="bi bi-pie-chart"></i>
+                    Visual Summary
+                </span>
+            </div>
+
+            <div class="visual-grid">
+                <div class="visual-donut-wrap">
+                    <div
+                        class="visual-donut"
+                        style="
+                            --completed-rate: {% if total_appointments %}{% widthratio completed_count total_appointments 100 %}{% else %}0{% endif %};
+                            --cancelled-rate: {% if total_appointments %}{% widthratio cancelled_count total_appointments 100 %}{% else %}0{% endif %};
+                        "
+                    >
+                        <div class="visual-donut-center">
+                            <strong>{% if total_appointments %}{% widthratio completed_count total_appointments 100 %}{% else %}0{% endif %}%</strong>
+                            <span>Completed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-bars">
+                    <div class="visual-progress-item">
+                        <div class="visual-progress-top">
+                            <span>Completed Records</span>
+                            <strong>{% if total_appointments %}{% widthratio completed_count total_appointments 100 %}{% else %}0{% endif %}%</strong>
+                        </div>
+                        <div class="visual-track">
+                            <div class="visual-fill fill-completed" style="width:{% if total_appointments %}{% widthratio completed_count total_appointments 100 %}{% else %}0{% endif %}%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="visual-progress-item">
+                        <div class="visual-progress-top">
+                            <span>Cancelled Records</span>
+                            <strong>{% if total_appointments %}{% widthratio cancelled_count total_appointments 100 %}{% else %}0{% endif %}%</strong>
+                        </div>
+                        <div class="visual-track">
+                            <div class="visual-fill fill-cancelled" style="width:{% if total_appointments %}{% widthratio cancelled_count total_appointments 100 %}{% else %}0{% endif %}%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="visual-progress-item">
+                        <div class="visual-progress-top">
+                            <span>Active / Other Records</span>
+                            <strong>
+                                {% if total_appointments %}
+                                    {% widthratio total_appointments|add:completed_count|add:cancelled_count total_appointments 100 %}
+                                {% else %}
+                                    0
+                                {% endif %}%
+                            </strong>
+                        </div>
+                        <div class="visual-track">
+                            <div class="visual-fill fill-active" style="width:35%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-table-card reveal reveal-up">
+            <div class="section-topbar">
+                <div>
+                    <h3 class="section-title">Your Appointment Records</h3>
+                    <p class="section-subtitle">
+                        All your bookings and consultation records are shown below in a structured medical history table.
+                    </p>
+                </div>
+
+                <span class="section-chip">
+                    <i class="bi bi-list-check"></i>
+                    Total: {{ total_appointments }}
+                </span>
+            </div>
+
+            <div class="table-modern-wrap">
+                <div class="table-responsive">
+                    <table class="table history-table">
+                        <thead>
+                            <tr>
+                                <th>Doctor Name</th>
+                                <th>Consultancy Fee</th>
+                                <th>Appointment Date</th>
+                                <th>Appointment Time</th>
+                                <th>Status</th>
+                                <th>Mode</th>
+                                <th>Category</th>
+                                <th>Urgency</th>
+                                <th>Symptoms</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for a in appointments %}
+                                <tr>
+                                    <td class="doctor-cell">
+                                        <div class="doctor-name-main">
+                                            <span class="doctor-avatar-mini">
+                                                {{ a.doctor.name|slice:":1" }}
+                                            </span>
+                                            <span>Dr. {{ a.doctor.name }}</span>
+                                        </div>
+                                    </td>
+
+                                    <td>{{ a.consultancy_fee }}</td>
+
+                                    <td>
+                                        <span class="date-pill">
+                                            <i class="bi bi-calendar-event"></i>
+                                            {{ a.appointment_date }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {% if a.appointment_time %}
+                                            <span class="time-pill">
+                                                <i class="bi bi-clock"></i>
+                                                {{ a.appointment_time }}
+                                            </span>
+                                        {% else %}
+                                            <span class="text-muted fw-semibold">No time</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if a.display_status == 'Booked' %}
+                                            <span class="status-badge status-booked">{{ a.display_status }}</span>
+                                        {% elif a.display_status == 'Completed' %}
+                                            <span class="status-badge status-completed">{{ a.display_status }}</span>
+                                        {% elif a.display_status == 'Missed' %}
+                                            <span class="status-badge status-missed">{{ a.display_status }}</span>
+                                        {% else %}
+                                            <span class="status-badge status-cancelled">{{ a.display_status }}</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <span class="mode-badge">
+                                            <i class="bi bi-camera-video"></i>
+                                            {{ a.appointment_mode }}
+                                        </span>
+                                    </td>
+
+                                    <td>{{ a.problem_category }}</td>
+
+                                    <td>
+                                        {% if a.urgency_level == 'Emergency' %}
+                                            <span class="urgency-badge urgency-emergency">{{ a.urgency_level }}</span>
+                                        {% elif a.urgency_level == 'Urgent' %}
+                                            <span class="urgency-badge urgency-urgent">{{ a.urgency_level }}</span>
+                                        {% else %}
+                                            <span class="urgency-badge urgency-normal">{{ a.urgency_level }}</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <div class="symptoms-text">
+                                            {{ a.symptoms|truncatewords:8 }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="action-stack">
+                                            {% if a.has_prescription %}
+                                                <a href="{% url 'patient_view_prescription' a.id %}" class="btn-prescription-modern">
+                                                    <i class="bi bi-file-earmark-medical"></i>
+                                                    View Prescription
+                                                </a>
+                                            {% elif a.can_cancel %}
+                                                <a href="{% url 'patient_cancel_appointment' a.id %}" class="btn-cancel-modern">
+                                                    <i class="bi bi-x-circle"></i>
+                                                    Cancel
+                                                </a>
+                                            {% else %}
+                                                <span class="no-action">
+                                                    <i class="bi bi-dash-circle"></i>
+                                                    No Action
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="10">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">
+                                                <i class="bi bi-calendar-x"></i>
+                                            </div>
+                                            <h5>No appointments found</h5>
+                                            <p>No appointments found in your history.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card reveal reveal-up">
+            <div class="section-topbar">
+                <div>
+                    <h3 class="section-title">History Notes</h3>
+                    <p class="section-subtitle">
+                        Appointment history helps you track your healthcare journey and maintain better continuity of care.
+                    </p>
+                </div>
+
+                <span class="section-chip">
+                    <i class="bi bi-info-circle"></i>
+                    Guide
+                </span>
+            </div>
+
+            <ul class="info-list">
+                <li>
+                    <span class="info-dot"><i class="bi bi-file-earmark-medical"></i></span>
+                    <span>Use prescription action to review treatment details from completed appointments.</span>
+                </li>
+
+                <li>
+                    <span class="info-dot"><i class="bi bi-x-circle"></i></span>
+                    <span>Cancel option appears only when the appointment is still allowed to be cancelled.</span>
+                </li>
+
+                <li>
+                    <span class="info-dot"><i class="bi bi-clock-history"></i></span>
+                    <span>Missed or completed appointments are stored for your future medical reference.</span>
+                </li>
+
+                <li>
+                    <span class="info-dot"><i class="bi bi-shield-check"></i></span>
+                    <span>Keeping appointment records organized improves follow-up care and patient communication.</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
 </section>
 
 <script>
@@ -434,8 +1143,10 @@
 
     function historyRevealOnScroll() {
         const triggerBottom = window.innerHeight * 0.9;
+
         historyReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
                 setTimeout(() => el.classList.add('show'), index * 70);
             }

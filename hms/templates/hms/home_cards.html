@@ -5,29 +5,25 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --primary-2: #1e293b;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --accent-2: #0ea5e9;
-        --light: #f8fbff;
-        --white: #ffffff;
-        --muted: #64748b;
-        --border: #e2e8f0;
-        --success: #10b981;
-        --warning: #f59e0b;
-        --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.06);
-        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.10);
-        --shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.16);
-        --shadow-blue: 0 18px 45px rgba(29, 78, 216, 0.22);
-        --radius-xl: 30px;
-        --radius-lg: 24px;
-        --radius-md: 18px;
-        --transition: all 0.35s ease;
-        --glass: rgba(255,255,255,0.14);
-        --glass-border: rgba(255,255,255,0.18);
-        --gradient-blue: linear-gradient(135deg, #1d4ed8, #38bdf8);
-        --gradient-dark: linear-gradient(135deg, #0f172a, #1e3a8a);
+        --sc-primary: #0f172a;
+        --sc-primary-soft: #1e293b;
+        --sc-blue: #2563eb;
+        --sc-blue-dark: #1d4ed8;
+        --sc-cyan: #06b6d4;
+        --sc-green: #10b981;
+        --sc-purple: #7c3aed;
+        --sc-orange: #f59e0b;
+        --sc-bg: #f6f9ff;
+        --sc-white: #ffffff;
+        --sc-muted: #64748b;
+        --sc-border: #e2e8f0;
+        --sc-shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.07);
+        --sc-shadow-md: 0 18px 45px rgba(15, 23, 42, 0.10);
+        --sc-shadow-lg: 0 30px 80px rgba(15, 23, 42, 0.16);
+        --sc-radius-xl: 32px;
+        --sc-radius-lg: 24px;
+        --sc-radius-md: 18px;
+        --sc-transition: all 0.35s ease;
     }
 
     html {
@@ -36,812 +32,855 @@
 
     body {
         background:
-            radial-gradient(circle at top left, rgba(56, 189, 248, 0.06), transparent 28%),
-            radial-gradient(circle at bottom right, rgba(29, 78, 216, 0.05), transparent 24%),
-            #f8fbff;
+            radial-gradient(circle at 10% 5%, rgba(37, 99, 235, 0.08), transparent 28%),
+            radial-gradient(circle at 90% 20%, rgba(6, 182, 212, 0.10), transparent 30%),
+            radial-gradient(circle at 50% 100%, rgba(16, 185, 129, 0.06), transparent 26%),
+            var(--sc-bg);
     }
 
-    .section-space {
-        padding: 34px 0 78px;
+    .sc-home-wrapper {
+        padding: 36px 0 90px;
+        overflow: hidden;
     }
 
-    .section-title {
-        font-size: 2.3rem;
-        font-weight: 900;
-        color: var(--primary);
-        margin-bottom: 12px;
-        letter-spacing: -0.8px;
+    .sc-container-card {
+        position: relative;
     }
 
-    .section-subtitle {
-        max-width: 780px;
-        margin: 0 auto 34px;
-        color: var(--muted);
-        line-height: 1.9;
-        font-size: 1rem;
+    .sc-section-head {
+        text-align: center;
+        max-width: 850px;
+        margin: 0 auto 38px;
     }
 
-    .section-kicker {
-        display: inline-block;
-        font-size: 0.78rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1.3px;
-        color: var(--secondary);
-        margin-bottom: 10px;
-    }
-
-    .mini-badge {
+    .sc-kicker {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 9px;
         padding: 9px 16px;
-        background: #eaf4ff;
-        color: var(--secondary);
         border-radius: 999px;
-        font-size: 13px;
-        font-weight: 800;
-        margin-bottom: 15px;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid rgba(29, 78, 216, 0.08);
+        background: rgba(37, 99, 235, 0.08);
+        color: var(--sc-blue-dark);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.9px;
+        text-transform: uppercase;
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        margin-bottom: 16px;
     }
 
-    .icon-circle {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background: rgba(29, 78, 216, 0.12);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 800;
+    .sc-section-title {
+        font-size: clamp(1.9rem, 4vw, 2.75rem);
+        font-weight: 950;
+        color: var(--sc-primary);
+        letter-spacing: -1.1px;
+        line-height: 1.13;
+        margin-bottom: 14px;
     }
 
-    .reveal {
+    .sc-section-subtitle {
+        color: var(--sc-muted);
+        font-size: 1rem;
+        line-height: 1.9;
+        margin: 0 auto;
+    }
+
+    .sc-reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.85s cubic-bezier(.2,.8,.2,1);
     }
 
-    .reveal-left { transform: translateX(-70px); }
-    .reveal-right { transform: translateX(70px); }
-    .reveal-up { transform: translateY(55px); }
+    .sc-reveal-left {
+        transform: translateX(-58px);
+    }
 
-    .reveal.show {
+    .sc-reveal-right {
+        transform: translateX(58px);
+    }
+
+    .sc-reveal-up {
+        transform: translateY(52px);
+    }
+
+    .sc-reveal.show {
         opacity: 1;
         transform: translate(0, 0);
     }
 
-    .delay-1 { transition-delay: 0.08s; }
-    .delay-2 { transition-delay: 0.16s; }
-    .delay-3 { transition-delay: 0.24s; }
-    .delay-4 { transition-delay: 0.32s; }
+    .sc-delay-1 { transition-delay: 0.08s; }
+    .sc-delay-2 { transition-delay: 0.16s; }
+    .sc-delay-3 { transition-delay: 0.24s; }
+    .sc-delay-4 { transition-delay: 0.32s; }
 
     /* Hero */
-    .hero-home {
+    .sc-hero {
         position: relative;
         overflow: hidden;
-        border-radius: 36px;
-        padding: 95px 56px;
-        margin-bottom: 28px;
+        border-radius: 40px;
+        padding: 72px 58px;
+        color: var(--sc-white);
         background:
-            linear-gradient(120deg, rgba(15, 23, 42, 0.94), rgba(29, 78, 216, 0.84)),
-            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: #fff;
-        box-shadow: var(--shadow-lg);
+            linear-gradient(125deg, rgba(15, 23, 42, 0.96), rgba(29, 78, 216, 0.88), rgba(6, 182, 212, 0.66)),
+            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        box-shadow: var(--sc-shadow-lg);
+        border: 1px solid rgba(255, 255, 255, 0.16);
         isolation: isolate;
-        border: 1px solid rgba(255,255,255,0.08);
+        margin-bottom: 26px;
     }
 
-    .hero-home::before {
+    .sc-hero::before {
         content: "";
         position: absolute;
-        width: 450px;
-        height: 450px;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.09);
         top: -170px;
-        right: -120px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+        right: -130px;
         z-index: -1;
     }
 
-    .hero-home::after {
+    .sc-hero::after {
         content: "";
         position: absolute;
-        width: 260px;
-        height: 260px;
-        bottom: -95px;
-        left: -55px;
+        width: 280px;
+        height: 280px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.07);
+        background: rgba(255, 255, 255, 0.07);
+        bottom: -110px;
+        left: -90px;
         z-index: -1;
     }
 
-    .hero-badge {
+    .sc-hero-badge {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.18);
-        padding: 9px 18px;
+        padding: 10px 18px;
         border-radius: 999px;
-        font-size: 14px;
-        font-weight: 700;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        backdrop-filter: blur(16px);
+        font-weight: 800;
+        font-size: 0.9rem;
         margin-bottom: 18px;
-        backdrop-filter: blur(10px);
     }
 
-    .hero-highlight {
-        display: inline-block;
-        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
-        border: 1px solid rgba(255,255,255,0.14);
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 14px;
-        backdrop-filter: blur(8px);
+    .sc-hero-badge span {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.18);
     }
 
-    .hero-home h1 {
-        font-size: 3.35rem;
-        font-weight: 900;
-        line-height: 1.06;
-        margin-bottom: 18px;
-        letter-spacing: -1px;
+    .sc-hero h1 {
+        font-size: clamp(2.25rem, 5vw, 4.15rem);
+        font-weight: 950;
+        line-height: 1.03;
+        letter-spacing: -1.7px;
+        max-width: 820px;
+        margin-bottom: 20px;
+    }
+
+    .sc-hero h1 span {
+        background: linear-gradient(90deg, #ffffff, #dff8ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .sc-hero-text {
         max-width: 760px;
-    }
-
-    .hero-home p {
-        max-width: 720px;
+        color: rgba(255, 255, 255, 0.92);
         font-size: 1.05rem;
-        line-height: 1.95;
-        color: rgba(255,255,255,0.93);
+        line-height: 1.9;
         margin-bottom: 30px;
     }
 
-    .hero-actions {
+    .sc-hero-actions {
         display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 22px;
     }
 
-    .hero-btn-primary,
-    .hero-btn-outline,
-    .btn-portal,
-    .cta-btn-secondary {
+    .sc-btn-primary,
+    .sc-btn-outline,
+    .sc-btn-dark,
+    .sc-btn-glass {
         position: relative;
         overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        text-decoration: none;
+        border-radius: 16px;
+        padding: 13px 22px;
+        font-weight: 900;
+        transition: var(--sc-transition);
+        border: 0;
     }
 
-    .hero-btn-primary::before,
-    .hero-btn-outline::before,
-    .btn-portal::before,
-    .cta-btn-secondary::before {
+    .sc-btn-primary::before,
+    .sc-btn-outline::before,
+    .sc-btn-dark::before,
+    .sc-btn-glass::before {
         content: "";
         position: absolute;
         top: 0;
         left: -120%;
-        width: 120%;
+        width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
-        transition: 0.6s ease;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+        transition: 0.65s ease;
     }
 
-    .hero-btn-primary:hover::before,
-    .hero-btn-outline:hover::before,
-    .btn-portal:hover::before,
-    .cta-btn-secondary:hover::before {
+    .sc-btn-primary:hover::before,
+    .sc-btn-outline:hover::before,
+    .sc-btn-dark:hover::before,
+    .sc-btn-glass:hover::before {
         left: 120%;
     }
 
-    .hero-btn-primary,
-    .hero-btn-outline {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        padding: 13px 24px;
-        border-radius: 14px;
-        font-weight: 800;
-        transition: var(--transition);
+    .sc-btn-primary {
+        background: #ffffff;
+        color: var(--sc-primary);
+        box-shadow: 0 18px 35px rgba(255, 255, 255, 0.18);
     }
 
-    .hero-btn-primary {
-        background: #fff;
-        color: var(--primary);
-        box-shadow: 0 12px 30px rgba(255,255,255,0.16);
+    .sc-btn-primary:hover {
+        color: var(--sc-primary);
+        transform: translateY(-3px);
+        background: #f1f7ff;
     }
 
-    .hero-btn-primary:hover {
-        background: #edf5ff;
-        color: var(--primary);
-        transform: translateY(-2px);
-    }
-
-    .hero-btn-outline {
-        border: 1px solid rgba(255,255,255,0.35);
-        color: #fff;
-        background: rgba(255,255,255,0.06);
-        backdrop-filter: blur(10px);
-    }
-
-    .hero-btn-outline:hover {
-        background: rgba(255,255,255,0.13);
-        color: #fff;
-        transform: translateY(-2px);
-    }
-
-    .hero-btn-primary:focus,
-    .hero-btn-outline:focus,
-    .btn-portal:focus,
-    .cta-btn-secondary:focus {
-        outline: 3px solid rgba(56, 189, 248, 0.35);
-        outline-offset: 3px;
-    }
-
-    .hero-info-card {
-        background: rgba(255,255,255,0.11);
-        border: 1px solid rgba(255,255,255,0.18);
-        border-radius: 24px;
-        padding: 26px;
+    .sc-btn-outline {
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.34);
+        background: rgba(255, 255, 255, 0.10);
         backdrop-filter: blur(14px);
-        box-shadow: 0 18px 44px rgba(0,0,0,0.14);
-        position: relative;
     }
 
-    .hero-info-card::after {
-        content: "";
-        position: absolute;
-        inset: auto -40px -40px auto;
-        width: 150px;
-        height: 150px;
-        background: radial-gradient(circle, rgba(56,189,248,0.18), transparent 70%);
-        border-radius: 50%;
+    .sc-btn-outline:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateY(-3px);
     }
 
-    .hero-info-card h5 {
-        font-weight: 800;
-        margin-bottom: 14px;
-        font-size: 1.18rem;
-        position: relative;
-        z-index: 2;
+    .sc-hero-mini-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
     }
 
-    .hero-info-card p {
-        color: rgba(255,255,255,0.91);
-        line-height: 1.85;
-        margin-bottom: 16px;
-        font-size: 0.96rem;
-        position: relative;
-        z-index: 2;
-    }
-
-    .hero-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        position: relative;
-        z-index: 2;
-    }
-
-    .hero-list li {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: rgba(255,255,255,0.92);
-        margin-bottom: 10px;
-        font-size: 0.95rem;
-    }
-
-    .hero-check {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.16);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        font-weight: 900;
-    }
-
-    /* Trust strip */
-    .trust-strip {
-        margin-top: -10px;
-        margin-bottom: 42px;
-        padding: 16px 20px;
-        background: rgba(255,255,255,0.82);
-        border: 1px solid rgba(226,232,240,0.8);
+    .sc-hero-mini {
+        padding: 16px;
         border-radius: 20px;
-        box-shadow: var(--shadow-md);
-        backdrop-filter: blur(10px);
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+        backdrop-filter: blur(14px);
     }
 
-    .trust-strip-item {
+    .sc-hero-mini strong {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 950;
+        margin-bottom: 4px;
+    }
+
+    .sc-hero-mini small {
+        color: rgba(255,255,255,0.82);
+        font-weight: 700;
+    }
+
+    .sc-hero-panel {
+        position: relative;
+        border-radius: 30px;
+        padding: 26px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.20);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 25px 65px rgba(0,0,0,0.18);
+    }
+
+    .sc-hero-panel-top {
         display: flex;
         align-items: center;
-        gap: 10px;
-        justify-content: center;
-        color: var(--primary);
-        font-weight: 700;
-        font-size: 0.95rem;
+        gap: 14px;
+        margin-bottom: 18px;
     }
 
-    .trust-strip-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--secondary);
-        box-shadow: var(--shadow-sm);
-    }
-
-    /* Stats */
-    .stats-box {
-        background: rgba(255,255,255,0.96);
-        border-radius: 24px;
-        padding: 30px 20px;
-        text-align: center;
-        box-shadow: var(--shadow-md);
-        border: 1px solid rgba(255,255,255,0.8);
-        height: 100%;
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .stats-box::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(29, 78, 216, 0.02), rgba(56, 189, 248, 0.05));
-        opacity: 0;
-        transition: var(--transition);
-    }
-
-    .stats-box:hover::before {
-        opacity: 1;
-    }
-
-    .stats-box:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--shadow-lg);
-    }
-
-    .stats-box .stats-icon {
+    .sc-hero-panel-icon {
         width: 58px;
         height: 58px;
         border-radius: 18px;
-        margin: 0 auto 14px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: var(--secondary);
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
-        font-weight: 800;
-        box-shadow: var(--shadow-sm);
-        position: relative;
-        z-index: 2;
+        background: rgba(255,255,255,0.18);
+        font-size: 1.5rem;
     }
 
-    .stats-box h3 {
-        font-size: 2rem;
+    .sc-hero-panel h5 {
+        margin: 0;
         font-weight: 900;
-        color: var(--secondary);
-        margin-bottom: 8px;
-        position: relative;
-        z-index: 2;
+        font-size: 1.15rem;
     }
 
-    .stats-box p {
+    .sc-hero-panel p {
+        color: rgba(255,255,255,0.88);
+        line-height: 1.82;
+        margin-bottom: 18px;
+    }
+
+    .sc-hero-list {
+        list-style: none;
         margin: 0;
-        color: var(--muted);
+        padding: 0;
+    }
+
+    .sc-hero-list li {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.11);
+        color: rgba(255,255,255,0.92);
         font-weight: 700;
-        position: relative;
-        z-index: 2;
+        font-size: 0.94rem;
     }
 
-    /* Generic cards */
-    .feature-card,
-    .portal-card,
-    .service-card,
-    .info-card,
-    .process-card {
-        background: rgba(255,255,255,0.97);
-        border: 1px solid #edf2f7;
-        border-radius: 24px;
-        box-shadow: var(--shadow-md);
-        transition: var(--transition);
-        height: 100%;
-        will-change: transform;
+    .sc-hero-list li:last-child {
+        border-bottom: 0;
     }
 
-    .feature-card:hover,
-    .portal-card:hover,
-    .service-card:hover,
-    .info-card:hover,
-    .process-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--shadow-lg);
-    }
-
-    .feature-card,
-    .service-card,
-    .info-card,
-    .process-card {
-        padding: 30px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .feature-card::after,
-    .service-card::after,
-    .info-card::after,
-    .process-card::after {
-        content: "";
-        position: absolute;
-        width: 120px;
-        height: 120px;
+    .sc-check {
+        width: 25px;
+        height: 25px;
         border-radius: 50%;
-        right: -35px;
-        bottom: -35px;
-        background: radial-gradient(circle, rgba(56,189,248,0.10), transparent 70%);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(16,185,129,0.22);
+        color: #d1fae5;
+        flex: 0 0 auto;
     }
 
-    .feature-icon,
-    .service-icon,
-    .info-icon {
-        width: 64px;
-        height: 64px;
-        border-radius: 18px;
+    /* Trust strip */
+    .sc-trust-strip {
+        position: relative;
+        margin: -10px 18px 58px;
+        padding: 18px;
+        border-radius: 24px;
+        background: rgba(255,255,255,0.86);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        box-shadow: var(--sc-shadow-md);
+        backdrop-filter: blur(16px);
+    }
+
+    .sc-trust-item {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 18px;
-        font-size: 24px;
-        color: var(--secondary);
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), var(--shadow-sm);
-        position: relative;
-        z-index: 2;
-        transition: var(--transition);
+        gap: 11px;
+        color: var(--sc-primary);
+        font-weight: 850;
+        font-size: 0.94rem;
     }
 
-    .feature-card:hover .feature-icon,
-    .service-card:hover .service-icon,
-    .info-card:hover .info-icon {
-        transform: scale(1.05);
+    .sc-trust-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #dbeafe, #cffafe);
+        color: var(--sc-blue-dark);
+        box-shadow: var(--sc-shadow-sm);
     }
 
-    .feature-card h5,
-    .service-card h5,
-    .info-card h5,
-    .process-card h5 {
-        font-weight: 800;
-        color: var(--primary);
-        margin-bottom: 12px;
-        position: relative;
-        z-index: 2;
-    }
-
-    .feature-card p,
-    .service-card p,
-    .info-card p,
-    .process-card p {
-        color: var(--muted);
-        line-height: 1.85;
-        margin: 0;
-        position: relative;
-        z-index: 2;
-    }
-
-    /* Portals */
-    .portal-card {
-        text-align: center;
-        padding: 34px 24px;
+    /* Stats */
+    .sc-stats-card {
+        height: 100%;
         position: relative;
         overflow: hidden;
-        background: linear-gradient(180deg, #ffffff, #f8fbff);
+        padding: 26px 20px;
+        border-radius: 26px;
+        background: rgba(255,255,255,0.94);
+        border: 1px solid rgba(226,232,240,0.86);
+        box-shadow: var(--sc-shadow-sm);
+        text-align: center;
+        transition: var(--sc-transition);
     }
 
-    .portal-card::before {
+    .sc-stats-card::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(29,78,216,0.05), rgba(56,189,248,0.02));
-        pointer-events: none;
+        background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(6,182,212,0.05));
+        opacity: 0;
+        transition: var(--sc-transition);
     }
 
-    .portal-card::after {
+    .sc-stats-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--sc-shadow-md);
+    }
+
+    .sc-stats-card:hover::before {
+        opacity: 1;
+    }
+
+    .sc-stats-icon {
+        position: relative;
+        z-index: 2;
+        width: 62px;
+        height: 62px;
+        margin: 0 auto 14px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--sc-blue-dark);
+        background: linear-gradient(135deg, #dbeafe, #ecfeff);
+        font-size: 1.55rem;
+        box-shadow: inset 0 1px 0 #fff, var(--sc-shadow-sm);
+    }
+
+    .sc-stats-card h3 {
+        position: relative;
+        z-index: 2;
+        color: var(--sc-primary);
+        font-size: 2rem;
+        font-weight: 950;
+        margin-bottom: 4px;
+        letter-spacing: -0.8px;
+    }
+
+    .sc-stats-card p {
+        position: relative;
+        z-index: 2;
+        color: var(--sc-muted);
+        font-weight: 800;
+        margin: 0;
+    }
+
+    /* Cards */
+    .sc-feature-card,
+    .sc-service-card,
+    .sc-portal-card,
+    .sc-process-card,
+    .sc-info-card {
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        border-radius: 28px;
+        background: rgba(255,255,255,0.94);
+        border: 1px solid rgba(226,232,240,0.88);
+        box-shadow: var(--sc-shadow-sm);
+        transition: var(--sc-transition);
+    }
+
+    .sc-feature-card,
+    .sc-service-card,
+    .sc-process-card,
+    .sc-info-card {
+        padding: 30px;
+    }
+
+    .sc-feature-card::after,
+    .sc-service-card::after,
+    .sc-process-card::after,
+    .sc-info-card::after,
+    .sc-portal-card::after {
         content: "";
         position: absolute;
         width: 150px;
         height: 150px;
         border-radius: 50%;
-        right: -50px;
-        top: -50px;
-        background: radial-gradient(circle, rgba(56,189,248,0.12), transparent 70%);
-        transition: var(--transition);
+        right: -65px;
+        top: -65px;
+        background: radial-gradient(circle, rgba(37,99,235,0.12), transparent 70%);
+        transition: var(--sc-transition);
     }
 
-    .portal-card:hover::after {
-        transform: scale(1.18);
+    .sc-feature-card:hover,
+    .sc-service-card:hover,
+    .sc-portal-card:hover,
+    .sc-process-card:hover,
+    .sc-info-card:hover {
+        transform: translateY(-9px);
+        box-shadow: var(--sc-shadow-md);
+        border-color: rgba(37,99,235,0.20);
     }
 
-    .portal-card:hover .portal-icon {
-        transform: translateY(-4px) scale(1.04);
-        box-shadow: 0 18px 36px rgba(29, 78, 216, 0.28);
+    .sc-feature-card:hover::after,
+    .sc-service-card:hover::after,
+    .sc-process-card:hover::after,
+    .sc-info-card:hover::after,
+    .sc-portal-card:hover::after {
+        transform: scale(1.15);
     }
 
-    .portal-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 24px;
-        margin: 0 auto 18px;
-        background: linear-gradient(135deg, var(--secondary), var(--accent));
-        color: #fff;
-        font-size: 28px;
+    .sc-card-icon {
+        position: relative;
+        z-index: 2;
+        width: 66px;
+        height: 66px;
+        border-radius: 22px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 900;
-        box-shadow: 0 14px 28px rgba(29, 78, 216, 0.24);
-        position: relative;
-        z-index: 2;
-        transition: var(--transition);
-    }
-
-    .portal-card h4 {
-        font-weight: 800;
-        color: var(--primary);
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 2;
-    }
-
-    .portal-card p {
-        color: var(--muted);
-        min-height: 76px;
-        line-height: 1.8;
+        color: var(--sc-blue-dark);
+        background: linear-gradient(135deg, #dbeafe, #cffafe);
+        font-size: 1.55rem;
+        box-shadow: inset 0 1px 0 #fff, var(--sc-shadow-sm);
         margin-bottom: 18px;
-        position: relative;
-        z-index: 2;
+        transition: var(--sc-transition);
     }
 
-    .btn-portal {
-        display: inline-flex;
+    .sc-feature-card:hover .sc-card-icon,
+    .sc-service-card:hover .sc-card-icon,
+    .sc-info-card:hover .sc-card-icon {
+        transform: rotate(-4deg) scale(1.05);
+    }
+
+    .sc-feature-card h5,
+    .sc-service-card h5,
+    .sc-process-card h5,
+    .sc-info-card h5 {
+        position: relative;
+        z-index: 2;
+        color: var(--sc-primary);
+        font-weight: 900;
+        margin-bottom: 11px;
+    }
+
+    .sc-feature-card p,
+    .sc-service-card p,
+    .sc-process-card p,
+    .sc-info-card p {
+        position: relative;
+        z-index: 2;
+        color: var(--sc-muted);
+        line-height: 1.85;
+        margin: 0;
+    }
+
+    /* Portal cards */
+    .sc-portal-card {
+        display: flex;
+        flex-direction: column;
+        padding: 30px 24px;
+        text-align: center;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,251,255,0.94));
+    }
+
+    .sc-portal-icon {
+        position: relative;
+        z-index: 2;
+        width: 82px;
+        height: 82px;
+        margin: 0 auto 18px;
+        border-radius: 26px;
+        display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        width: 100%;
-        text-decoration: none;
-        background: var(--primary);
-        color: #fff;
-        border-radius: 14px;
-        padding: 12px 18px;
-        font-weight: 800;
-        transition: var(--transition);
-        position: relative;
-        z-index: 2;
+        color: #ffffff;
+        font-size: 1.9rem;
+        background: linear-gradient(135deg, var(--sc-blue-dark), var(--sc-cyan));
+        box-shadow: 0 18px 38px rgba(37, 99, 235, 0.28);
+        transition: var(--sc-transition);
     }
 
-    .btn-portal:hover {
-        background: var(--secondary);
-        color: #fff;
+    .sc-portal-card:hover .sc-portal-icon {
+        transform: translateY(-5px) scale(1.04);
+    }
+
+    .sc-portal-card h4 {
+        position: relative;
+        z-index: 2;
+        color: var(--sc-primary);
+        font-weight: 950;
+        margin-bottom: 10px;
+    }
+
+    .sc-portal-card p {
+        position: relative;
+        z-index: 2;
+        color: var(--sc-muted);
+        line-height: 1.75;
+        margin-bottom: 20px;
+        flex-grow: 1;
+    }
+
+    .sc-btn-dark {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        background: var(--sc-primary);
+        color: #ffffff;
+        padding: 12px 18px;
+    }
+
+    .sc-btn-dark:hover {
+        background: var(--sc-blue-dark);
+        color: #ffffff;
         transform: translateY(-2px);
     }
 
-    /* Image blocks */
-    .image-info-card {
+    /* Image cards */
+    .sc-image-card {
         position: relative;
-        min-height: 350px;
-        border-radius: 28px;
+        min-height: 370px;
+        border-radius: 32px;
         overflow: hidden;
-        box-shadow: var(--shadow-lg);
         background-size: cover;
         background-position: center;
-        transition: var(--transition);
+        box-shadow: var(--sc-shadow-md);
+        border: 1px solid rgba(255,255,255,0.4);
+        transition: var(--sc-transition);
     }
 
-    .image-info-card:hover {
-        transform: translateY(-6px);
+    .sc-image-card:hover {
+        transform: translateY(-7px);
+        box-shadow: var(--sc-shadow-lg);
     }
 
-    .image-info-card::before {
+    .sc-image-card::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.18));
+        background: linear-gradient(to top, rgba(15,23,42,0.94), rgba(15,23,42,0.30), rgba(15,23,42,0.06));
     }
 
-    .image-info-overlay {
+    .sc-image-content {
         position: absolute;
         inset: 0;
-        padding: 28px;
+        padding: 32px;
         display: flex;
         align-items: end;
     }
 
-    .image-info-overlay h5 {
-        color: #fff;
-        font-weight: 800;
+    .sc-image-content h5 {
+        color: #ffffff;
+        font-weight: 950;
         margin-bottom: 10px;
     }
 
-    .image-info-overlay p {
-        color: rgba(255,255,255,0.91);
-        margin: 0;
+    .sc-image-content p {
+        color: rgba(255,255,255,0.88);
         line-height: 1.85;
+        margin: 0;
     }
 
     /* Process */
-    .process-step {
-        width: 46px;
-        height: 46px;
-        border-radius: 14px;
-        background: var(--gradient-blue);
-        color: #fff;
-        font-weight: 900;
+    .sc-process-step {
+        position: relative;
+        z-index: 2;
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 16px;
-        box-shadow: 0 14px 28px rgba(29, 78, 216, 0.22);
-        position: relative;
-        z-index: 2;
+        background: linear-gradient(135deg, var(--sc-blue-dark), var(--sc-cyan));
+        color: #ffffff;
+        font-weight: 950;
+        margin-bottom: 18px;
+        box-shadow: 0 16px 32px rgba(37, 99, 235, 0.24);
     }
 
     /* Trust section */
-    .trust-section {
-        background: linear-gradient(135deg, #ffffff, #f5faff);
-        border-radius: 30px;
-        padding: 46px 32px;
-        box-shadow: var(--shadow-md);
-        border: 1px solid #edf2f7;
+    .sc-why-box {
+        border-radius: 34px;
+        padding: 44px 34px;
+        background:
+            linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248,251,255,0.94));
+        border: 1px solid rgba(226,232,240,0.9);
+        box-shadow: var(--sc-shadow-md);
     }
 
-    .trust-item {
+    .sc-why-item {
         display: flex;
-        gap: 15px;
-        margin-bottom: 22px;
+        gap: 16px;
+        padding: 18px;
+        border-radius: 22px;
+        transition: var(--sc-transition);
     }
 
-    .trust-icon {
-        min-width: 54px;
-        height: 54px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+    .sc-why-item:hover {
+        background: rgba(37,99,235,0.05);
+    }
+
+    .sc-why-icon {
+        flex: 0 0 auto;
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--secondary);
-        font-size: 22px;
-        font-weight: 900;
-        box-shadow: var(--shadow-sm);
+        color: var(--sc-blue-dark);
+        background: linear-gradient(135deg, #dbeafe, #cffafe);
+        font-size: 1.35rem;
+        box-shadow: var(--sc-shadow-sm);
     }
 
-    .trust-item h6 {
-        font-weight: 800;
+    .sc-why-item h6 {
+        color: var(--sc-primary);
+        font-weight: 950;
         margin-bottom: 6px;
-        color: var(--primary);
     }
 
-    .trust-item p {
-        color: var(--muted);
-        line-height: 1.8;
+    .sc-why-item p {
+        color: var(--sc-muted);
+        line-height: 1.75;
         margin: 0;
     }
 
     /* CTA */
-    .contact-cta {
+    .sc-cta {
         position: relative;
         overflow: hidden;
+        border-radius: 34px;
+        padding: 54px 42px;
+        color: #ffffff;
         background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(29, 78, 216, 0.86)),
-            url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: #fff;
-        border-radius: 30px;
-        padding: 60px 42px;
-        box-shadow: var(--shadow-lg);
+            linear-gradient(125deg, rgba(15,23,42,0.96), rgba(29,78,216,0.88), rgba(6,182,212,0.65)),
+            url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        box-shadow: var(--sc-shadow-lg);
+        border: 1px solid rgba(255,255,255,0.16);
     }
 
-    .contact-cta::before {
+    .sc-cta::before {
         content: "";
         position: absolute;
-        right: -70px;
-        top: -70px;
-        width: 220px;
-        height: 220px;
+        width: 260px;
+        height: 260px;
+        right: -100px;
+        top: -100px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.09);
     }
 
-    .contact-cta h2 {
-        font-weight: 900;
+    .sc-cta h2 {
+        position: relative;
+        z-index: 2;
+        font-weight: 950;
+        letter-spacing: -0.8px;
         margin-bottom: 12px;
-        position: relative;
-        z-index: 2;
     }
 
-    .contact-cta p {
-        color: rgba(255,255,255,0.91);
-        line-height: 1.9;
-        margin-bottom: 0;
+    .sc-cta p {
         position: relative;
         z-index: 2;
+        color: rgba(255,255,255,0.9);
+        line-height: 1.85;
+        margin: 0;
     }
 
-    .cta-actions {
+    .sc-cta-actions {
+        position: relative;
+        z-index: 2;
         display: flex;
-        gap: 14px;
-        justify-content: flex-end;
+        gap: 13px;
         flex-wrap: wrap;
-        position: relative;
-        z-index: 2;
+        justify-content: flex-end;
     }
 
-    .cta-btn-secondary {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        padding: 13px 22px;
-        border-radius: 14px;
-        font-weight: 800;
-        transition: var(--transition);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: #fff;
-        background: rgba(255,255,255,0.08);
-        backdrop-filter: blur(8px);
+    .sc-btn-glass {
+        color: #ffffff;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.28);
+        backdrop-filter: blur(14px);
     }
 
-    .cta-btn-secondary:hover {
-        background: rgba(255,255,255,0.14);
-        color: #fff;
-        transform: translateY(-2px);
+    .sc-btn-glass:hover {
+        color: #ffffff;
+        background: rgba(255,255,255,0.18);
+        transform: translateY(-3px);
+    }
+
+    .sc-mb-large {
+        margin-bottom: 70px;
+    }
+
+    .sc-mb-medium {
+        margin-bottom: 56px;
     }
 
     @media (max-width: 991px) {
-        .hero-home {
-            padding: 64px 28px;
+        .sc-hero {
+            padding: 56px 30px;
+            border-radius: 30px;
         }
 
-        .hero-home h1 {
-            font-size: 2.45rem;
+        .sc-hero-panel {
+            margin-top: 16px;
         }
 
-        .cta-actions {
+        .sc-cta-actions {
             justify-content: flex-start;
+        }
+
+        .sc-trust-strip {
+            margin-left: 0;
+            margin-right: 0;
         }
     }
 
     @media (max-width: 768px) {
-        .section-title {
-            font-size: 1.78rem;
+        .sc-home-wrapper {
+            padding: 24px 0 70px;
         }
 
-        .hero-home {
-            padding: 52px 22px;
+        .sc-hero {
+            padding: 44px 22px;
             border-radius: 26px;
         }
 
-        .hero-home h1 {
-            font-size: 2.04rem;
+        .sc-hero-mini-grid {
+            grid-template-columns: 1fr;
         }
 
-        .contact-cta {
-            padding: 42px 24px;
-        }
-
-        .portal-card p {
-            min-height: auto;
-        }
-
-        .trust-strip-item {
+        .sc-trust-item {
             justify-content: flex-start;
+        }
+
+        .sc-feature-card,
+        .sc-service-card,
+        .sc-process-card,
+        .sc-info-card,
+        .sc-portal-card {
+            padding: 26px 22px;
+        }
+
+        .sc-image-card {
+            min-height: 320px;
+        }
+
+        .sc-image-content {
+            padding: 24px;
+        }
+
+        .sc-why-box {
+            padding: 30px 20px;
+        }
+
+        .sc-why-item {
+            padding: 14px 0;
+        }
+
+        .sc-cta {
+            padding: 42px 24px;
         }
     }
 
@@ -856,135 +895,183 @@
 {% endblock %}
 
 {% block content %}
-<section class="section-space">
-    <div class="container">
+<section class="sc-home-wrapper">
+    <div class="container sc-container-card">
 
-        <div class="hero-home reveal reveal-up show">
+        <!-- Hero -->
+        <div class="sc-hero sc-reveal sc-reveal-up show">
             <div class="row align-items-center g-4">
                 <div class="col-lg-7">
-                    <span class="hero-badge">
-                        <span class="icon-circle"><i class="bi bi-plus-lg"></i></span>
+                    <div class="sc-hero-badge">
+                        <span><i class="bi bi-plus-lg"></i></span>
                         SmartCare HMS • Integrated Digital Healthcare
-                    </span>
-
-                    <div class="hero-highlight">
-                        Modern hospital workflow for patients, doctors, receptionists, and administrators
                     </div>
 
-                    <h1>Smarter Hospital Management with Faster Access, Better Care, and Professional Digital Coordination</h1>
+                    <h1>
+                        Smarter Hospital Management for
+                        <span>Faster Care and Better Coordination</span>
+                    </h1>
 
-                    <p>
+                    <p class="sc-hero-text">
                         SmartCare HMS is a modern hospital management platform designed to simplify patient access,
                         strengthen doctor coordination, support receptionist operations, and help administrators
-                        manage healthcare services through one connected and professional digital environment.
+                        manage healthcare services through one connected digital environment.
                     </p>
 
-                    <div class="hero-actions flex-wrap gap-3">
-                        <a href="#portals" class="hero-btn-primary">
+                    <div class="sc-hero-actions">
+                        <a href="#portals" class="sc-btn-primary">
                             <i class="bi bi-grid"></i>
                             Explore Portals
                         </a>
-                        <a href="{% url 'about' %}" class="hero-btn-outline">
+
+                        <a href="{% url 'about' %}" class="sc-btn-outline">
                             <i class="bi bi-info-circle"></i>
                             Learn More
                         </a>
                     </div>
+
+                    <div class="sc-hero-mini-grid">
+                        <div class="sc-hero-mini">
+                            <strong>24/7</strong>
+                            <small>Digital Patient Access</small>
+                        </div>
+                        <div class="sc-hero-mini">
+                            <strong>4 Role</strong>
+                            <small>Dedicated User Portals</small>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-lg-5">
-                    <div class="hero-info-card">
-                        <h5>Healthcare, Managed More Intelligently</h5>
+                    <div class="sc-hero-panel">
+                        <div class="sc-hero-panel-top">
+                            <div class="sc-hero-panel-icon">
+                                <i class="bi bi-heart-pulse"></i>
+                            </div>
+                            <div>
+                                <h5>Healthcare, Managed Intelligently</h5>
+                            </div>
+                        </div>
+
                         <p>
                             From appointment booking and doctor approval to prescriptions, report follow-up,
                             and patient guidance through MediBot, SmartCare HMS brings hospital operations
-                            into one clean, reliable, and scalable system.
+                            into one clean and scalable system.
                         </p>
 
-                        <ul class="hero-list">
-                            <li><span class="hero-check"><i class="bi bi-check-lg"></i></span> Secure role-based portals</li>
-                            <li><span class="hero-check"><i class="bi bi-check-lg"></i></span> Modern appointment workflow</li>
-                            <li><span class="hero-check"><i class="bi bi-check-lg"></i></span> Prescription and report support</li>
-                            <li><span class="hero-check"><i class="bi bi-check-lg"></i></span> Built-in patient guidance with MediBot</li>
+                        <ul class="sc-hero-list">
+                            <li>
+                                <span class="sc-check"><i class="bi bi-check-lg"></i></span>
+                                Secure role-based portals
+                            </li>
+                            <li>
+                                <span class="sc-check"><i class="bi bi-check-lg"></i></span>
+                                Modern appointment workflow
+                            </li>
+                            <li>
+                                <span class="sc-check"><i class="bi bi-check-lg"></i></span>
+                                Prescription and report support
+                            </li>
+                            <li>
+                                <span class="sc-check"><i class="bi bi-check-lg"></i></span>
+                                Built-in patient guidance with MediBot
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="trust-strip reveal reveal-up">
-            <div class="row g-3 text-center">
+        <!-- Trust strip -->
+        <div class="sc-trust-strip sc-reveal sc-reveal-up">
+            <div class="row g-3">
                 <div class="col-md-3 col-6">
-                    <div class="trust-strip-item">
-                        <span class="trust-strip-icon"><i class="bi bi-shield-lock"></i></span>
+                    <div class="sc-trust-item">
+                        <span class="sc-trust-icon"><i class="bi bi-shield-lock"></i></span>
                         Secure Access
                     </div>
                 </div>
+
                 <div class="col-md-3 col-6">
-                    <div class="trust-strip-item">
-                        <span class="trust-strip-icon"><i class="bi bi-person-badge"></i></span>
+                    <div class="sc-trust-item">
+                        <span class="sc-trust-icon"><i class="bi bi-person-badge"></i></span>
                         4 Role Portals
                     </div>
                 </div>
+
                 <div class="col-md-3 col-6">
-                    <div class="trust-strip-item">
-                        <span class="trust-strip-icon"><i class="bi bi-calendar2-check"></i></span>
+                    <div class="sc-trust-item">
+                        <span class="sc-trust-icon"><i class="bi bi-calendar2-check"></i></span>
                         Smart Appointments
                     </div>
                 </div>
+
                 <div class="col-md-3 col-6">
-                    <div class="trust-strip-item">
-                        <span class="trust-strip-icon"><i class="bi bi-robot"></i></span>
+                    <div class="sc-trust-item">
+                        <span class="sc-trust-icon"><i class="bi bi-robot"></i></span>
                         MediBot Support
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row g-4 mb-5">
+        <!-- Stats -->
+        <div class="row g-4 sc-mb-large">
             <div class="col-md-3">
-                <div class="stats-box reveal reveal-left delay-1">
-                    <div class="stats-icon"><i class="bi bi-clock-history"></i></div>
+                <div class="sc-stats-card sc-reveal sc-reveal-left sc-delay-1">
+                    <div class="sc-stats-icon"><i class="bi bi-clock-history"></i></div>
                     <h3>24/7</h3>
                     <p>Digital Patient Access</p>
                 </div>
             </div>
+
             <div class="col-md-3">
-                <div class="stats-box reveal reveal-up delay-2">
-                    <div class="stats-icon"><i class="bi bi-person-badge"></i></div>
+                <div class="sc-stats-card sc-reveal sc-reveal-up sc-delay-2">
+                    <div class="sc-stats-icon"><i class="bi bi-person-badge"></i></div>
                     <h3>4</h3>
                     <p>Dedicated User Roles</p>
                 </div>
             </div>
+
             <div class="col-md-3">
-                <div class="stats-box reveal reveal-up delay-3">
-                    <div class="stats-icon"><i class="bi bi-calendar2-check"></i></div>
+                <div class="sc-stats-card sc-reveal sc-reveal-up sc-delay-3">
+                    <div class="sc-stats-icon"><i class="bi bi-calendar2-check"></i></div>
                     <h3>Smart</h3>
                     <p>Appointment Workflow</p>
                 </div>
             </div>
+
             <div class="col-md-3">
-                <div class="stats-box reveal reveal-right delay-4">
-                    <div class="stats-icon"><i class="bi bi-shield-lock"></i></div>
+                <div class="sc-stats-card sc-reveal sc-reveal-right sc-delay-4">
+                    <div class="sc-stats-icon"><i class="bi bi-shield-lock"></i></div>
                     <h3>Secure</h3>
                     <p>Role-Based Protection</p>
                 </div>
             </div>
         </div>
 
-        <div class="text-center mb-4 reveal reveal-up">
-            <span class="mini-badge"><i class="bi bi-hospital"></i> About SmartCare HMS</span>
-            <h2 class="section-title">A Connected Platform for Modern, Organized, and Patient-Focused Healthcare</h2>
-            <p class="section-subtitle">
+        <!-- About -->
+        <div class="sc-section-head sc-reveal sc-reveal-up">
+            <span class="sc-kicker">
+                <i class="bi bi-hospital"></i>
+                About SmartCare HMS
+            </span>
+
+            <h2 class="sc-section-title">
+                A Connected Platform for Modern, Organized, and Patient-Focused Healthcare
+            </h2>
+
+            <p class="sc-section-subtitle">
                 SmartCare HMS connects patients, doctors, receptionists, and administrators in one centralized platform
                 to create a smoother treatment journey, more efficient hospital coordination, and a polished digital
-                healthcare experience suitable for modern hospitals and clinics.
+                healthcare experience.
             </p>
         </div>
 
-        <div class="row g-4 mb-5">
+        <div class="row g-4 sc-mb-large">
             <div class="col-md-4">
-                <div class="feature-card reveal reveal-left delay-1">
-                    <div class="feature-icon"><i class="bi bi-person-heart"></i></div>
+                <div class="sc-feature-card sc-reveal sc-reveal-left sc-delay-1">
+                    <div class="sc-card-icon"><i class="bi bi-person-heart"></i></div>
                     <h5>Patient-Centered Convenience</h5>
                     <p>
                         Patients can discover doctors, book appointments, review prescriptions, upload follow-up reports,
@@ -994,135 +1081,171 @@
             </div>
 
             <div class="col-md-4">
-                <div class="feature-card reveal reveal-up delay-2">
-                    <div class="feature-icon"><i class="bi bi-diagram-3"></i></div>
+                <div class="sc-feature-card sc-reveal sc-reveal-up sc-delay-2">
+                    <div class="sc-card-icon"><i class="bi bi-diagram-3"></i></div>
                     <h5>Efficient Hospital Coordination</h5>
                     <p>
                         SmartCare HMS streamlines communication between doctors, receptionists, and administrators,
-                        helping each role work faster with better visibility and less operational friction.
+                        helping every role work faster with better visibility and less operational friction.
                     </p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="feature-card reveal reveal-right delay-3">
-                    <div class="feature-icon"><i class="bi bi-stars"></i></div>
+                <div class="sc-feature-card sc-reveal sc-reveal-right sc-delay-3">
+                    <div class="sc-card-icon"><i class="bi bi-stars"></i></div>
                     <h5>Professional Digital Presence</h5>
                     <p>
-                        A modern healthcare interface makes the system easier to use while also presenting the project
-                        as modern, trustworthy, and professionally ready for deployment.
+                        A clean healthcare interface makes the system easier to use while presenting the project
+                        as trustworthy, modern, and professionally ready for demonstration or deployment.
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="text-center mb-4 reveal reveal-up">
-            <span class="mini-badge"><i class="bi bi-grid-1x2"></i> Core Services</span>
-            <h2 class="section-title">Built to Support Care Delivery, Appointment Flow, and Everyday Hospital Operations</h2>
-            <p class="section-subtitle">
-                SmartCare HMS combines the essential hospital workflows into one practical system for care access,
+        <!-- Services -->
+        <div class="sc-section-head sc-reveal sc-reveal-up">
+            <span class="sc-kicker">
+                <i class="bi bi-grid-1x2"></i>
+                Core Services
+            </span>
+
+            <h2 class="sc-section-title">
+                Built to Support Care Delivery, Appointment Flow, and Everyday Hospital Operations
+            </h2>
+
+            <p class="sc-section-subtitle">
+                SmartCare HMS combines essential hospital workflows into one practical system for care access,
                 doctor management, front-desk support, and administrative control.
             </p>
         </div>
 
-        <div class="row g-4 mb-5">
+        <div class="row g-4 sc-mb-large">
             <div class="col-md-3">
-                <div class="service-card text-center reveal reveal-left delay-1">
-                    <div class="service-icon mx-auto"><i class="bi bi-calendar2-plus"></i></div>
+                <div class="sc-service-card text-center sc-reveal sc-reveal-left sc-delay-1">
+                    <div class="sc-card-icon mx-auto"><i class="bi bi-calendar2-plus"></i></div>
                     <h5>Appointment Booking</h5>
-                    <p>Patients can request online or offline appointments through a clean and structured booking flow.</p>
+                    <p>
+                        Patients can request online or offline appointments through a clean and structured booking flow.
+                    </p>
                 </div>
             </div>
+
             <div class="col-md-3">
-                <div class="service-card text-center reveal reveal-up delay-2">
-                    <div class="service-icon mx-auto"><i class="bi bi-heart-pulse"></i></div>
+                <div class="sc-service-card text-center sc-reveal sc-reveal-up sc-delay-2">
+                    <div class="sc-card-icon mx-auto"><i class="bi bi-heart-pulse"></i></div>
                     <h5>Doctor Management</h5>
-                    <p>Doctors can manage pending consultations, completed appointments, prescriptions, and follow-up reports.</p>
+                    <p>
+                        Doctors can manage consultations, prescriptions, completed appointments, and follow-up reports.
+                    </p>
                 </div>
             </div>
+
             <div class="col-md-3">
-                <div class="service-card text-center reveal reveal-up delay-3">
-                    <div class="service-icon mx-auto"><i class="bi bi-clipboard2-pulse"></i></div>
+                <div class="sc-service-card text-center sc-reveal sc-reveal-up sc-delay-3">
+                    <div class="sc-card-icon mx-auto"><i class="bi bi-clipboard2-pulse"></i></div>
                     <h5>Reception Workflow</h5>
-                    <p>Receptionists can create appointments, manage test-related requests, and support front-desk operations efficiently.</p>
+                    <p>
+                        Receptionists can create appointments, manage test requests, and support front-desk operations.
+                    </p>
                 </div>
             </div>
+
             <div class="col-md-3">
-                <div class="service-card text-center reveal reveal-right delay-4">
-                    <div class="service-icon mx-auto"><i class="bi bi-robot"></i></div>
+                <div class="sc-service-card text-center sc-reveal sc-reveal-right sc-delay-4">
+                    <div class="sc-card-icon mx-auto"><i class="bi bi-robot"></i></div>
                     <h5>MediBot Assistance</h5>
-                    <p>Patients can receive basic health guidance for common issues before deciding whether a doctor visit is necessary.</p>
+                    <p>
+                        Patients can receive basic health guidance before deciding whether a doctor visit is necessary.
+                    </p>
                 </div>
             </div>
         </div>
 
-        <div id="portals" class="text-center mb-4 reveal reveal-up">
-            <span class="mini-badge"><i class="bi bi-box-arrow-in-right"></i> Access Portals</span>
-            <h2 class="section-title">Choose the Right Portal for Your Role</h2>
-            <p class="section-subtitle">
+        <!-- Portals -->
+        <div id="portals" class="sc-section-head sc-reveal sc-reveal-up">
+            <span class="sc-kicker">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Access Portals
+            </span>
+
+            <h2 class="sc-section-title">
+                Choose the Right Portal for Your Role
+            </h2>
+
+            <p class="sc-section-subtitle">
                 Every user gets a dedicated portal designed around responsibility, clarity, and a focused hospital workflow.
             </p>
         </div>
 
-        <div class="row g-4 mb-5">
+        <div class="row g-4 sc-mb-large">
             <div class="col-md-6 col-lg-3">
-                <div class="portal-card reveal reveal-left delay-1">
-                    <div class="portal-icon"><i class="bi bi-shield-check"></i></div>
+                <div class="sc-portal-card sc-reveal sc-reveal-left sc-delay-1">
+                    <div class="sc-portal-icon"><i class="bi bi-shield-check"></i></div>
                     <h4>Admin</h4>
-                    <p>Monitor users, approve doctors, manage appointments, review system activity, and oversee hospital operations from one secure dashboard.</p>
-                    <a href="{% url 'admin_login' %}" class="btn-portal">
+                    <p>
+                        Monitor users, approve doctors, manage appointments, review activity, and oversee hospital operations.
+                    </p>
+                    <a href="{% url 'admin_login' %}" class="sc-btn-dark">
                         <i class="bi bi-arrow-right-circle"></i>
-                        Admin Panel
+                        Sign in
                     </a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3">
-                <div class="portal-card reveal reveal-up delay-2">
-                    <div class="portal-icon"><i class="bi bi-heart-pulse"></i></div>
+                <div class="sc-portal-card sc-reveal sc-reveal-up sc-delay-2">
+                    <div class="sc-portal-icon"><i class="bi bi-heart-pulse"></i></div>
                     <h4>Doctor</h4>
-                    <p>Manage appointments, conduct consultations, issue prescriptions, review reports, and maintain professional patient care workflow.</p>
-                    <a href="{% url 'doctor_login' %}" class="btn-portal">
+                    <p>
+                        Manage appointments, conduct consultations, issue prescriptions, and review reports professionally.
+                    </p>
+                    <a href="{% url 'doctor_login' %}" class="sc-btn-dark">
                         <i class="bi bi-arrow-right-circle"></i>
-                        Doctor Login
+                        Sign in
                     </a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3">
-                <div class="portal-card reveal reveal-up delay-3">
-                    <div class="portal-icon"><i class="bi bi-person-circle"></i></div>
+                <div class="sc-portal-card sc-reveal sc-reveal-up sc-delay-3">
+                    <div class="sc-portal-icon"><i class="bi bi-person-circle"></i></div>
                     <h4>Patient</h4>
-                    <p>Find doctors, book appointments, access prescriptions, upload reports, and use MediBot for basic guidance in one place.</p>
-                    <a href="{% url 'patient_login' %}" class="btn-portal">
+                    <p>
+                        Find doctors, book appointments, access prescriptions, upload reports, and use MediBot guidance.
+                    </p>
+                    <a href="{% url 'patient_login' %}" class="sc-btn-dark">
                         <i class="bi bi-arrow-right-circle"></i>
-                        Patient Login
+                        Sign in
                     </a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3">
-                <div class="portal-card reveal reveal-right delay-4">
-                    <div class="portal-icon"><i class="bi bi-headset"></i></div>
+                <div class="sc-portal-card sc-reveal sc-reveal-right sc-delay-4">
+                    <div class="sc-portal-icon"><i class="bi bi-headset"></i></div>
                     <h4>Receptionist</h4>
-                    <p>Handle front-desk coordination, create appointments, manage test requests, and support daily hospital service flow efficiently.</p>
-                    <a href="{% url 'receptionist_login' %}" class="btn-portal">
+                    <p>
+                        Handle front-desk coordination, create appointments, manage test requests, and support daily flow.
+                    </p>
+                    <a href="{% url 'receptionist_login' %}" class="sc-btn-dark">
                         <i class="bi bi-arrow-right-circle"></i>
-                        Reception Login
+                        Sign in
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="row g-4 mb-5">
+        <!-- Image information cards -->
+        <div class="row g-4 sc-mb-large">
             <div class="col-lg-6">
-                <div class="image-info-card reveal reveal-left" style="background-image: url('https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1400&q=80');">
-                    <div class="image-info-overlay">
+                <div class="sc-image-card sc-reveal sc-reveal-left" style="background-image: url('https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1400&q=80');">
+                    <div class="sc-image-content">
                         <div>
                             <h5>Scalable for Hospitals, Clinics, and Growing Healthcare Networks</h5>
                             <p>
-                                SmartCare HMS is designed to support structured hospital growth with centralized access,
-                                coordinated workflows, and a system architecture suitable for modern digital healthcare operations.
+                                SmartCare HMS supports structured hospital growth with centralized access,
+                                coordinated workflows, and modern digital healthcare operations.
                             </p>
                         </div>
                     </div>
@@ -1130,13 +1253,13 @@
             </div>
 
             <div class="col-lg-6">
-                <div class="image-info-card reveal reveal-right" style="background-image: url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1400&q=80');">
-                    <div class="image-info-overlay">
+                <div class="sc-image-card sc-reveal sc-reveal-right" style="background-image: url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1400&q=80');">
+                    <div class="sc-image-content">
                         <div>
                             <h5>Stronger Care Coordination Between Doctors and Patients</h5>
                             <p>
-                                By keeping appointments, prescriptions, follow-up reports, and patient guidance connected,
-                                the platform helps make treatment communication more organized and accessible.
+                                Appointments, prescriptions, follow-up reports, and patient guidance stay connected
+                                for a smoother treatment communication experience.
                             </p>
                         </div>
                     </div>
@@ -1144,65 +1267,72 @@
             </div>
         </div>
 
-        <div class="row g-4 mb-5">
+        <!-- Info cards -->
+        <div class="row g-4 sc-mb-large">
             <div class="col-md-4">
-                <div class="info-card reveal reveal-left delay-1">
-                    <div class="info-icon"><i class="bi bi-shield-check"></i></div>
+                <div class="sc-info-card sc-reveal sc-reveal-left sc-delay-1">
+                    <div class="sc-card-icon"><i class="bi bi-shield-check"></i></div>
                     <h5>Role-Based Privacy</h5>
                     <p>
                         Each user accesses only the features and information relevant to their responsibility,
-                        helping maintain privacy, clarity, and controlled digital healthcare operations.
+                        helping maintain privacy, clarity, and controlled healthcare operations.
                     </p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="info-card reveal reveal-up delay-2">
-                    <div class="info-icon"><i class="bi bi-layers"></i></div>
+                <div class="sc-info-card sc-reveal sc-reveal-up sc-delay-2">
+                    <div class="sc-card-icon"><i class="bi bi-layers"></i></div>
                     <h5>Simplified Workflow</h5>
                     <p>
-                        The interface is structured to reduce confusion, improve task completion, and make common
-                        hospital activities easier for both staff and patients.
+                        The interface is structured to reduce confusion, improve task completion, and make hospital
+                        activities easier for both staff and patients.
                     </p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="info-card reveal reveal-right delay-3">
-                    <div class="info-icon"><i class="bi bi-stars"></i></div>
+                <div class="sc-info-card sc-reveal sc-reveal-right sc-delay-3">
+                    <div class="sc-card-icon"><i class="bi bi-stars"></i></div>
                     <h5>Modern Healthcare Presence</h5>
                     <p>
-                        A clean, premium design helps the system feel trustworthy, user-friendly, and ready for
-                        presentation, deployment, or professional demonstration.
+                        A polished design helps the system feel trustworthy, user-friendly, and ready for presentation,
+                        deployment, or professional demonstration.
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="text-center mb-4 reveal reveal-up">
-            <span class="mini-badge"><i class="bi bi-diagram-3"></i> Smart Workflow</span>
-            <h2 class="section-title">How SmartCare HMS Works</h2>
-            <p class="section-subtitle">
+        <!-- Process -->
+        <div class="sc-section-head sc-reveal sc-reveal-up">
+            <span class="sc-kicker">
+                <i class="bi bi-diagram-3"></i>
+                Smart Workflow
+            </span>
+
+            <h2 class="sc-section-title">How SmartCare HMS Works</h2>
+
+            <p class="sc-section-subtitle">
                 The platform is designed to make digital healthcare access simple, organized, and efficient
                 for patients, doctors, receptionists, and administrators.
             </p>
         </div>
 
-        <div class="row g-4 mb-5">
+        <div class="row g-4 sc-mb-large">
             <div class="col-md-4">
-                <div class="process-card reveal reveal-left delay-1">
-                    <div class="process-step">01</div>
+                <div class="sc-process-card sc-reveal sc-reveal-left sc-delay-1">
+                    <div class="sc-process-step">01</div>
                     <h5>Register and Access the Right Portal</h5>
                     <p>
-                        Users log in through role-based portals designed specifically for patient care access,
+                        Users log in through role-based portals designed specifically for patient care,
                         doctor workflow, reception support, and administrative monitoring.
                     </p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="process-card reveal reveal-up delay-2">
-                    <div class="process-step">02</div>
+                <div class="sc-process-card sc-reveal sc-reveal-up sc-delay-2">
+                    <div class="sc-process-step">02</div>
                     <h5>Manage Appointments and Healthcare Tasks</h5>
                     <p>
                         Patients can book appointments, doctors can manage consultations and prescriptions,
@@ -1212,57 +1342,75 @@
             </div>
 
             <div class="col-md-4">
-                <div class="process-card reveal reveal-right delay-3">
-                    <div class="process-step">03</div>
+                <div class="sc-process-card sc-reveal sc-reveal-right sc-delay-3">
+                    <div class="sc-process-step">03</div>
                     <h5>Track Follow-Up and Improve Coordination</h5>
                     <p>
-                        Reports, prescriptions, and guidance stay connected in one platform, creating a smoother,
-                        more professional healthcare experience across all roles.
+                        Reports, prescriptions, and guidance stay connected in one platform, creating a smoother
+                        healthcare experience across all roles.
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="trust-section mb-5 reveal reveal-up">
+        <!-- Why choose -->
+        <div class="sc-why-box sc-mb-large sc-reveal sc-reveal-up">
             <div class="row align-items-center g-4">
                 <div class="col-lg-5">
-                    <span class="mini-badge"><i class="bi bi-award"></i> Why Choose SmartCare HMS</span>
-                    <h2 class="section-title mb-3">Designed for Trust, Speed, and Better Healthcare Coordination</h2>
-                    <p class="text-muted" style="line-height: 1.9; margin-bottom: 0;">
+                    <span class="sc-kicker">
+                        <i class="bi bi-award"></i>
+                        Why Choose SmartCare HMS
+                    </span>
+
+                    <h2 class="sc-section-title mb-3">
+                        Designed for Trust, Speed, and Better Healthcare Coordination
+                    </h2>
+
+                    <p class="sc-section-subtitle text-start">
                         SmartCare HMS helps healthcare organizations move toward digital service delivery with better
                         structure, stronger visibility, and a more professional patient experience.
                     </p>
                 </div>
 
                 <div class="col-lg-7">
-                    <div class="trust-item">
-                        <div class="trust-icon"><i class="bi bi-shield-lock"></i></div>
+                    <div class="sc-why-item">
+                        <div class="sc-why-icon"><i class="bi bi-shield-lock"></i></div>
                         <div>
                             <h6>Secure Access for Every Role</h6>
-                            <p>Doctors, patients, administrators, and receptionists receive role-focused access for safer and more organized workflow management.</p>
+                            <p>
+                                Doctors, patients, administrators, and receptionists receive role-focused access for safer
+                                and more organized workflow management.
+                            </p>
                         </div>
                     </div>
 
-                    <div class="trust-item">
-                        <div class="trust-icon"><i class="bi bi-diagram-3"></i></div>
+                    <div class="sc-why-item">
+                        <div class="sc-why-icon"><i class="bi bi-diagram-3"></i></div>
                         <div>
                             <h6>Connected Care Ecosystem</h6>
-                            <p>Appointments, prescriptions, follow-up reports, and hospital coordination stay connected inside one integrated platform.</p>
+                            <p>
+                                Appointments, prescriptions, follow-up reports, and hospital coordination stay connected
+                                inside one integrated platform.
+                            </p>
                         </div>
                     </div>
 
-                    <div class="trust-item mb-0">
-                        <div class="trust-icon"><i class="bi bi-robot"></i></div>
+                    <div class="sc-why-item">
+                        <div class="sc-why-icon"><i class="bi bi-robot"></i></div>
                         <div>
                             <h6>Smarter Patient Support</h6>
-                            <p>MediBot offers basic health guidance, helping patients understand common health concerns before deciding whether professional consultation is needed.</p>
+                            <p>
+                                MediBot offers basic health guidance, helping patients understand common health concerns
+                                before deciding whether professional consultation is needed.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="contact-cta reveal reveal-up">
+        <!-- CTA -->
+        <div class="sc-cta sc-reveal sc-reveal-up">
             <div class="row align-items-center g-4">
                 <div class="col-lg-8">
                     <h2>Transform Hospital Operations with a Cleaner Digital Experience</h2>
@@ -1273,12 +1421,13 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="cta-actions">
-                        <a href="{% url 'about' %}" class="cta-btn-secondary">
+                    <div class="sc-cta-actions">
+                        <a href="{% url 'about' %}" class="sc-btn-glass">
                             <i class="bi bi-info-circle"></i>
                             About System
                         </a>
-                        <a href="{% url 'contact' %}" class="hero-btn-primary">
+
+                        <a href="{% url 'contact' %}" class="sc-btn-primary">
                             <i class="bi bi-envelope-paper"></i>
                             Contact Us
                         </a>
@@ -1293,20 +1442,21 @@
 
 {% block extra_js %}
 <script>
-    const revealElements = document.querySelectorAll('.reveal');
+    const smartCareRevealElements = document.querySelectorAll('.sc-reveal');
 
-    const revealOnScroll = () => {
+    const smartCareRevealOnScroll = () => {
         const triggerBottom = window.innerHeight * 0.88;
 
-        revealElements.forEach(el => {
+        smartCareRevealElements.forEach(el => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
                 el.classList.add('show');
             }
         });
     };
 
-    window.addEventListener('scroll', revealOnScroll);
-    window.addEventListener('load', revealOnScroll);
+    window.addEventListener('scroll', smartCareRevealOnScroll);
+    window.addEventListener('load', smartCareRevealOnScroll);
 </script>
 {% endblock %}

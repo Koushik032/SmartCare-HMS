@@ -32,6 +32,12 @@ class Doctor(models.Model):
     is_approved = models.BooleanField(default=False)
     is_available = models.BooleanField(default=True)
 
+    # NEW: Doctor next 7 days availability
+    available_from_time = models.TimeField(blank=True, null=True)
+    available_to_time = models.TimeField(blank=True, null=True)
+    availability_note = models.CharField(max_length=255, blank=True, null=True)
+    availability_updated_at = models.DateTimeField(blank=True, null=True)
+
     def __str__(self):
         return self.name
 
@@ -64,6 +70,7 @@ class ContactMessage(models.Model):
 
 class Appointment(models.Model):
     STATUS_CHOICES = (
+        ('Pending Receptionist', 'Pending Receptionist'),
         ('Booked', 'Booked'),
         ('Arrived', 'Arrived'),
         ('Waiting', 'Waiting'),
@@ -96,6 +103,7 @@ class Appointment(models.Model):
         ('Urgent', 'Urgent'),
         ('Emergency', 'Emergency'),
     )
+
     payment_method = models.CharField(
         max_length=20,
         choices=[
@@ -106,11 +114,13 @@ class Appointment(models.Model):
         null=True
     )
 
-
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     appointment_date = models.DateField()
-    appointment_time = models.TimeField()
+
+    # UPDATED: patient will not choose time. Receptionist will assign later.
+    appointment_time = models.TimeField(blank=True, null=True)
+
     consultancy_fee = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_mode = models.CharField(max_length=20, choices=MODE_CHOICES, default='Offline')
     problem_category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='General Checkup')
@@ -119,6 +129,7 @@ class Appointment(models.Model):
     meeting_link = models.URLField(blank=True, null=True)
     transaction_id = models.CharField(max_length=100, blank=True, null=True)
     payment_number = models.CharField(max_length=20, blank=True, null=True)
+
     payment_status = models.CharField(
         max_length=20,
         choices=[
@@ -128,8 +139,21 @@ class Appointment(models.Model):
         ],
         default='Unpaid'
     )
+
     visit_note = models.CharField(max_length=255, blank=True, null=True)
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='Booked')
+
+    # NEW: Receptionist assigned message/time info
+    receptionist_message = models.TextField(blank=True, null=True)
+    receptionist_assigned_at = models.DateTimeField(blank=True, null=True)
+    patient_message_seen = models.BooleanField(default=False)
+    patient_message_seen_at = models.DateTimeField(blank=True, null=True)
+
+    status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default='Pending Receptionist'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

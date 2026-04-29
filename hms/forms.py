@@ -264,7 +264,6 @@ class AppointmentForm(forms.ModelForm):
         fields = [
             'doctor',
             'appointment_date',
-            'appointment_time',
             'appointment_mode',
             'problem_category',
             'urgency_level',
@@ -277,10 +276,6 @@ class AppointmentForm(forms.ModelForm):
         widgets = {
             'appointment_date': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'form-control'
-            }),
-            'appointment_time': forms.TimeInput(attrs={
-                'type': 'time',
                 'class': 'form-control'
             }),
             'problem_category': forms.Select(attrs={
@@ -364,46 +359,201 @@ from .models import Prescription
 
 class DoctorProfileForm(forms.Form):
     name = forms.CharField(
-        max_length=150,
+        label="Doctor Name",
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+
     specialist = forms.CharField(
-        max_length=150,
+        label="Specialist",
+        required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+
     hospital_name = forms.CharField(
-        max_length=150,
+        label="Hospital Name",
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+
     location = forms.CharField(
-        max_length=150,
+        label="Location",
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+
     contact = forms.CharField(
-        max_length=20,
+        label="Contact",
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+
     consultancy_fee = forms.DecimalField(
+        label="Consultancy Fee",
+        max_digits=10,
+        decimal_places=2,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
+
     about = forms.CharField(
+        label="About",
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4})
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 4
+        })
     )
+
     username = forms.CharField(
-        max_length=150,
+        label="Username",
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+
     email = forms.EmailField(
-        required=False,
+        label="Email",
         widget=forms.EmailInput(attrs={'class': 'form-control'})
     )
+
     photo = forms.ImageField(
+        label="Profile Photo",
         required=False,
-        widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
+        widget=forms.FileInput(attrs={'class': 'form-control'})
     )
+
+    # NEW: Doctor availability fields
+    available_from_time = forms.TimeField(
+        label="Available From Time",
+        required=False,
+        widget=forms.TimeInput(attrs={
+            'type': 'time',
+            'class': 'form-control'
+        })
+    )
+
+    available_to_time = forms.TimeField(
+        label="Available To Time",
+        required=False,
+        widget=forms.TimeInput(attrs={
+            'type': 'time',
+            'class': 'form-control'
+        })
+    )
+
+    availability_note = forms.CharField(
+        label="Availability Note",
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Example: Available for next 7 days except Friday'
+        })
+    )
+
+    def __init__(self, *args, **kwargs):
+        # This line fixes:
+        # BaseForm.__init__() got an unexpected keyword argument 'user_instance'
+        self.user_instance = kwargs.pop('user_instance', None)
+        super().__init__(*args, **kwargs)
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+
+        if self.user_instance:
+            qs = User.objects.filter(username=username).exclude(id=self.user_instance.id)
+            if qs.exists():
+                raise forms.ValidationError("This username is already taken.")
+
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if self.user_instance:
+            qs = User.objects.filter(email=email).exclude(id=self.user_instance.id)
+            if qs.exists():
+                raise forms.ValidationError("This email is already used.")
+
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        from_time = cleaned_data.get('available_from_time')
+        to_time = cleaned_data.get('available_to_time')
+
+        if from_time and to_time and from_time >= to_time:
+            raise forms.ValidationError("Available from time must be earlier than available to time.")
+
+        return cleaned_data
+
+class PatientAppointmentRequestForm(forms.ModelForm):
+    class Meta:
+        model = Appointment
+        fields = [
+            'doctor',
+            'appointment_date',
+            'appointment_mode',
+            'problem_category',
+            'urgency_level',
+            'symptoms',
+            'meeting_link',
+            'payment_method',
+            'transaction_id',
+        ]
+
+        widgets = {
+            'doctor': forms.Select(attrs={'class': 'form-select'}),
+            'appointment_date': forms.DateInput(attrs={
+                'type': 'date',
+                'class': 'form-control'
+            }),
+
+            # IMPORTANT: mode radio button
+            'appointment_mode': forms.RadioSelect(),
+
+            'problem_category': forms.Select(attrs={'class': 'form-select'}),
+
+            # IMPORTANT: urgency radio button
+            'urgency_level': forms.RadioSelect(),
+
+            'symptoms': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Describe your symptoms clearly...'
+            }),
+            'meeting_link': forms.URLInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Paste meeting link if appointment is online'
+            }),
+            'payment_method': forms.Select(attrs={'class': 'form-select'}),
+            'transaction_id': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter transaction ID if paid by Bkash'
+            }),
+        }
+
+        labels = {
+            'doctor': 'Select Doctor',
+            'appointment_date': 'Appointment Date',
+            'appointment_mode': 'Appointment Mode',
+            'problem_category': 'Problem Category',
+            'urgency_level': 'Urgency Level',
+            'symptoms': 'Symptoms',
+            'meeting_link': 'Meeting Link',
+            'payment_method': 'Payment Method',
+            'transaction_id': 'Transaction ID',
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        appointment_mode = cleaned_data.get('appointment_mode')
+        meeting_link = cleaned_data.get('meeting_link')
+        payment_method = cleaned_data.get('payment_method')
+        transaction_id = cleaned_data.get('transaction_id')
+
+        if appointment_mode == 'Online' and not meeting_link:
+            self.add_error('meeting_link', 'Meeting link is required for online appointment.')
+
+        if payment_method == 'Bkash' and not transaction_id:
+            self.add_error('transaction_id', 'Transaction ID is required for Bkash payment.')
+
+        return cleaned_data
 
     def __init__(self, *args, **kwargs):
         self.user_instance = kwargs.pop('user_instance', None)
@@ -430,19 +580,41 @@ class DoctorProfileForm(forms.Form):
 
 
 class DoctorPasswordForm(forms.Form):
-    current_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    new_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    old_password = forms.CharField(
+        label="Current Password",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter current password'
+        })
+    )
+
+    new_password = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter new password'
+        })
+    )
+
+    confirm_password = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm new password'
+        })
+    )
 
     def __init__(self, *args, **kwargs):
         self.user_instance = kwargs.pop('user_instance', None)
         super().__init__(*args, **kwargs)
 
-    def clean_current_password(self):
-        current_password = self.cleaned_data['current_password']
-        if self.user_instance and not self.user_instance.check_password(current_password):
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_password')
+
+        if self.user_instance and not self.user_instance.check_password(old_password):
             raise forms.ValidationError("Current password is incorrect.")
-        return current_password
+
+        return old_password
 
     def clean(self):
         cleaned_data = super().clean()
@@ -450,10 +622,7 @@ class DoctorPasswordForm(forms.Form):
         confirm_password = cleaned_data.get('confirm_password')
 
         if new_password and confirm_password and new_password != confirm_password:
-            raise forms.ValidationError("New passwords do not match.")
-
-        if self.user_instance and new_password:
-            validate_password(new_password, self.user_instance)
+            raise forms.ValidationError("New password and confirm password do not match.")
 
         return cleaned_data
 
@@ -1009,6 +1178,39 @@ class WalkInPatientAppointmentForm(forms.Form):
             self.add_error('meeting_link', 'Meeting link is required for online appointments.')
 
         return cleaned_data
+    
+
+from django import forms
+from .models import Appointment
+
+
+class ReceptionistAssignAppointmentTimeForm(forms.ModelForm):
+    class Meta:
+        model = Appointment
+        fields = ['appointment_time', 'receptionist_message']
+
+        widgets = {
+            'appointment_time': forms.TimeInput(attrs={
+                'type': 'time',
+                'class': 'form-control'
+            }),
+            'receptionist_message': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Example: Please arrive 15 minutes early. Your approximate appointment time is 10:30 AM.'
+            }),
+        }
+
+        labels = {
+            'appointment_time': 'Approximate Appointment Time',
+            'receptionist_message': 'Message for Patient',
+        }
+
+    def clean_appointment_time(self):
+        appointment_time = self.cleaned_data.get('appointment_time')
+        if not appointment_time:
+            raise forms.ValidationError('Please assign an approximate appointment time.')
+        return appointment_time
     
 from django import forms
 from .models import ReportShow, Doctor, Appointment, Prescription

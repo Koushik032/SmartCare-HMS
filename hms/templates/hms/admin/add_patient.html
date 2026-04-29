@@ -4,28 +4,17 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --primary-2: #1e293b;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --accent-soft: #e0f2fe;
-        --muted: #64748b;
-        --border: #e6edf5;
-        --soft: #f8fbff;
-        --white: #ffffff;
-        --success: #16a34a;
-        --danger: #dc2626;
-        --shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
-        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
-        --shadow-lg: 0 28px 64px rgba(15, 23, 42, 0.14);
-        --transition: all 0.35s ease;
-    }
-
-    body {
-        background:
-            radial-gradient(circle at top left, rgba(56, 189, 248, 0.06), transparent 28%),
-            radial-gradient(circle at bottom right, rgba(29, 78, 216, 0.05), transparent 24%),
-            #f8fbff;
+        --sc-primary: #0f172a;
+        --sc-secondary: #1d4ed8;
+        --sc-accent: #38bdf8;
+        --sc-muted: #64748b;
+        --sc-border: #e6edf5;
+        --sc-soft: #f8fbff;
+        --sc-danger: #dc2626;
+        --sc-shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
+        --sc-shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
+        --sc-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+        --sc-transition: all 0.35s ease;
     }
 
     .admin-form-page {
@@ -33,7 +22,7 @@
         overflow: hidden;
         padding: 40px 0 78px;
         background:
-            linear-gradient(rgba(248, 251, 255, 0.90), rgba(248, 251, 255, 0.94)),
+            linear-gradient(rgba(248, 251, 255, 0.92), rgba(248, 251, 255, 0.96)),
             url('https://images.unsplash.com/photo-1579684453423-f84349ef60b0?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat fixed;
     }
 
@@ -49,22 +38,22 @@
 
     .admin-form-shell {
         position: relative;
-        background: rgba(255,255,255,0.92);
+        background: rgba(255,255,255,0.94);
         border: 1px solid rgba(230, 237, 245, 0.9);
-        border-radius: 32px;
-        box-shadow: var(--shadow-lg);
+        border-radius: 34px;
+        box-shadow: var(--sc-shadow-lg);
         overflow: hidden;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(14px);
     }
 
     .admin-form-top {
         position: relative;
         overflow: hidden;
         background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(29, 78, 216, 0.88) 56%, rgba(56, 189, 248, 0.78) 100%),
+            linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(29, 78, 216, 0.88), rgba(56, 189, 248, 0.76)),
             url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
         color: #ffffff;
-        padding: 52px 42px;
+        padding: 54px 42px;
         isolation: isolate;
     }
 
@@ -78,10 +67,10 @@
     }
 
     .admin-form-top::before {
-        width: 250px;
-        height: 250px;
-        top: -80px;
-        right: -70px;
+        width: 260px;
+        height: 260px;
+        top: -90px;
+        right: -75px;
     }
 
     .admin-form-top::after {
@@ -100,16 +89,16 @@
         background: rgba(255,255,255,0.14);
         border: 1px solid rgba(255,255,255,0.16);
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 800;
         margin-bottom: 16px;
         backdrop-filter: blur(10px);
     }
 
     .admin-form-top h2 {
-        margin: 0 0 10px;
-        font-size: 2.25rem;
-        font-weight: 900;
-        letter-spacing: -0.5px;
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 4vw, 2.65rem);
+        font-weight: 950;
+        letter-spacing: -0.6px;
         line-height: 1.08;
     }
 
@@ -117,8 +106,7 @@
         margin: 0;
         color: rgba(255,255,255,0.92);
         line-height: 1.9;
-        max-width: 780px;
-        font-size: 1rem;
+        max-width: 800px;
     }
 
     .top-highlight-row {
@@ -138,11 +126,11 @@
         border: 1px solid rgba(255,255,255,0.14);
         color: #ffffff;
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 650;
     }
 
     .admin-form-body {
-        padding: 34px;
+        padding: 36px;
     }
 
     .form-grid {
@@ -152,20 +140,22 @@
     }
 
     .form-card,
+    .profile-upload-card,
     .side-info-card {
         background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(251,253,255,0.95));
         border: 1px solid #e8eef7;
-        border-radius: 26px;
-        padding: 26px;
-        box-shadow: var(--shadow-sm);
-        transition: var(--transition);
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: var(--sc-shadow-sm);
+        transition: var(--sc-transition);
         height: 100%;
     }
 
     .form-card:hover,
+    .profile-upload-card:hover,
     .side-info-card:hover {
         transform: translateY(-4px);
-        box-shadow: var(--shadow-md);
+        box-shadow: var(--sc-shadow-md);
     }
 
     .section-mini-title {
@@ -173,33 +163,33 @@
         align-items: center;
         gap: 10px;
         font-size: 1.18rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 18px;
+        font-weight: 900;
+        color: var(--sc-primary);
+        margin-bottom: 16px;
     }
 
     .title-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 14px;
+        width: 46px;
+        height: 46px;
+        border-radius: 15px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
-        font-size: 18px;
-        box-shadow: var(--shadow-sm);
+        color: var(--sc-secondary);
+        font-size: 19px;
+        box-shadow: var(--sc-shadow-sm);
         flex-shrink: 0;
     }
 
     .section-description {
-        color: var(--muted);
+        color: var(--sc-muted);
         line-height: 1.8;
         margin-bottom: 22px;
     }
 
     .form-label {
-        font-weight: 700;
+        font-weight: 750;
         color: #334155;
         margin-bottom: 8px;
         display: block;
@@ -216,7 +206,7 @@
         box-shadow: none;
         width: 100%;
         padding: 12px 14px;
-        transition: var(--transition);
+        transition: var(--sc-transition);
         font-size: 0.98rem;
     }
 
@@ -256,9 +246,9 @@
         border-radius: 14px;
         border: 1px solid #dbe2ea;
         background: #f8fafc;
-        font-weight: 700;
+        font-weight: 800;
         color: #334155;
-        transition: var(--transition);
+        transition: var(--sc-transition);
     }
 
     .radio-item input[type="radio"]:checked + .gender-card {
@@ -279,27 +269,25 @@
     }
 
     .field-error {
-        color: var(--danger);
+        color: var(--sc-danger);
         margin-top: 6px;
         display: block;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 0.9rem;
+    }
+
+    .alert-danger {
+        border-radius: 14px;
+        border: none;
+        background: #fef2f2;
+        color: #b91c1c;
+        font-weight: 700;
+        padding: 14px 16px;
     }
 
     .profile-upload-card {
         position: relative;
         overflow: hidden;
-        background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,250,255,0.96));
-        border: 1px solid #e5edf7;
-        border-radius: 28px;
-        padding: 26px;
-        box-shadow: var(--shadow-md);
-        transition: var(--transition);
-    }
-
-    .profile-upload-card:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-lg);
     }
 
     .profile-upload-card::before {
@@ -307,16 +295,15 @@
         position: absolute;
         top: -35px;
         right: -35px;
-        width: 120px;
-        height: 120px;
+        width: 125px;
+        height: 125px;
         border-radius: 50%;
         background: rgba(59, 130, 246, 0.06);
     }
 
-    .profile-upload-top {
+    .profile-upload-card > * {
         position: relative;
         z-index: 2;
-        margin-bottom: 20px;
     }
 
     .profile-upload-chip {
@@ -328,28 +315,26 @@
         background: #eff6ff;
         color: #1d4ed8;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         margin-bottom: 12px;
         box-shadow: inset 0 0 0 1px #dbeafe;
     }
 
     .profile-upload-title {
         font-size: 1.2rem;
-        font-weight: 800;
-        color: #0f172a;
+        font-weight: 900;
+        color: var(--sc-primary);
         margin-bottom: 8px;
     }
 
     .profile-upload-text {
-        color: var(--muted);
+        color: var(--sc-muted);
         line-height: 1.8;
         font-size: 0.95rem;
-        margin-bottom: 0;
+        margin-bottom: 20px;
     }
 
     .profile-preview-shell {
-        position: relative;
-        z-index: 2;
         background: linear-gradient(135deg, #eef6ff, #f8fbff);
         border: 1px solid #dbeafe;
         border-radius: 24px;
@@ -362,7 +347,7 @@
         width: 180px;
         height: 180px;
         margin: 0 auto 16px;
-        border-radius: 28px;
+        border-radius: 30px;
         overflow: hidden;
         background: linear-gradient(135deg, #dbeafe, #bfdbfe);
         display: flex;
@@ -370,16 +355,6 @@
         justify-content: center;
         box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
         border: 5px solid rgba(255,255,255,0.95);
-        position: relative;
-    }
-
-    .profile-preview::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 28px;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
-        pointer-events: none;
     }
 
     .profile-preview img {
@@ -393,7 +368,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
         color: #1d4ed8;
         gap: 8px;
         padding: 12px;
@@ -406,25 +380,15 @@
 
     .profile-placeholder strong {
         font-size: 0.98rem;
-        font-weight: 800;
-        color: #0f172a;
+        font-weight: 900;
+        color: var(--sc-primary);
     }
 
     .profile-placeholder span {
         font-size: 0.85rem;
         color: #64748b;
         line-height: 1.6;
-        max-width: 120px;
-    }
-
-    .profile-upload-actions {
-        position: relative;
-        z-index: 2;
-    }
-
-    .custom-file-wrap {
-        position: relative;
-        margin-bottom: 14px;
+        max-width: 130px;
     }
 
     .custom-file-wrap input[type="file"] {
@@ -434,12 +398,7 @@
         border: 1px solid #dbe3ee;
         background: #ffffff;
         padding: 11px 14px;
-        transition: var(--transition);
-    }
-
-    .custom-file-wrap input[type="file"]:hover {
-        border-color: #93c5fd;
-        background: #f8fbff;
+        transition: var(--sc-transition);
     }
 
     .file-name-box {
@@ -454,7 +413,7 @@
         color: #475569;
         font-size: 0.92rem;
         line-height: 1.6;
-        margin-bottom: 14px;
+        margin: 14px 0;
     }
 
     .file-name-box i {
@@ -470,8 +429,8 @@
 
     .profile-guidelines h6 {
         font-size: 0.95rem;
-        font-weight: 800;
-        color: #0f172a;
+        font-weight: 900;
+        color: var(--sc-primary);
         margin-bottom: 10px;
     }
 
@@ -512,10 +471,10 @@
     }
 
     .footer-note {
-        color: var(--muted);
+        color: var(--sc-muted);
         line-height: 1.75;
         margin: 0;
-        max-width: 520px;
+        max-width: 620px;
         font-size: 0.95rem;
     }
 
@@ -526,8 +485,8 @@
         border-radius: 15px;
         background: linear-gradient(135deg, #1d4ed8, #38bdf8);
         color: #ffffff;
-        font-weight: 700;
-        transition: var(--transition);
+        font-weight: 850;
+        transition: var(--sc-transition);
         box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
         display: inline-flex;
         align-items: center;
@@ -537,15 +496,7 @@
     .btn-admin-main:hover {
         color: #ffffff;
         transform: translateY(-2px);
-    }
-
-    .alert-danger {
-        border-radius: 14px;
-        border: none;
-        background: #fef2f2;
-        color: #b91c1c;
-        font-weight: 600;
-        padding: 14px 16px;
+        box-shadow: 0 16px 32px rgba(29, 78, 216, 0.22);
     }
 
     .reveal {
@@ -582,7 +533,7 @@
 
     @media (max-width: 767px) {
         .admin-form-page {
-            padding: 26px 0 50px;
+            padding: 26px 0 54px;
             background-attachment: scroll;
         }
 
@@ -592,9 +543,8 @@
         }
 
         .form-card,
-        .side-info-card,
         .profile-upload-card {
-            padding: 20px;
+            padding: 22px;
         }
 
         .form-footer {
@@ -625,7 +575,9 @@
                     <i class="bi bi-person-plus"></i>
                     SmartCare HMS • Admin Action
                 </span>
+
                 <h2>Add Patient Account</h2>
+
                 <p>
                     Create a new patient profile directly from the administrative panel with a secure,
                     structured, and professional onboarding flow inside SmartCare HMS.
@@ -649,8 +601,9 @@
                                 <span class="title-icon"><i class="bi bi-person-vcard"></i></span>
                                 Patient Information
                             </h3>
+
                             <p class="section-description">
-                                Enter the patient’s identity, contact, gender, login credentials, and profile picture carefully.
+                                Enter the patient’s identity, contact, gender, login credentials, and profile information carefully.
                             </p>
 
                             <div class="row g-4">
@@ -680,6 +633,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label d-block">{{ form.gender.label }}</label>
+
                                     <div class="radio-list">
                                         {% for choice in form.gender %}
                                             <label class="radio-item">
@@ -688,6 +642,7 @@
                                             </label>
                                         {% endfor %}
                                     </div>
+
                                     {% if form.gender.errors %}
                                         <small class="field-error">{{ form.gender.errors|striptags }}</small>
                                     {% endif %}
@@ -724,8 +679,6 @@
                                         <small class="field-error">{{ form.confirm_password.errors|striptags }}</small>
                                     {% endif %}
                                 </div>
-                                <div class="profile-upload-actions">
-                                </div>
                             </div>
 
                             {% if form.non_field_errors %}
@@ -734,26 +687,10 @@
                                 </div>
                             {% endif %}
 
-                           <div class="profile-upload-top">
-
-                                    <h4 class="profile-upload-title">Upload Your profile picture</h4>
-                            
-                                </div>
-
-                                <div class="profile-upload-actions">
-                                    <div class="custom-file-wrap">
-                                        {{ form.photo }}
-                                        {% if form.photo.errors %}
-                                            <small class="field-error">{{ form.photo.errors|striptags }}</small>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                        </div>
-
                             <div class="form-footer">
                                 <p class="footer-note">
-                                    After submission, the patient will be able to access appointments, healthcare support,
-                                    and profile-based hospital services inside SmartCare HMS.
+                                    After submission, the patient can access appointments, healthcare support,
+                                    reports, prescriptions, and profile-based hospital services inside SmartCare HMS.
                                 </p>
 
                                 <button type="submit" class="btn-admin-main">
@@ -763,7 +700,61 @@
                             </div>
                         </div>
 
-                        
+                        <div class="profile-upload-card reveal reveal-right">
+                            <span class="profile-upload-chip">
+                                <i class="bi bi-image"></i>
+                                Profile Photo
+                            </span>
+
+                            <h4 class="profile-upload-title">Upload Patient Profile Picture</h4>
+
+                            <p class="profile-upload-text">
+                                Add a clear patient profile photo to make the patient record easier to identify
+                                across dashboard, history, and appointment-related screens.
+                            </p>
+
+                            <div class="profile-preview-shell">
+                                <div class="profile-preview">
+                                    <img id="previewImage" alt="Patient Preview">
+
+                                    <div class="profile-placeholder" id="uploadPlaceholder">
+                                        <i class="bi bi-person-bounding-box"></i>
+                                        <strong>No Photo</strong>
+                                        <span>Choose a photo to preview here</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="custom-file-wrap">
+                                {{ form.photo }}
+                                {% if form.photo.errors %}
+                                    <small class="field-error">{{ form.photo.errors|striptags }}</small>
+                                {% endif %}
+                            </div>
+
+                            <div class="file-name-box">
+                                <i class="bi bi-paperclip"></i>
+                                <span id="fileNameText">No file selected yet</span>
+                            </div>
+
+                            <div class="profile-guidelines">
+                                <h6>Photo Guidelines</h6>
+                                <ul>
+                                    <li>
+                                        <i class="bi bi-check-circle"></i>
+                                        <span>Use a clear portrait or square image.</span>
+                                    </li>
+                                    <li>
+                                        <i class="bi bi-check-circle"></i>
+                                        <span>Try to use good lighting and simple background.</span>
+                                    </li>
+                                    <li>
+                                        <i class="bi bi-check-circle"></i>
+                                        <span>This upload keeps your existing backend functionality unchanged.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
                     </div>
                 </form>
@@ -780,8 +771,10 @@
 
     function addPatientRevealOnScroll() {
         const triggerBottom = window.innerHeight * 0.9;
+
         addPatientReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
                 setTimeout(() => el.classList.add('show'), index * 80);
             }
@@ -796,7 +789,7 @@
     const uploadPlaceholder = document.getElementById('uploadPlaceholder');
     const fileNameText = document.getElementById('fileNameText');
 
-    if (photoInput) {
+    if (photoInput && previewImage && uploadPlaceholder && fileNameText) {
         photoInput.addEventListener('change', function (event) {
             const file = event.target.files[0];
 

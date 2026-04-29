@@ -3,127 +3,401 @@
 <head>
     <meta charset="utf-8">
     <title>Appointments PDF</title>
+
     <style>
+        @page {
+            size: A4 landscape;
+            margin: 18mm 14mm;
+        }
+
         body {
             font-family: Helvetica, Arial, sans-serif;
-            font-size: 11px;
+            font-size: 10.5px;
             color: #111827;
-            margin: 24px;
+            margin: 0;
+            background: #ffffff;
+        }
+
+        .pdf-page {
+            width: 100%;
         }
 
         .top-wrap {
+            position: relative;
             text-align: center;
-            margin-bottom: 18px;
-            border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 12px;
+            margin-bottom: 16px;
+            padding: 18px 20px 16px;
+            border-radius: 12px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+
+        .top-title-line {
+            width: 70px;
+            height: 3px;
+            background: #1d4ed8;
+            margin: 10px auto 0;
+            border-radius: 999px;
         }
 
         .chip {
             display: inline-block;
-            padding: 5px 10px;
+            padding: 5px 11px;
             border-radius: 999px;
-            background: #e0ecff;
+            background: #dbeafe;
             color: #1d4ed8;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             margin-bottom: 8px;
+            border: 1px solid #bfdbfe;
         }
 
         h2 {
             text-align: center;
             margin: 0 0 6px;
-            font-size: 20px;
+            font-size: 22px;
             color: #0f172a;
+            letter-spacing: -0.2px;
         }
 
-        p {
+        .org-name {
             text-align: center;
             margin: 0;
-            color: #475569;
+            color: #334155;
             line-height: 1.6;
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        .summary-box {
-            margin: 16px 0 18px;
+        .subtitle {
+            text-align: center;
+            margin: 4px 0 0;
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 10.5px;
+        }
+
+        .summary-grid {
+            width: 100%;
+            margin: 14px 0 16px;
+            border-collapse: separate;
+            border-spacing: 8px 0;
+        }
+
+        .summary-card {
+            width: 25%;
+            padding: 10px 12px;
+            border: 1px solid #dbe2ea;
+            background: #f8fbff;
+            border-radius: 8px;
+            vertical-align: top;
+        }
+
+        .summary-label {
+            color: #64748b;
+            font-size: 9.5px;
+            margin-bottom: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .summary-value {
+            color: #0f172a;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .info-box {
+            margin: 0 0 14px;
             padding: 10px 12px;
             border: 1px solid #dbe2ea;
             background: #f8fbff;
             border-radius: 8px;
             color: #334155;
+            line-height: 1.7;
+        }
+
+        .info-box strong {
+            color: #0f172a;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10.5px;
+            font-size: 9.5px;
+            table-layout: fixed;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #cbd5e1;
-            padding: 7px;
+            padding: 7px 6px;
             text-align: left;
             vertical-align: top;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.45;
         }
 
         th {
             background: #e2e8f0;
             color: #0f172a;
             font-weight: 700;
+            font-size: 9.5px;
         }
 
         tbody tr:nth-child(even) {
             background: #f8fafc;
         }
 
+        .patient-cell {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .doctor-cell {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 4px 7px;
+            border-radius: 999px;
+            font-size: 8.8px;
+            font-weight: 700;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .status-cancelled,
+        .status-missed {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fecaca;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fde68a;
+        }
+
+        .time-pending {
+            color: #92400e;
+            font-weight: 700;
+        }
+
+        .muted {
+            color: #64748b;
+        }
+
+        .message-box {
+            margin-top: 4px;
+            padding: 5px 6px;
+            border-radius: 6px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #334155;
+            font-size: 8.8px;
+            line-height: 1.45;
+        }
+
         .empty-cell {
             text-align: center;
             color: #64748b;
-            padding: 14px;
+            padding: 18px;
+            font-weight: 700;
+            background: #f8fafc;
         }
+
+        .footer-note {
+            margin-top: 14px;
+            padding-top: 9px;
+            border-top: 1px solid #cbd5e1;
+            color: #64748b;
+            font-size: 9px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .w-patient { width: 13%; }
+        .w-doctor { width: 13%; }
+        .w-hospital { width: 15%; }
+        .w-date { width: 9%; }
+        .w-time { width: 8%; }
+        .w-status { width: 10%; }
+        .w-mode { width: 8%; }
+        .w-symptoms { width: 24%; }
     </style>
 </head>
+
 <body>
-    <div class="top-wrap">
-        <div class="chip">Receptionist Appointment Export</div>
-        <h2>Filtered Appointments</h2>
-        <p>{{ receptionist.organization_name }}</p>
-    </div>
+    <div class="pdf-page">
 
-    <div class="summary-box">
-        Exported appointment list for organizational review and record keeping.
-    </div>
+        <div class="top-wrap">
+            <div class="chip">Receptionist Appointment Export</div>
 
-    <table>
-        <thead>
+            <h2>Filtered Appointments Report</h2>
+
+            <p class="org-name">
+                {{ receptionist.organization_name }}
+            </p>
+
+            <p class="subtitle">
+                Professional appointment summary generated from SmartCare HMS for organizational review and record keeping.
+            </p>
+
+            <div class="top-title-line"></div>
+        </div>
+
+        <table class="summary-grid">
             <tr>
-                <th>Patient</th>
-                <th>Doctor</th>
-                <th>Hospital</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Mode</th>
-                <th>Symptoms</th>
+                <td class="summary-card">
+                    <div class="summary-label">Organization</div>
+                    <div class="summary-value">
+                        {{ receptionist.organization_name }}
+                    </div>
+                </td>
+
+                <td class="summary-card">
+                    <div class="summary-label">Total Records</div>
+                    <div class="summary-value">
+                        {{ appointments|length }}
+                    </div>
+                </td>
+
+                <td class="summary-card">
+                    <div class="summary-label">Report Type</div>
+                    <div class="summary-value">
+                        Filtered Export
+                    </div>
+                </td>
+
+                <td class="summary-card">
+                    <div class="summary-label">Generated For</div>
+                    <div class="summary-value">
+                        Receptionist Review
+                    </div>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            {% for a in appointments %}
-            <tr>
-                <td>{{ a.patient.first_name }} {{ a.patient.last_name }}</td>
-                <td>{{ a.doctor.name }}</td>
-                <td>{{ a.doctor.hospital_name }}</td>
-                <td>{{ a.appointment_date }}</td>
-                <td>{{ a.appointment_time }}</td>
-                <td>{{ a.status }}</td>
-                <td>{{ a.appointment_mode }}</td>
-                <td>{{ a.symptoms|default:"-" }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="8" class="empty-cell">No appointments found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        </table>
+
+        <div class="info-box">
+            <strong>Report Note:</strong>
+            This PDF contains appointment information based on the current receptionist filters.
+            It includes patient, doctor, hospital, date, time, status, mode, symptoms, and receptionist message if available.
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="w-patient">Patient</th>
+                    <th class="w-doctor">Doctor</th>
+                    <th class="w-hospital">Hospital</th>
+                    <th class="w-date">Date</th>
+                    <th class="w-time">Time</th>
+                    <th class="w-status">Status</th>
+                    <th class="w-mode">Mode</th>
+                    <th class="w-symptoms">Symptoms / Note</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for a in appointments %}
+                    <tr>
+                        <td class="patient-cell">
+                            {{ a.patient.first_name }} {{ a.patient.last_name }}
+                            {% if a.patient.contact %}
+                                <br>
+                                <span class="muted">{{ a.patient.contact }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="doctor-cell">
+                            Dr. {{ a.doctor.name }}
+                            {% if a.doctor.specialist %}
+                                <br>
+                                <span class="muted">{{ a.doctor.specialist }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {{ a.doctor.hospital_name|default:"-" }}
+                        </td>
+
+                        <td>
+                            {% if a.appointment_date %}
+                                {{ a.appointment_date|date:"M d, Y" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if a.appointment_time %}
+                                {{ a.appointment_time|time:"h:i A" }}
+                            {% else %}
+                                <span class="time-pending">Pending</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if a.status == 'Completed' %}
+                                <span class="status-pill status-completed">{{ a.status }}</span>
+                            {% elif a.status == 'Cancelled by Patient' or a.status == 'Cancelled by Doctor' %}
+                                <span class="status-pill status-cancelled">{{ a.status }}</span>
+                            {% elif a.status == 'Missed' %}
+                                <span class="status-pill status-missed">{{ a.status }}</span>
+                            {% elif a.status == 'Pending Receptionist' %}
+                                <span class="status-pill status-pending">Pending Receptionist</span>
+                            {% else %}
+                                <span class="status-pill">{{ a.status }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {{ a.appointment_mode|default:"-" }}
+                        </td>
+
+                        <td>
+                            {% if a.symptoms %}
+                                {{ a.symptoms }}
+                            {% else %}
+                                <span class="muted">No symptoms added.</span>
+                            {% endif %}
+
+                            {% if a.receptionist_message %}
+                                <div class="message-box">
+                                    <strong>Receptionist Message:</strong>
+                                    {{ a.receptionist_message }}
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" class="empty-cell">
+                            No appointments found for the selected filter.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="footer-note">
+            SmartCare HMS Appointment Export • This report is generated for internal healthcare coordination and record keeping.
+        </div>
+
+    </div>
 </body>
 </html>

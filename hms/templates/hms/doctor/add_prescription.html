@@ -4,238 +4,385 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --muted: #64748b;
-        --border: #dbe2ea;
-        --soft: #f8fbff;
-        --white: #ffffff;
-        --danger: #dc2626;
-        --success: #16a34a;
-        --warning-bg: linear-gradient(135deg, #fff7ed, #fffbeb);
-        --warning-border: #fed7aa;
-        --warning-text: #9a3412;
-        --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.06);
-        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.10);
-        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.16);
-        --transition: all 0.35s ease;
+        --rx-primary: #07111f;
+        --rx-dark: #0f172a;
+        --rx-blue: #2563eb;
+        --rx-blue-dark: #1d4ed8;
+        --rx-cyan: #06b6d4;
+        --rx-green: #16a34a;
+        --rx-orange: #f59e0b;
+        --rx-red: #dc2626;
+        --rx-muted: #64748b;
+        --rx-border: rgba(148, 163, 184, 0.25);
+        --rx-soft: #f8fbff;
+        --rx-white: #ffffff;
+        --rx-shadow-sm: 0 10px 26px rgba(15, 23, 42, 0.07);
+        --rx-shadow-md: 0 20px 52px rgba(15, 23, 42, 0.11);
+        --rx-shadow-lg: 0 34px 90px rgba(15, 23, 42, 0.16);
+        --rx-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --rx-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --rx-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
     }
 
-    .prescription-section {
-        padding: 40px 0 70px;
+    body {
         background:
-            radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
-            radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.08), transparent 28%);
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
     }
 
-    .prescription-wrapper {
-        background: rgba(255,255,255,0.96);
-        border-radius: 28px;
-        overflow: hidden;
-        box-shadow: var(--shadow-lg);
-        border: 1px solid rgba(226, 232, 240, 0.85);
-    }
-
-    .prescription-left {
+    .prescription-page {
         position: relative;
-        min-height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 50px 36px;
-        background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(29, 78, 216, 0.86) 60%, rgba(56, 189, 248, 0.78) 100%);
-        color: #fff;
         overflow: hidden;
+        padding: 42px 0 88px;
     }
 
-    .prescription-left::before {
+    .prescription-page::before {
         content: "";
         position: absolute;
-        width: 220px;
-        height: 220px;
+        width: 420px;
+        height: 420px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
-        top: -80px;
-        right: -50px;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -150px;
+        top: -160px;
+        pointer-events: none;
     }
 
-    .prescription-left::after {
+    .prescription-page::after {
         content: "";
         position: absolute;
-        width: 160px;
-        height: 160px;
+        width: 380px;
+        height: 380px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.06);
-        bottom: -50px;
-        left: -30px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -140px;
+        bottom: -150px;
+        pointer-events: none;
     }
 
-    .prescription-left-content {
+    .rx-hero {
         position: relative;
-        z-index: 2;
-        max-width: 360px;
+        overflow: hidden;
+        border-radius: 38px;
+        padding: 64px 52px;
+        margin-bottom: 26px;
+        background:
+            var(--rx-gradient-dark),
+            url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--rx-shadow-lg);
+        isolation: isolate;
     }
 
-    .prescription-badge {
+    .rx-hero::before {
+        content: "";
+        position: absolute;
+        width: 480px;
+        height: 480px;
+        top: -190px;
+        right: -150px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
+    }
+
+    .rx-hero::after {
+        content: "";
+        position: absolute;
+        width: 270px;
+        height: 270px;
+        left: -95px;
+        bottom: -105px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .rx-chip,
+    .rx-highlight,
+    .rx-pill {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 16px;
         border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .rx-chip {
+        padding: 9px 17px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.18);
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 13px;
+        font-weight: 850;
+        margin-bottom: 16px;
+    }
+
+    .rx-highlight {
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 18px;
+    }
+
+    .rx-hero h2 {
+        font-size: clamp(2.15rem, 4vw, 3.15rem);
+        font-weight: 950;
+        line-height: 1.06;
+        letter-spacing: -1px;
+        margin-bottom: 14px;
+        max-width: 920px;
+    }
+
+    .rx-hero p {
+        color: rgba(255,255,255,0.92);
+        line-height: 1.9;
+        max-width: 850px;
+        margin-bottom: 0;
+    }
+
+    .rx-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .rx-pill {
+        padding: 9px 15px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
         font-size: 13px;
         font-weight: 700;
-        margin-bottom: 18px;
-        backdrop-filter: blur(10px);
     }
 
-    .prescription-left h2 {
-        font-size: 2.1rem;
-        font-weight: 900;
-        margin-bottom: 14px;
-        line-height: 1.15;
-        letter-spacing: -0.5px;
+    .rx-main-card {
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--rx-border);
+        border-radius: 34px;
+        box-shadow: var(--rx-shadow-lg);
+        backdrop-filter: blur(16px);
     }
 
-    .prescription-left p {
-        color: rgba(255,255,255,0.92);
-        line-height: 1.85;
-        margin-bottom: 22px;
+    .rx-layout {
+        display: grid;
+        grid-template-columns: 0.95fr 1.45fr;
+        min-height: 100%;
     }
 
-    .prescription-points {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    .rx-sidebar {
+        position: relative;
+        overflow: hidden;
+        padding: 36px;
+        background:
+            radial-gradient(circle at top left, rgba(255,255,255,0.16), transparent 28%),
+            var(--rx-gradient-dark);
+        color: #ffffff;
+        isolation: isolate;
     }
 
-    .prescription-points li {
+    .rx-sidebar::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        right: -90px;
+        top: -80px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.09);
+        z-index: -1;
+    }
+
+    .rx-sidebar::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        left: -60px;
+        bottom: -50px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.07);
+        z-index: -1;
+    }
+
+    .rx-sidebar-title {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-        color: rgba(255,255,255,0.94);
-        font-weight: 500;
+        gap: 12px;
+        margin-bottom: 18px;
     }
 
-    .check-badge {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
+    .rx-sidebar-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 20px;
         background: rgba(255,255,255,0.14);
-        display: inline-flex;
+        border: 1px solid rgba(255,255,255,0.18);
+        display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 12px;
+        font-size: 24px;
         flex-shrink: 0;
     }
 
-    .prescription-right {
-        padding: 40px 34px;
-        background: linear-gradient(to bottom right, #ffffff, #fbfdff);
+    .rx-sidebar-title h3 {
+        margin: 0;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+        font-size: 1.35rem;
     }
 
-    .top-badge {
+    .rx-sidebar-text {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.85;
+        margin-bottom: 24px;
+    }
+
+    .rx-check-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 13px;
+    }
+
+    .rx-check-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: rgba(255,255,255,0.94);
+        line-height: 1.65;
+        font-weight: 650;
+    }
+
+    .rx-check-list span {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.16);
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 12px;
+    }
+
+    .rx-sidebar-note {
+        margin-top: 26px;
+        padding: 16px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        font-size: 0.92rem;
+    }
+
+    .rx-form-area {
+        padding: 36px;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, #ffffff, #fbfdff);
+    }
+
+    .rx-form-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
+    }
+
+    .rx-form-title h3 {
+        margin: 0;
+        color: var(--rx-primary);
+        font-size: 1.65rem;
+        font-weight: 950;
+        letter-spacing: -0.5px;
+    }
+
+    .rx-form-title p {
+        margin: 8px 0 0;
+        color: var(--rx-muted);
+        line-height: 1.75;
+    }
+
+    .rx-form-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 14px;
         border-radius: 999px;
-        background: #eaf4ff;
-        color: var(--secondary);
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 14px;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .page-title {
-        font-size: 1.95rem;
-        font-weight: 800;
-        color: var(--primary);
-        margin-bottom: 8px;
-        letter-spacing: -0.4px;
-    }
-
-    .page-subtitle {
-        color: var(--muted);
-        margin-bottom: 24px;
-        line-height: 1.8;
+        background: #eff6ff;
+        color: var(--rx-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 12px;
+        font-weight: 850;
+        white-space: nowrap;
     }
 
     .patient-info-box {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-        margin-bottom: 24px;
-        padding: 18px;
-        border-radius: 18px;
-        background: #f8fbff;
-        border: 1px solid #e5eefb;
-        transition: var(--transition);
-    }
-
-    .patient-info-box:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-sm);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 22px;
     }
 
     .patient-info-item {
-        background: #ffffff;
-        border: 1px solid #e7eef6;
-        border-radius: 14px;
-        padding: 14px 16px;
-        transition: var(--transition);
+        min-width: 0;
+        padding: 14px 13px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        box-shadow: 0 8px 18px rgba(15,23,42,0.04);
+        transition: var(--rx-transition);
     }
 
     .patient-info-item:hover {
         transform: translateY(-3px);
-        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
-        border-color: #cfe2ff;
+        background: #ffffff;
+        box-shadow: var(--rx-shadow-sm);
+        border-color: rgba(37,99,235,0.25);
     }
 
     .patient-info-item small {
         display: block;
-        color: var(--muted);
-        font-size: 0.82rem;
+        color: var(--rx-muted);
+        font-size: 0.75rem;
+        font-weight: 850;
         margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
     }
 
     .patient-info-item strong {
-        color: var(--primary);
-        font-size: 0.98rem;
+        display: block;
+        color: var(--rx-primary);
+        font-size: 0.92rem;
+        font-weight: 900;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .symptoms-box {
-        margin-bottom: 24px;
-        padding: 20px 20px 18px;
-        border-radius: 20px;
-        background: var(--warning-bg);
-        border: 1px solid var(--warning-border);
+        margin-bottom: 22px;
+        padding: 18px;
+        border-radius: 22px;
+        background:
+            radial-gradient(circle at top right, rgba(245,158,11,0.10), transparent 30%),
+            linear-gradient(135deg, #fff7ed, #fffbeb);
+        border: 1px solid #fed7aa;
         box-shadow: 0 12px 30px rgba(154, 52, 18, 0.06);
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .symptoms-box::before {
-        content: "";
-        position: absolute;
-        top: -30px;
-        right: -30px;
-        width: 110px;
-        height: 110px;
-        background: rgba(251, 146, 60, 0.08);
-        border-radius: 50%;
-    }
-
-    .symptoms-box:hover {
-        transform: translateY(-4px) scale(1.01);
-        box-shadow: 0 18px 36px rgba(154, 52, 18, 0.10);
-        border-color: #fdba74;
     }
 
     .symptoms-title {
@@ -243,290 +390,407 @@
         align-items: center;
         gap: 10px;
         font-size: 1rem;
-        font-weight: 800;
-        color: var(--warning-text);
+        font-weight: 900;
+        color: #9a3412;
         margin-bottom: 10px;
-        position: relative;
-        z-index: 2;
     }
 
     .symptoms-icon {
         width: 34px;
         height: 34px;
-        border-radius: 10px;
+        border-radius: 12px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: rgba(251, 146, 60, 0.12);
-        color: var(--warning-text);
-        font-size: 15px;
+        background: rgba(251,146,60,0.13);
+        color: #9a3412;
         flex-shrink: 0;
     }
 
     .symptoms-text {
-        margin: 0;
         color: #7c2d12;
-        line-height: 1.85;
-        font-size: 0.95rem;
+        line-height: 1.8;
+        margin-bottom: 0;
         white-space: pre-line;
-        position: relative;
-        z-index: 2;
     }
 
-    .prescription-right .form-label {
-        font-weight: 700;
-        color: #334155;
+    .rx-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .rx-field-wrap {
+        padding: 14px;
+        border-radius: 20px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        transition: var(--rx-transition);
+    }
+
+    .rx-field-wrap:hover {
+        background: #ffffff;
+        border-color: rgba(37,99,235,0.28);
+        box-shadow: var(--rx-shadow-sm);
+        transform: translateY(-2px);
+    }
+
+    .rx-field-wrap.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .rx-field-wrap .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         margin-bottom: 8px;
+        color: #334155;
+        font-size: 0.92rem;
+        font-weight: 850;
     }
 
-    .prescription-right .form-control,
-    .prescription-right input,
-    .prescription-right select,
-    .prescription-right textarea {
-        min-height: 52px;
-        border-radius: 14px;
-        background: #f8fafc;
-        border: 1px solid var(--border);
-        box-shadow: none !important;
+    .rx-field-wrap .form-label::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--rx-gradient-main);
+        flex-shrink: 0;
+    }
+
+    .rx-form-area .form-control,
+    .rx-form-area input,
+    .rx-form-area select,
+    .rx-form-area textarea {
         width: 100%;
+        min-height: 52px;
+        border-radius: 15px;
+        border: 1px solid #dbe3ee;
+        background: #ffffff;
+        box-shadow: none !important;
         padding: 12px 14px;
-        transition: var(--transition);
+        transition: var(--rx-transition);
     }
 
-    .prescription-right textarea.form-control,
-    .prescription-right textarea {
-        min-height: 120px;
+    .rx-form-area textarea,
+    .rx-form-area textarea.form-control {
+        min-height: 118px;
         resize: vertical;
     }
 
-    .prescription-right .form-control:focus,
-    .prescription-right input:focus,
-    .prescription-right select:focus,
-    .prescription-right textarea:focus {
-        background: #ffffff;
+    .rx-form-area .form-control:focus,
+    .rx-form-area input:focus,
+    .rx-form-area select:focus,
+    .rx-form-area textarea:focus {
         border-color: #2563eb;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08) !important;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10) !important;
         outline: none;
     }
 
-    .prescription-right ul.errorlist {
+    .field-error,
+    .rx-form-area ul.errorlist li {
+        color: var(--rx-red);
+        font-size: 0.86rem;
+        font-weight: 750;
+        margin-top: 7px;
+    }
+
+    .rx-form-area ul.errorlist {
         list-style: none;
         padding: 0;
         margin: 8px 0 0;
     }
 
-    .prescription-right ul.errorlist li,
-    .field-error {
-        color: var(--danger);
-        font-size: 0.88rem;
-        font-weight: 600;
+    .non-field-error {
+        margin-bottom: 16px;
+        padding: 13px 15px;
+        border-radius: 16px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+        font-weight: 800;
     }
 
-    .form-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
+    .rx-action-row {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #ffffff, #f8fbff);
+        border: 1px solid #e5edf7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
     }
 
-    .full-width {
-        grid-column: 1 / -1;
+    .rx-action-note {
+        color: var(--rx-muted);
+        line-height: 1.7;
+        font-size: 0.92rem;
+        max-width: 620px;
     }
 
-    .btn-submit {
+    .rx-action-note strong {
+        color: var(--rx-primary);
+    }
+
+    .btn-submit-rx {
+        min-height: 52px;
+        padding: 12px 24px;
+        border-radius: 999px;
+        border: none;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        background: var(--rx-gradient-main);
         color: #ffffff;
-        border: none;
-        border-radius: 14px;
-        padding: 14px 20px;
-        font-weight: 700;
-        width: 100%;
-        box-shadow: 0 14px 28px rgba(29, 78, 216, 0.20);
-        transition: var(--transition);
-        margin-top: 8px;
+        font-weight: 900;
+        box-shadow: 0 16px 34px rgba(37,99,235,0.24);
+        transition: var(--rx-transition);
+        white-space: nowrap;
     }
 
-    .btn-submit:hover {
+    .btn-submit-rx:hover {
         color: #ffffff;
-        transform: translateY(-2px);
-        box-shadow: 0 18px 34px rgba(29, 78, 216, 0.28);
-    }
-
-    .bottom-note {
-        margin-top: 18px;
-        padding: 15px 16px;
-        border-radius: 16px;
-        background: #f8fbff;
-        border: 1px solid #e5eefb;
-        color: var(--muted);
-        line-height: 1.7;
-        text-align: center;
-        transition: var(--transition);
-    }
-
-    .bottom-note:hover {
-        box-shadow: var(--shadow-sm);
+        transform: translateY(-3px);
+        box-shadow: 0 22px 48px rgba(37,99,235,0.30);
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
-    .reveal-left { transform: translateX(-60px); }
-    .reveal-right { transform: translateX(60px); }
+    .reveal-left { transform: translateX(-58px); }
+    .reveal-right { transform: translateX(58px); }
+    .reveal-up { transform: translateY(52px); }
 
     .reveal.show {
         opacity: 1;
-        transform: translateX(0);
+        transform: translate(0, 0);
+    }
+
+    @media (max-width: 1199px) {
+        .patient-info-box {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     @media (max-width: 991px) {
-        .prescription-left,
-        .prescription-right {
-            padding: 30px 22px;
+        .prescription-page {
+            padding: 30px 0 68px;
         }
 
-        .prescription-left h2 {
-            font-size: 1.8rem;
+        .rx-hero {
+            padding: 48px 28px;
+            border-radius: 30px;
         }
 
-        .page-title {
-            font-size: 1.6rem;
+        .rx-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .rx-sidebar,
+        .rx-form-area {
+            padding: 28px;
         }
     }
 
     @media (max-width: 768px) {
-        .prescription-section {
-            padding: 25px 0 45px;
+        .rx-hero {
+            padding: 40px 22px;
+            border-radius: 26px;
         }
 
-        .prescription-wrapper {
-            border-radius: 22px;
+        .rx-hero h2 {
+            font-size: 2rem;
         }
 
-        .form-grid,
-        .patient-info-box {
+        .rx-main-card {
+            border-radius: 26px;
+        }
+
+        .patient-info-box,
+        .rx-form-grid {
             grid-template-columns: 1fr;
+        }
+
+        .rx-action-row {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .btn-submit-rx {
+            width: 100%;
         }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="prescription-section">
-    <div class="container">
-        <div class="prescription-wrapper">
-            <div class="row g-0">
-                <div class="col-lg-5">
-                    <div class="prescription-left reveal reveal-left show">
-                        <div class="prescription-left-content">
-                            <span class="prescription-badge">
-                                <i class="bi bi-file-earmark-medical"></i>
-                                Doctor Prescription Panel
-                            </span>
+<section class="prescription-page">
+    <div class="container position-relative" style="z-index: 2;">
 
-                            <h2>Create Patient Prescription</h2>
+        <div class="rx-hero reveal reveal-up show">
+            <span class="rx-chip">
+                <i class="bi bi-file-earmark-medical"></i>
+                Doctor Prescription Panel
+            </span>
 
-                            <p>
-                                Add diagnosis, medicines, tests, and professional advice for the patient in a clear and structured format.
-                            </p>
+            <div class="rx-highlight">
+                <i class="bi bi-shield-check"></i>
+                Create clear, structured and professional prescriptions
+            </div>
 
-                            <ul class="prescription-points">
-                                <li><span class="check-badge">✓</span> Quick prescription entry</li>
-                                <li><span class="check-badge">✓</span> Clear medicine instructions</li>
-                                <li><span class="check-badge">✓</span> Advice and follow-up planning</li>
-                                <li><span class="check-badge">✓</span> Professional healthcare workflow</li>
-                            </ul>
+            <h2>Create Patient Prescription</h2>
+
+            <p>
+                Add diagnosis, medicines, tests, advice and follow-up information in a clean medical workflow.
+                Review patient details and symptoms before saving the prescription.
+            </p>
+
+            <div class="rx-pills">
+                <span class="rx-pill"><i class="bi bi-capsule"></i> Medicine Notes</span>
+                <span class="rx-pill"><i class="bi bi-clipboard2-pulse"></i> Diagnosis</span>
+                <span class="rx-pill"><i class="bi bi-activity"></i> Tests</span>
+                <span class="rx-pill"><i class="bi bi-calendar-check"></i> Follow-up Advice</span>
+            </div>
+        </div>
+
+        <div class="rx-main-card">
+            <div class="rx-layout">
+
+                <aside class="rx-sidebar reveal reveal-left show">
+                    <div class="rx-sidebar-title">
+                        <div class="rx-sidebar-icon">
+                            <i class="bi bi-prescription2"></i>
                         </div>
+                        <h3>Prescription Workflow</h3>
                     </div>
-                </div>
 
-                <div class="col-lg-7">
-                    <div class="prescription-right reveal reveal-right show">
-                        <span class="top-badge">
+                    <p class="rx-sidebar-text">
+                        A good prescription should be readable, organized and clinically clear.
+                        Complete every important field carefully before submitting.
+                    </p>
+
+                    <ul class="rx-check-list">
+                        <li><span>✓</span> Add diagnosis or prescription text clearly.</li>
+                        <li><span>✓</span> Mention tests only when required.</li>
+                        <li><span>✓</span> Write advice in simple patient-friendly wording.</li>
+                        <li><span>✓</span> Review symptoms before final submission.</li>
+                    </ul>
+
+                    <div class="rx-sidebar-note">
+                        <strong>Safety note:</strong> Double-check dosage, duration, medicine names and follow-up guidance before saving the prescription.
+                    </div>
+                </aside>
+
+                <div class="rx-form-area reveal reveal-right show">
+                    <div class="rx-form-top">
+                        <div class="rx-form-title">
+                            <h3>Add Prescription</h3>
+                            <p>Fill in the patient prescription details below.</p>
+                        </div>
+
+                        <span class="rx-form-badge">
                             <i class="bi bi-clipboard2-pulse"></i>
                             Prescription Form
                         </span>
+                    </div>
 
-                        <h3 class="page-title">Add Prescription</h3>
-                        <p class="page-subtitle">
-                            Fill in the patient prescription details below.
-                        </p>
-
-                        {% if appointment %}
+                    {% if appointment %}
                         <div class="patient-info-box">
                             <div class="patient-info-item">
                                 <small>Patient</small>
                                 <strong>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</strong>
                             </div>
+
                             <div class="patient-info-item">
                                 <small>Doctor</small>
-                                <strong>{{ appointment.doctor.name }}</strong>
+                                <strong>Dr. {{ appointment.doctor.name }}</strong>
                             </div>
+
                             <div class="patient-info-item">
                                 <small>Appointment Date</small>
-                                <strong>{{ appointment.date }}</strong>
+                                <strong>
+                                    {% if appointment.appointment_date %}
+                                        {{ appointment.appointment_date }}
+                                    {% elif appointment.date %}
+                                        {{ appointment.date }}
+                                    {% else %}
+                                        Not available
+                                    {% endif %}
+                                </strong>
                             </div>
+
                             <div class="patient-info-item">
                                 <small>Time</small>
-                                <strong>{{ appointment.time }}</strong>
+                                <strong>
+                                    {% if appointment.appointment_time %}
+                                        {{ appointment.appointment_time|time:"h:i A" }}
+                                    {% elif appointment.time %}
+                                        {{ appointment.time }}
+                                    {% else %}
+                                        No time
+                                    {% endif %}
+                                </strong>
                             </div>
                         </div>
 
                         {% if appointment.symptoms %}
-                        <div class="symptoms-box">
-                            <h5 class="symptoms-title">
-                                <span class="symptoms-icon">
-                                    <i class="bi bi-chat-left-text"></i>
-                                </span>
-                                Patient Symptoms / Message
-                            </h5>
-                            <p class="symptoms-text">{{ appointment.symptoms }}</p>
-                        </div>
+                            <div class="symptoms-box">
+                                <h5 class="symptoms-title">
+                                    <span class="symptoms-icon">
+                                        <i class="bi bi-chat-left-text"></i>
+                                    </span>
+                                    Patient Symptoms / Message
+                                </h5>
+                                <p class="symptoms-text">{{ appointment.symptoms }}</p>
+                            </div>
                         {% endif %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="non-field-error">
+                                {{ form.non_field_errors|striptags }}
+                            </div>
                         {% endif %}
 
-                        <form method="post">
-                            {% csrf_token %}
+                        <div class="rx-form-grid">
+                            {% for field in form %}
+                                <div class="rx-field-wrap {% if field.name == 'prescription_text' or field.name == 'test' or field.name == 'advice' %}full-width{% endif %}">
+                                    <label class="form-label">{{ field.label }}</label>
+                                    {{ field }}
 
-                            {% if form.non_field_errors %}
-                                <div class="mb-3">
-                                    <small class="field-error">{{ form.non_field_errors|striptags }}</small>
+                                    {% if field.errors %}
+                                        <small class="field-error">{{ field.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
-                            {% endif %}
+                            {% endfor %}
+                        </div>
 
-                            <div class="form-grid">
-                                {% for field in form %}
-                                    <div class="{% if field.name == 'prescription_text' or field.name == 'test' or field.name == 'advice' %}full-width{% endif %}">
-                                        <div class="mb-3">
-                                            <label class="form-label">{{ field.label }}</label>
-                                            {{ field }}
-
-                                            {% if field.errors %}
-                                                <small class="field-error">{{ field.errors|striptags }}</small>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% endfor %}
+                        <div class="rx-action-row">
+                            <div class="rx-action-note">
+                                <strong>Before saving:</strong>
+                                Review medicine dosage, test instructions and advice carefully.
                             </div>
 
-                            <button type="submit" class="btn-submit">
+                            <button type="submit" class="btn-submit-rx">
                                 <i class="bi bi-check-circle"></i>
                                 Save Prescription
                             </button>
-                        </form>
-
-                        <div class="bottom-note">
-                            Please review medicine dosage, duration, and advice carefully before saving the prescription.
                         </div>
-                    </div>
+                    </form>
                 </div>
+
             </div>
         </div>
+
     </div>
 </section>
 {% endblock %}
@@ -539,7 +803,7 @@
         prescriptionReveal.forEach((el, index) => {
             setTimeout(() => {
                 el.classList.add('show');
-            }, index * 120);
+            }, index * 90);
         });
     }
 

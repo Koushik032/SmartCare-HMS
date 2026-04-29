@@ -3,60 +3,739 @@
 
 {% block content %}
 <style>
-    .page-wrap { padding: 34px 0 70px; }
-    .hero {
-        background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #38bdf8 100%);
-        color:#fff; border-radius:30px; padding:55px 40px; margin-bottom:30px;
-        box-shadow:0 20px 50px rgba(15,23,42,.14);
+    :root {
+        --ur-primary: #07111f;
+        --ur-blue: #2563eb;
+        --ur-blue-dark: #1d4ed8;
+        --ur-cyan: #06b6d4;
+        --ur-green: #16a34a;
+        --ur-orange: #f59e0b;
+        --ur-red: #dc2626;
+        --ur-muted: #64748b;
+        --ur-border: rgba(148, 163, 184, 0.24);
+        --ur-soft: #f8fbff;
+        --ur-white: #ffffff;
+
+        --ur-shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.06);
+        --ur-shadow-md: 0 16px 38px rgba(15, 23, 42, 0.10);
+        --ur-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.14);
+
+        --ur-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --ur-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.86), rgba(6, 182, 212, 0.68));
+        --ur-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
     }
+
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
+    }
+
+    .update-report-page {
+        position: relative;
+        overflow: hidden;
+        padding: 36px 0 74px;
+    }
+
+    .update-report-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -160px;
+        top: -170px;
+        pointer-events: none;
+    }
+
+    .update-report-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -150px;
+        bottom: -160px;
+        pointer-events: none;
+    }
+
+    .update-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 32px;
+        padding: 52px 46px;
+        margin-bottom: 20px;
+        background:
+            var(--ur-gradient-dark),
+            url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--ur-shadow-lg);
+        isolation: isolate;
+    }
+
+    .update-hero::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -170px;
+        right: -140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
+        z-index: -1;
+    }
+
+    .update-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -90px;
+        bottom: -95px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
+    }
+
+    .hero-badge,
+    .hero-highlight,
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .hero-badge {
+        padding: 8px 15px;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.20);
+        font-size: 12.8px;
+        font-weight: 850;
+        margin-bottom: 12px;
+    }
+
+    .hero-highlight {
+        padding: 8px 15px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12.8px;
+        font-weight: 800;
+        margin-bottom: 14px;
+    }
+
+    .update-hero h2 {
+        font-size: clamp(2.05rem, 3.4vw, 2.75rem);
+        font-weight: 950;
+        line-height: 1.08;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        max-width: 900px;
+    }
+
+    .update-hero p {
+        color: rgba(255,255,255,0.90);
+        line-height: 1.75;
+        max-width: 900px;
+        margin-bottom: 0;
+        font-size: 1rem;
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .hero-pill {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 12.8px;
+        font-weight: 700;
+    }
+
+    .update-layout {
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr;
+        gap: 22px;
+        align-items: start;
+    }
+
+    .side-card,
     .form-card {
-        background:#fff; border:1px solid #e5edf5; border-radius:24px; box-shadow:0 16px 36px rgba(15,23,42,.08); padding:28px;
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--ur-border);
+        border-radius: 28px;
+        box-shadow: var(--ur-shadow-sm);
+        backdrop-filter: blur(16px);
+        padding: 24px;
+        transition: var(--ur-transition);
     }
-    .form-control {
-        min-height:52px; border-radius:14px; background:#f8fafc; border:1px solid #dbe2ea; box-shadow:none !important;
+
+    .side-card::before,
+    .form-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top right, rgba(6,182,212,0.06), transparent 28%),
+            linear-gradient(180deg, rgba(255,255,255,0.10), transparent);
     }
-    .form-control:focus {
-        background:#fff; border-color:#2563eb; box-shadow:0 0 0 4px rgba(37,99,235,.08) !important;
+
+    .side-card > *,
+    .form-card > * {
+        position: relative;
+        z-index: 2;
     }
-    textarea.form-control { min-height:120px; }
+
+    .side-card:hover,
+    .form-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--ur-shadow-md);
+        border-color: rgba(37,99,235,0.28);
+    }
+
+    .side-card {
+        position: sticky;
+        top: 20px;
+    }
+
+    .patient-card-top {
+        text-align: center;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #edf2f7;
+        margin-bottom: 18px;
+    }
+
+    .patient-avatar {
+        width: 86px;
+        height: 86px;
+        margin: 0 auto 13px;
+        border-radius: 24px;
+        background: var(--ur-gradient-main);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 950;
+        box-shadow: 0 16px 34px rgba(37, 99, 235, 0.20);
+    }
+
+    .patient-name {
+        color: var(--ur-primary);
+        font-size: 1.25rem;
+        font-weight: 950;
+        line-height: 1.3;
+        margin-bottom: 7px;
+        letter-spacing: -0.3px;
+    }
+
+    .patient-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--ur-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 11.8px;
+        font-weight: 850;
+    }
+
+    .report-note-box {
+        padding: 16px;
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at top right, rgba(245,158,11,0.10), transparent 30%),
+            linear-gradient(135deg, #fff7ed, #fffbeb);
+        border: 1px solid #fed7aa;
+        color: #7c2d12;
+        margin-bottom: 18px;
+    }
+
+    .report-note-box h5 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #9a3412;
+        font-weight: 950;
+        font-size: 0.96rem;
+        margin-bottom: 9px;
+    }
+
+    .report-note-box p {
+        margin: 0;
+        line-height: 1.7;
+        font-size: 0.9rem;
+        white-space: pre-line;
+    }
+
+    .guide-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+    }
+
+    .guide-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        color: #475569;
+        line-height: 1.6;
+        font-size: 0.88rem;
+        transition: var(--ur-transition);
+    }
+
+    .guide-list li:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: var(--ur-shadow-sm);
+        border-color: rgba(37,99,235,0.24);
+    }
+
+    .guide-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--ur-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .section-title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        margin: 0;
+        color: var(--ur-primary);
+        font-size: 1.32rem;
+        font-weight: 950;
+        letter-spacing: -0.35px;
+        line-height: 1.28;
+    }
+
+    .section-subtitle {
+        margin: 6px 0 0;
+        color: var(--ur-muted);
+        line-height: 1.68;
+        font-size: 0.92rem;
+    }
+
+    .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--ur-blue-dark);
+        border: 1px solid #dbeafe;
+        font-size: 11.8px;
+        font-weight: 850;
+        white-space: nowrap;
+    }
+
+    .update-form-grid {
+        display: grid;
+        gap: 16px;
+    }
+
+    .form-field {
+        padding: 15px;
+        border-radius: 20px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        transition: var(--ur-transition);
+    }
+
+    .form-field:hover {
+        background: #ffffff;
+        border-color: rgba(37,99,235,0.25);
+        box-shadow: var(--ur-shadow-sm);
+        transform: translateY(-2px);
+    }
+
+    .field-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #334155;
+        font-size: 0.92rem;
+        font-weight: 950;
+        margin-bottom: 9px;
+    }
+
+    .field-icon {
+        width: 31px;
+        height: 31px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: var(--ur-blue-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 14px;
+    }
+
+    .update-report-page .form-control,
+    .update-report-page textarea,
+    .update-report-page input,
+    .update-report-page select {
+        width: 100%;
+        min-height: 52px;
+        border-radius: 15px;
+        background: #ffffff;
+        border: 1px solid #dbe3ee;
+        box-shadow: none !important;
+        padding: 12px 14px;
+        transition: var(--ur-transition);
+        font-size: 0.92rem;
+        color: #334155;
+    }
+
+    .update-report-page textarea,
+    .update-report-page textarea.form-control {
+        min-height: 135px;
+        resize: vertical;
+    }
+
+    .update-report-page .form-control:focus,
+    .update-report-page textarea:focus,
+    .update-report-page input:focus,
+    .update-report-page select:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10) !important;
+        outline: none;
+    }
+
+    .submit-panel {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #ffffff, #f8fbff);
+        border: 1px solid #e5edf7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .submit-note {
+        color: var(--ur-muted);
+        line-height: 1.65;
+        font-size: 0.9rem;
+        margin: 0;
+        max-width: 600px;
+    }
+
+    .submit-note strong {
+        color: var(--ur-primary);
+    }
+
     .submit-btn {
-        min-height:52px; border:none; border-radius:14px; color:#fff; font-weight:700; width:100%;
-        background:linear-gradient(135deg, #1d4ed8, #38bdf8);
+        min-height: 48px;
+        border: none;
+        border-radius: 999px;
+        color: #ffffff;
+        font-weight: 900;
+        padding: 10px 20px;
+        min-width: 180px;
+        background: var(--ur-gradient-main);
+        box-shadow: 0 10px 22px rgba(37,99,235,0.18);
+        transition: var(--ur-transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .submit-btn:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(37,99,235,0.22);
+    }
+
+    .reveal {
+        opacity: 0;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .reveal-up {
+        transform: translateY(40px);
+    }
+
+    .reveal-left {
+        transform: translateX(-42px);
+    }
+
+    .reveal-right {
+        transform: translateX(42px);
+    }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translate(0,0);
+    }
+
+    @media (max-width: 991px) {
+        .update-report-page {
+            padding: 30px 0 62px;
+        }
+
+        .update-hero {
+            padding: 44px 28px;
+            border-radius: 28px;
+        }
+
+        .update-hero h2 {
+            font-size: 2rem;
+        }
+
+        .update-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .side-card {
+            position: static;
+        }
+
+        .side-card,
+        .form-card {
+            padding: 22px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .update-hero {
+            padding: 36px 22px;
+            border-radius: 24px;
+        }
+
+        .update-hero h2 {
+            font-size: 1.78rem;
+        }
+
+        .update-hero p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .side-card,
+        .form-card {
+            border-radius: 22px;
+        }
+
+        .section-title {
+            font-size: 1.18rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.86rem;
+        }
+
+        .submit-panel {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .submit-btn {
+            width: 100%;
+        }
     }
 </style>
 
-<section class="section-space page-wrap">
-    <div class="container">
-        <div class="hero">
-            <h2>Update Report</h2>
-            <p class="mb-0">Write prescription, recommended test, and advice for this report submission.</p>
+<section class="update-report-page">
+    <div class="container position-relative" style="z-index: 2;">
+
+        <div class="update-hero reveal reveal-up show">
+            <span class="hero-badge">
+                <i class="bi bi-pencil-square"></i>
+                SmartCare HMS • Update Report
+            </span>
+
+            <div class="hero-highlight">
+                <i class="bi bi-file-earmark-medical"></i>
+                Prescription, test and advice update area
+            </div>
+
+            <h2>Update Patient Report</h2>
+
+            <p>
+                Write the updated prescription, recommended test, and medical advice for this patient’s
+                follow-up report submission.
+            </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-capsule"></i> Prescription</span>
+                <span class="hero-pill"><i class="bi bi-clipboard2-pulse"></i> Recommended Test</span>
+                <span class="hero-pill"><i class="bi bi-chat-left-heart"></i> Advice</span>
+                <span class="hero-pill"><i class="bi bi-check-circle"></i> Submit Update</span>
+            </div>
         </div>
 
-        <div class="form-card">
-            <h4 class="fw-bold mb-3">Patient: {{ report.patient.first_name }} {{ report.patient.last_name }}</h4>
-            <p class="text-muted">Previous doctor note / report: {{ report.report_note|default:"No note" }}</p>
+        <div class="update-layout">
+            <aside class="side-card reveal reveal-left">
+                <div class="patient-card-top">
+                    <div class="patient-avatar">
+                        {{ report.patient.first_name|slice:":1" }}
+                    </div>
 
-            <form method="post">
-                {% csrf_token %}
+                    <h4 class="patient-name">
+                        {{ report.patient.first_name }} {{ report.patient.last_name }}
+                    </h4>
 
-                <div class="mb-3">
-                    <label class="form-label">Prescription</label>
-                    {{ form.prescription_text }}
+                    <span class="patient-chip">
+                        <i class="bi bi-person-heart"></i>
+                        Patient Report
+                    </span>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Test</label>
-                    {{ form.test }}
+                <div class="report-note-box">
+                    <h5>
+                        <i class="bi bi-chat-left-text"></i>
+                        Previous Report Note
+                    </h5>
+
+                    <p>{{ report.report_note|default:"No note" }}</p>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Advice</label>
-                    {{ form.advice }}
+                <ul class="guide-list">
+                    <li>
+                        <span class="guide-dot"><i class="bi bi-prescription2"></i></span>
+                        <span>Write prescription clearly so the patient can follow instructions correctly.</span>
+                    </li>
+
+                    <li>
+                        <span class="guide-dot"><i class="bi bi-clipboard2-pulse"></i></span>
+                        <span>Mention tests only if the report needs further diagnosis or confirmation.</span>
+                    </li>
+
+                    <li>
+                        <span class="guide-dot"><i class="bi bi-chat-left-heart"></i></span>
+                        <span>Keep advice simple, practical and easy for the patient to understand.</span>
+                    </li>
+                </ul>
+            </aside>
+
+            <div class="form-card reveal reveal-right">
+                <div class="section-title-row">
+                    <div>
+                        <h3 class="section-title">Medical Update Form</h3>
+                        <p class="section-subtitle">
+                            Complete the follow-up response for this patient report.
+                        </p>
+                    </div>
+
+                    <span class="section-badge">
+                        <i class="bi bi-clipboard2-check"></i>
+                        Doctor Update
+                    </span>
                 </div>
 
-                <button type="submit" class="btn submit-btn">Submit Update</button>
-            </form>
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="update-form-grid">
+                        <div class="form-field">
+                            <label class="field-label">
+                                <span class="field-icon">
+                                    <i class="bi bi-prescription2"></i>
+                                </span>
+                                Prescription
+                            </label>
+                            {{ form.prescription_text }}
+                        </div>
+
+                        <div class="form-field">
+                            <label class="field-label">
+                                <span class="field-icon">
+                                    <i class="bi bi-clipboard2-pulse"></i>
+                                </span>
+                                Test
+                            </label>
+                            {{ form.test }}
+                        </div>
+
+                        <div class="form-field">
+                            <label class="field-label">
+                                <span class="field-icon">
+                                    <i class="bi bi-chat-left-heart"></i>
+                                </span>
+                                Advice
+                            </label>
+                            {{ form.advice }}
+                        </div>
+                    </div>
+
+                    <div class="submit-panel">
+                        <p class="submit-note">
+                            <strong>Before submitting:</strong>
+                            Review prescription, test, and advice carefully because this update will be shown to the patient.
+                        </p>
+
+                        <button type="submit" class="btn submit-btn">
+                            <i class="bi bi-check2-circle"></i>
+                            Submit Update
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
+
     </div>
 </section>
+
+<script>
+    const updateReportRevealItems = document.querySelectorAll('.reveal');
+
+    function updateReportRevealOnScroll() {
+        const triggerBottom = window.innerHeight * 0.88;
+
+        updateReportRevealItems.forEach((el, index) => {
+            const top = el.getBoundingClientRect().top;
+
+            if (top < triggerBottom) {
+                setTimeout(() => {
+                    el.classList.add('show');
+                }, index * 45);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', updateReportRevealOnScroll);
+    window.addEventListener('load', updateReportRevealOnScroll);
+</script>
 {% endblock %}

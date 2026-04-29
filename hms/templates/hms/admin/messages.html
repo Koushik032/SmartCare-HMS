@@ -4,215 +4,581 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #0f172a;
-        --secondary: #1d4ed8;
-        --accent: #38bdf8;
-        --muted: #64748b;
-        --border: #e6edf5;
-        --soft: #f8fbff;
-        --white: #ffffff;
-        --shadow-sm: 0 10px 24px rgba(15, 23, 42, 0.06);
-        --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.09);
-        --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.14);
-        --transition: all 0.35s ease;
+        --msg-primary: #07111f;
+        --msg-dark: #0f172a;
+        --msg-blue: #2563eb;
+        --msg-blue-dark: #1d4ed8;
+        --msg-cyan: #06b6d4;
+        --msg-sky: #38bdf8;
+        --msg-muted: #64748b;
+        --msg-border: rgba(148, 163, 184, 0.24);
+        --msg-soft: #f6faff;
+        --msg-white: #ffffff;
+        --msg-shadow-sm: 0 10px 26px rgba(15, 23, 42, 0.07);
+        --msg-shadow-md: 0 20px 52px rgba(15, 23, 42, 0.11);
+        --msg-shadow-lg: 0 34px 90px rgba(15, 23, 42, 0.16);
+        --msg-gradient-main: linear-gradient(135deg, #2563eb, #06b6d4);
+        --msg-gradient-dark: linear-gradient(135deg, rgba(7, 17, 31, 0.96), rgba(37, 99, 235, 0.84), rgba(6, 182, 212, 0.66));
+        --msg-transition: all 0.35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.10), transparent 28%),
+            radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.12), transparent 30%),
+            linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #f8fbff 100%) !important;
     }
 
     .messages-page {
-        padding: 34px 0 70px;
+        position: relative;
+        overflow: hidden;
+        padding: 42px 0 88px;
+    }
+
+    .messages-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+        left: -150px;
+        top: -160px;
+        pointer-events: none;
+    }
+
+    .messages-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 68%);
+        right: -140px;
+        bottom: -150px;
+        pointer-events: none;
     }
 
     .page-hero {
         position: relative;
         overflow: hidden;
-        background:
-            linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(29, 78, 216, 0.84) 58%, rgba(56, 189, 248, 0.76) 100%),
-            url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: #ffffff;
-        border-radius: 30px;
-        padding: 52px 40px;
+        border-radius: 38px;
+        padding: 68px 52px;
         margin-bottom: 30px;
-        box-shadow: var(--shadow-lg);
+        background:
+            var(--msg-gradient-dark),
+            url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: var(--msg-shadow-lg);
         isolation: isolate;
     }
 
-    .page-hero::before,
-    .page-hero::after {
+    .page-hero::before {
         content: "";
         position: absolute;
+        width: 480px;
+        height: 480px;
+        top: -190px;
+        right: -150px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.08);
+        background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 68%);
         z-index: -1;
     }
 
-    .page-hero::before {
-        width: 230px;
-        height: 230px;
-        top: -70px;
-        right: -60px;
-    }
-
     .page-hero::after {
-        width: 160px;
-        height: 160px;
-        bottom: -45px;
-        left: -25px;
+        content: "";
+        position: absolute;
+        width: 270px;
+        height: 270px;
+        left: -95px;
+        bottom: -105px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+        z-index: -1;
     }
 
-    .hero-chip {
+    .hero-chip,
+    .hero-highlight,
+    .hero-pill {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 16px;
         border-radius: 999px;
+        color: #ffffff;
+        backdrop-filter: blur(14px);
+    }
+
+    .hero-chip {
+        padding: 9px 17px;
         background: rgba(255,255,255,0.14);
-        border: 1px solid rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.20);
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 850;
         margin-bottom: 16px;
-        backdrop-filter: blur(10px);
+    }
+
+    .hero-highlight {
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07));
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 18px;
     }
 
     .page-hero h2 {
-        font-size: 2.2rem;
-        font-weight: 900;
-        margin-bottom: 10px;
-        letter-spacing: -0.5px;
+        font-size: clamp(2.2rem, 4vw, 3.2rem);
+        font-weight: 950;
+        line-height: 1.06;
+        letter-spacing: -1px;
+        margin-bottom: 15px;
     }
 
     .page-hero p {
         color: rgba(255,255,255,0.92);
+        line-height: 1.9;
+        max-width: 850px;
         margin-bottom: 0;
-        line-height: 1.85;
-        max-width: 760px;
+    }
+
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .hero-pill {
+        padding: 9px 15px;
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .stats-row {
+        margin-bottom: 30px;
+    }
+
+    .stats-card {
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.94);
+        border: 1px solid var(--msg-border);
+        border-radius: 28px;
+        padding: 28px 22px;
+        box-shadow: var(--msg-shadow-sm);
+        text-align: center;
+        backdrop-filter: blur(16px);
+        transition: var(--msg-transition);
+    }
+
+    .stats-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 5px;
+        width: 100%;
+        background: var(--msg-gradient-main);
+    }
+
+    .stats-card::after {
+        content: "";
+        position: absolute;
+        width: 135px;
+        height: 135px;
+        border-radius: 50%;
+        right: -55px;
+        bottom: -55px;
+        background: radial-gradient(circle, rgba(6,182,212,0.16), transparent 70%);
+    }
+
+    .stats-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--msg-shadow-md);
+        border-color: rgba(37,99,235,0.30);
+    }
+
+    .stats-icon {
+        position: relative;
+        z-index: 2;
+        width: 64px;
+        height: 64px;
+        border-radius: 21px;
+        margin: 0 auto 15px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--msg-blue-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        box-shadow: inset 0 1px 0 #ffffff, var(--msg-shadow-sm);
+    }
+
+    .stats-card h3 {
+        position: relative;
+        z-index: 2;
+        color: var(--msg-blue-dark);
+        font-size: 2rem;
+        font-weight: 950;
+        letter-spacing: -0.7px;
+        margin-bottom: 8px;
+    }
+
+    .stats-card p {
+        position: relative;
+        z-index: 2;
+        margin: 0;
+        color: var(--msg-muted);
+        font-weight: 850;
     }
 
     .search-shell {
-        background: rgba(255,255,255,0.97);
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        padding: 24px;
-        box-shadow: var(--shadow-md);
-        margin-bottom: 28px;
+        position: relative;
+        background: rgba(255,255,255,0.94);
+        border: 1px solid var(--msg-border);
+        border-radius: 30px;
+        padding: 28px;
+        box-shadow: var(--msg-shadow-sm);
+        margin-bottom: 32px;
+        backdrop-filter: blur(16px);
+        transition: var(--msg-transition);
+    }
+
+    .search-shell:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--msg-shadow-md);
+        border-color: rgba(37,99,235,0.26);
+    }
+
+    .search-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .search-title {
+        margin: 0;
+        color: var(--msg-primary);
+        font-size: 1.2rem;
+        font-weight: 950;
+        letter-spacing: -0.3px;
+    }
+
+    .search-subtitle {
+        margin: 6px 0 0;
+        color: var(--msg-muted);
+        line-height: 1.75;
+        font-size: 0.95rem;
+    }
+
+    .search-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #eff6ff;
+        color: var(--msg-blue-dark);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 12px;
+        font-weight: 850;
+        border: 1px solid #dbeafe;
     }
 
     .search-shell .form-control {
-        min-height: 56px;
-        border-radius: 14px;
-        background: #f8fafc;
-        border: 1px solid #dbe2ea;
+        min-height: 58px;
+        border-radius: 18px;
+        background: #f8fbff;
+        border: 1px solid rgba(148,163,184,0.30);
         box-shadow: none;
+        padding-left: 16px;
+        transition: var(--msg-transition);
     }
 
     .search-shell .form-control:focus {
         background: #ffffff;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+        border-color: rgba(37,99,235,0.55);
+        box-shadow: 0 0 0 5px rgba(37,99,235,0.10);
     }
 
     .btn-search-modern {
-        min-height: 56px;
-        border-radius: 14px;
+        min-height: 58px;
+        border-radius: 18px;
         border: none;
-        background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+        background: var(--msg-gradient-main);
         color: #ffffff;
-        font-weight: 700;
-        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
-        transition: var(--transition);
+        font-weight: 900;
+        box-shadow: 0 16px 34px rgba(37,99,235,0.24);
+        transition: var(--msg-transition);
     }
 
     .btn-search-modern:hover {
         color: #ffffff;
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+        box-shadow: 0 22px 48px rgba(37,99,235,0.30);
     }
 
-    .messages-card {
-        background: rgba(255,255,255,0.98);
-        border: 1px solid var(--border);
+    .message-title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .message-title-row h3 {
+        color: var(--msg-primary);
+        font-size: 1.4rem;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+        margin: 0;
+    }
+
+    .message-title-row p {
+        color: var(--msg-muted);
+        margin: 6px 0 0;
+        line-height: 1.75;
+    }
+
+    .result-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: #ffffff;
+        border: 1px solid var(--msg-border);
+        color: var(--msg-primary);
+        font-size: 13px;
+        font-weight: 850;
+        box-shadow: var(--msg-shadow-sm);
+    }
+
+    .message-card {
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--msg-border);
+        border-radius: 30px;
+        box-shadow: var(--msg-shadow-sm);
+        backdrop-filter: blur(16px);
+        transition: var(--msg-transition);
+    }
+
+    .message-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--msg-shadow-md);
+        border-color: rgba(37,99,235,0.32);
+    }
+
+    .message-card-top {
+        position: relative;
+        padding: 26px 24px;
+        background:
+            radial-gradient(circle at top left, rgba(255,255,255,0.55), transparent 28%),
+            linear-gradient(135deg, #dbeafe, #ccfbf1);
+        border-bottom: 1px solid #e5edf7;
+    }
+
+    .message-avatar {
+        width: 74px;
+        height: 74px;
         border-radius: 24px;
-        box-shadow: var(--shadow-md);
-        padding: 22px;
-    }
-
-    .table {
-        margin-bottom: 0;
-    }
-
-    .table thead th {
-        background: #f1f7ff;
-        color: #0f172a;
-        font-weight: 800;
-        border-bottom: 1px solid #dbe5f0;
-        padding: 14px 12px;
-    }
-
-    .table tbody td {
-        vertical-align: top;
-        color: #475569;
-        padding: 14px 12px;
-        line-height: 1.8;
-        border-color: #edf2f7;
-    }
-
-    .message-name {
-        font-weight: 800;
-        color: #0f172a;
-    }
-
-    .message-body {
-        max-width: 340px;
-        white-space: normal;
-        word-break: break-word;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 48px 18px;
-    }
-
-    .empty-icon {
-        width: 76px;
-        height: 76px;
-        border-radius: 22px;
-        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-        color: #1d4ed8;
+        background: var(--msg-gradient-main);
+        color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 30px;
-        margin: 0 auto 18px;
+        font-size: 1.9rem;
+        font-weight: 950;
+        box-shadow: 0 18px 35px rgba(37,99,235,0.22);
+        margin-bottom: 16px;
     }
 
-    .empty-state h4 {
-        font-weight: 800;
-        color: #0f172a;
+    .message-status {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 13px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.92);
+        color: var(--msg-blue-dark);
+        border: 1px solid #bfdbfe;
+        font-size: 12px;
+        font-weight: 900;
+        box-shadow: var(--msg-shadow-sm);
+        backdrop-filter: blur(10px);
+    }
+
+    .message-name {
+        color: var(--msg-primary);
+        font-size: 1.25rem;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+        margin: 0 0 8px;
+    }
+
+    .message-email {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.88);
+        color: var(--msg-blue-dark);
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid #bfdbfe;
+        word-break: break-word;
+    }
+
+    .message-card-body {
+        padding: 24px;
+    }
+
+    .message-meta {
+        display: grid;
+        gap: 11px;
+        margin-bottom: 14px;
+    }
+
+    .message-meta-item {
+        margin: 0;
+        color: #475569;
+        line-height: 1.75;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 11px 13px;
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        border-radius: 16px;
+    }
+
+    .message-meta-item i {
+        color: var(--msg-blue-dark);
+        margin-top: 4px;
+        flex-shrink: 0;
+    }
+
+    .message-meta-item strong {
+        color: var(--msg-primary);
+    }
+
+    .message-box {
+        padding: 15px 16px;
+        border-radius: 18px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #334155;
+        line-height: 1.8;
+        word-break: break-word;
+    }
+
+    .message-box strong {
+        color: var(--msg-blue-dark);
+    }
+
+    .empty-state-card {
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--msg-border);
+        border-radius: 30px;
+        box-shadow: var(--msg-shadow-sm);
+        padding: 58px 22px;
+        text-align: center;
+        backdrop-filter: blur(16px);
+    }
+
+    .empty-icon {
+        width: 82px;
+        height: 82px;
+        border-radius: 26px;
+        background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+        color: var(--msg-blue-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        margin: 0 auto 18px;
+        box-shadow: var(--msg-shadow-sm);
+    }
+
+    .empty-state-card h4 {
+        color: var(--msg-primary);
+        font-weight: 950;
         margin-bottom: 10px;
     }
 
-    .empty-state p {
-        color: #64748b;
-        margin: 0;
-        line-height: 1.8;
+    .empty-state-card p {
+        color: var(--msg-muted);
+        margin-bottom: 0;
+        line-height: 1.85;
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .reveal {
         opacity: 0;
-        transition: all 0.9s ease;
+        transition: all 0.9s cubic-bezier(.2,.8,.2,1);
     }
 
-    .reveal-up { transform: translateY(50px); }
+    .reveal-left { transform: translateX(-58px); }
+    .reveal-right { transform: translateX(58px); }
+    .reveal-up { transform: translateY(52px); }
 
     .reveal.show {
         opacity: 1;
-        transform: translate(0,0);
+        transform: translate(0, 0);
     }
 
     @media (max-width: 991px) {
+        .messages-page {
+            padding: 30px 0 68px;
+        }
+
         .page-hero {
-            padding: 38px 24px;
+            padding: 48px 28px;
+            border-radius: 30px;
+        }
+
+        .search-shell {
+            padding: 24px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-hero {
+            padding: 40px 22px;
+            border-radius: 26px;
         }
 
         .page-hero h2 {
-            font-size: 1.9rem;
+            font-size: 2rem;
+        }
+
+        .message-card,
+        .search-shell,
+        .stats-card,
+        .empty-state-card {
+            border-radius: 24px;
+        }
+
+        .message-status {
+            position: static;
+            margin-bottom: 14px;
+            width: fit-content;
         }
     }
 </style>
@@ -220,63 +586,192 @@
 
 {% block content %}
 <section class="section-space messages-page">
-  <div class="container">
-    <div class="page-hero reveal reveal-up show">
-      <span class="hero-chip">
-        <i class="bi bi-envelope-paper"></i>
-        Admin Messages
-      </span>
-      <h2>Messages</h2>
-      <p>Search and review submitted messages from users through a clean and professional communication view.</p>
-    </div>
+    <div class="container position-relative" style="z-index: 2;">
 
-    <form method="get" class="row g-2 mb-4 search-shell reveal reveal-up">
-      <div class="col-md-10">
-        <input type="text" name="q" class="form-control" value="{{ query }}" placeholder="Enter Contact Number">
-      </div>
-      <div class="col-md-2">
-        <button class="btn btn-search-modern w-100">
-          <i class="bi bi-search me-1"></i>
-          Search
-        </button>
-      </div>
-    </form>
+        <div class="page-hero reveal reveal-up show">
+            <span class="hero-chip">
+                <i class="bi bi-envelope-paper"></i>
+                Admin Messages
+            </span>
 
-    <div class="messages-card reveal reveal-up">
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Contact</th>
-              <th>Message</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for m in messages_list %}
-            <tr>
-              <td class="message-name">{{ m.name }}</td>
-              <td>{{ m.email }}</td>
-              <td>{{ m.contact }}</td>
-              <td class="message-body">{{ m.message }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="4">
-                <div class="empty-state">
-                  <div class="empty-icon"><i class="bi bi-chat-dots"></i></div>
-                  <h4>No messages found</h4>
-                  <p>No messages matched your current search.</p>
+            <div class="hero-highlight">
+                <i class="bi bi-chat-dots"></i>
+                Review user-submitted contact messages in a clean communication dashboard
+            </div>
+
+            <h2>Messages</h2>
+
+            <p>
+                Search and review submitted messages from patients, visitors, and users through a modern,
+                professional communication workspace designed for fast admin response and better record visibility.
+            </p>
+
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="bi bi-inbox"></i> Message Inbox</span>
+                <span class="hero-pill"><i class="bi bi-search"></i> Contact Search</span>
+                <span class="hero-pill"><i class="bi bi-person-lines-fill"></i> User Details</span>
+                <span class="hero-pill"><i class="bi bi-shield-check"></i> Admin Review</span>
+            </div>
+        </div>
+
+        <div class="row g-4 stats-row">
+            <div class="col-md-4">
+                <div class="stats-card reveal reveal-left">
+                    <div class="stats-icon"><i class="bi bi-chat-left-text"></i></div>
+                    <h3>{{ messages_list|length }}</h3>
+                    <p>Visible Messages</p>
                 </div>
-              </td>
-            </tr>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stats-card reveal reveal-up">
+                    <div class="stats-icon"><i class="bi bi-search-heart"></i></div>
+                    <h3>Smart</h3>
+                    <p>Contact Number Search</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stats-card reveal reveal-right">
+                    <div class="stats-icon"><i class="bi bi-headset"></i></div>
+                    <h3>Support</h3>
+                    <p>Communication Review</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-shell reveal reveal-up">
+            <div class="search-header">
+                <div>
+                    <h3 class="search-title">
+                        <i class="bi bi-search me-1"></i>
+                        Search Messages
+                    </h3>
+
+                    <p class="search-subtitle">
+                        Search submitted messages by contact number to quickly find relevant communication records.
+                    </p>
+                </div>
+
+                <span class="search-badge">
+                    <i class="bi bi-telephone"></i>
+                    Contact Search
+                </span>
+            </div>
+
+            <form method="get" class="row g-3">
+                <div class="col-md-10">
+                    <input
+                        type="text"
+                        name="q"
+                        class="form-control"
+                        value="{{ query }}"
+                        placeholder="Enter contact number"
+                    >
+                </div>
+
+                <div class="col-md-2">
+                    <button class="btn btn-search-modern w-100" type="submit">
+                        <i class="bi bi-search me-1"></i>
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="message-title-row reveal reveal-up">
+            <div>
+                <h3>Message Inbox</h3>
+                <p>All visible user-submitted messages are shown below in a modern card-based layout.</p>
+            </div>
+
+            <span class="result-chip">
+                <i class="bi bi-list-check"></i>
+                Results: {{ messages_list|length }}
+            </span>
+        </div>
+
+        <div class="row g-4">
+            {% for m in messages_list %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="message-card reveal reveal-up">
+
+                        <div class="message-card-top">
+                            <span class="message-status">
+                                <i class="bi bi-envelope-check"></i>
+                                Received
+                            </span>
+
+                            <div class="message-avatar">
+                                {{ m.name|slice:":1" }}
+                            </div>
+
+                            <h4 class="message-name">{{ m.name|default:"Unknown User" }}</h4>
+
+                            <span class="message-email">
+                                <i class="bi bi-envelope"></i>
+                                {{ m.email|default:"No email" }}
+                            </span>
+                        </div>
+
+                        <div class="message-card-body">
+                            <div class="message-meta">
+                                <p class="message-meta-item">
+                                    <i class="bi bi-person"></i>
+                                    <span>
+                                        <strong>Full Name:</strong>
+                                        {{ m.name|default:"Not provided" }}
+                                    </span>
+                                </p>
+
+                                <p class="message-meta-item">
+                                    <i class="bi bi-envelope"></i>
+                                    <span>
+                                        <strong>Email:</strong>
+                                        {{ m.email|default:"Not provided" }}
+                                    </span>
+                                </p>
+
+                                <p class="message-meta-item">
+                                    <i class="bi bi-telephone"></i>
+                                    <span>
+                                        <strong>Contact:</strong>
+                                        {{ m.contact|default:"Not provided" }}
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="message-box">
+                                <strong>
+                                    <i class="bi bi-chat-left-text me-1"></i>
+                                    Message:
+                                </strong>
+                                <br>
+                                {{ m.message|default:"No message provided." }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="empty-state-card reveal reveal-up">
+                        <div class="empty-icon">
+                            <i class="bi bi-chat-dots"></i>
+                        </div>
+
+                        <h4>No Messages Found</h4>
+
+                        <p>
+                            No messages matched your current search. Try another contact number
+                            or remove the search filter to view all submitted messages.
+                        </p>
+                    </div>
+                </div>
             {% endfor %}
-          </tbody>
-        </table>
-      </div>
+        </div>
+
     </div>
-  </div>
 </section>
 {% endblock %}
 
@@ -285,11 +780,15 @@
     const messagesReveal = document.querySelectorAll('.reveal');
 
     function messagesRevealOnScroll() {
-        const triggerBottom = window.innerHeight * 0.9;
+        const triggerBottom = window.innerHeight * 0.88;
+
         messagesReveal.forEach((el, index) => {
             const top = el.getBoundingClientRect().top;
+
             if (top < triggerBottom) {
-                setTimeout(() => el.classList.add('show'), index * 80);
+                setTimeout(() => {
+                    el.classList.add('show');
+                }, index * 45);
             }
         });
     }
