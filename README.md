@@ -1,142 +1,383 @@
 # SmartCare HMS
 
-A role-based **Hospital Management System** built with **Django** to digitize hospital workflows such as patient registration, doctor approval, appointment booking, prescription management, report follow-up, diagnostic test reporting, and basic health guidance through **MediBot**.
+SmartCare HMS is a role-based **Hospital Management System** built with **Django**.  
+It is designed to digitize hospital workflows such as patient registration, doctor approval, appointment booking, prescription management, report follow-up, diagnostic test reporting, receptionist operations, and basic patient health guidance through **MediBot**.
 
 ---
 
-## Overview
+## Project Overview
 
-**SmartCare HMS** is a web-based healthcare management platform designed to connect **patients, doctors, receptionists, and administrators** in one integrated system.
+**SmartCare HMS** is a web-based healthcare management platform that connects **patients, doctors, receptionists, and administrators** in one integrated system.
 
-The project aims to reduce manual hospital workload, improve service efficiency, support better follow-up care, and provide a cleaner digital workflow for both patients and healthcare staff.
+The main goal of this project is to reduce manual hospital workload, improve service efficiency, organize patient care, and create a cleaner digital workflow for both patients and healthcare staff.
+
+This system allows patients to book appointments, doctors to manage consultations and prescriptions, receptionists to handle walk-in patients and test reports, and administrators to monitor and control the overall hospital system.
+
+---
+
+## Main Purpose of the Project
+
+The purpose of SmartCare HMS is to create a complete digital hospital management solution where different users can perform their tasks according to their roles.
+
+The system helps to:
+
+- Reduce manual paperwork
+- Manage hospital appointments digitally
+- Improve communication between patients and doctors
+- Support receptionist-based hospital workflow
+- Store prescriptions and reports in an organized way
+- Help patients with basic symptom guidance through MediBot
+- Maintain role-based access and secure system control
+
+---
+
+## User Roles
+
+The system supports four main user roles:
+
+1. **Admin**
+2. **Doctor**
+3. **Patient**
+4. **Receptionist**
+
+Each role has a separate dashboard and access permission.  
+This makes the system more secure, organized, and easy to manage.
 
 ---
 
 ## Key Features
 
 ### Patient Module
+
+The patient module allows patients to register, log in, search doctors, book appointments, view prescriptions, upload reports, and get basic health guidance.
+
+Main features:
+
 - Patient registration and login
-- Doctor browsing by details and availability
-- Appointment booking
-- Prescription archive
-- Report upload and follow-up support
-- MediBot basic symptom guidance
+- Patient profile management
+- Browse doctors by details and availability
+- Book appointments with available doctors
+- View appointment history
+- View prescription records
+- Upload follow-up reports
+- Submit previous prescription and medical report files
+- Receive receptionist messages
+- Use MediBot for basic symptom guidance
+
+---
 
 ### Doctor Module
-- Secure login with approval validation
-- Pending and completed appointment management
-- Prescription creation
-- Report review
-- Patient bookmarking for follow-up care
+
+The doctor module allows doctors to manage their appointments, review reports, create prescriptions, and manage patient follow-up activities.
+
+Main features:
+
+- Doctor registration and login
+- Admin approval required before access
+- Doctor dashboard with overview
+- Manage pending appointments
+- View assigned appointments
+- Mark appointments as completed
+- Create prescriptions
+- Add medicine, test, and advice
+- Review patient follow-up reports
+- Update report responses
+- View patient history
+- Bookmark patients for follow-up care
+- Manage doctor profile and availability
+
+---
 
 ### Receptionist Module
-- Walk-in appointment creation
-- Patient handling and support
-- Test report generation
-- Billing summary handling
-- Report print/download support
+
+The receptionist module is designed for front-desk hospital operations. Receptionists can create appointments, handle walk-in patients, manage test reports, and communicate approximate appointment times to patients.
+
+Main features:
+
+- Receptionist login
+- Receptionist dashboard with overview
+- Create appointments for registered patients
+- Register walk-in patients and create instant appointments
+- Assign doctors to appointments
+- Manage doctor availability
+- View doctors and patients
+- View all appointments
+- Update appointment status
+- Send appointment messages to patients
+- Generate diagnostic test reports
+- Select multiple medical tests
+- Calculate total test cost automatically
+- View and print test reports
+- Manage receptionist profile
+
+---
 
 ### Admin Module
-- Doctor approval workflow
-- User monitoring
-- Appointment statistics and overview
-- Message monitoring and system-level control
 
----
+The admin module controls the whole system. Admin can approve doctors, monitor users, manage appointments, and access system-level information.
 
-## User Roles
+Main features:
 
-The system supports four major user roles:
-
-- **Admin**
-- **Doctor**
-- **Patient**
-- **Receptionist**
-
-Each role has separate dashboards and access permissions for secure and organized workflow management.
-
----
-
-## Technology Stack
-
-### Frontend
-- HTML
-- CSS
-- JavaScript
-- Bootstrap
-
-### Backend
-- Django (Python)
-
-### Database
-- SQLite
-
-### Version Control & Tools
-- Git
-- GitHub
+- Admin login
+- Admin dashboard
+- Manage patients
+- Manage doctors
+- Approve or reject doctor registration requests
+- Manage receptionists
+- View appointments
+- Monitor contact messages
+- Add doctor, patient, or receptionist manually
+- System-level overview and control
 
 ---
 
 ## Core Modules
 
-- Appointment Management
-- Prescription Management
-- Report Show / Follow-up Module
-- Medical Test & Test Report Module
+SmartCare HMS includes the following important modules:
+
+- Role-Based Authentication Module
+- Patient Management Module
+- Doctor Management Module
+- Receptionist Management Module
+- Admin Management Module
+- Appointment Management Module
+- Prescription Management Module
+- Follow-up Report Module
+- Diagnostic Test Report Module
 - Contact Message Module
 - Doctor Approval Workflow
 - MediBot Patient Support Module
 
 ---
 
+## Appointment Management
+
+The appointment system supports both patient-side booking and receptionist-side appointment creation.
+
+Appointment features include:
+
+- Patient can book appointment by selecting doctor and date
+- Receptionist can create appointment for registered patients
+- Receptionist can create walk-in patient with instant appointment
+- Doctor receives assigned appointments
+- Appointment status can be updated
+- Receptionist can assign approximate appointment time
+- Doctor can mark appointment as completed
+- Expired appointments can be handled based on date and time
+
+---
+
+## Prescription Management
+
+Doctors can create prescriptions after consultation.
+
+Prescription features include:
+
+- Add prescription text
+- Add medical tests
+- Add advice
+- Link prescription with appointment
+- Patient can view prescription history
+- Doctor can check whether prescription already exists for an appointment
+
+---
+
+## Report Follow-up Module
+
+Patients can submit medical reports for doctor review.
+
+Report follow-up features include:
+
+- Patient can select doctor
+- Patient can upload previous prescription
+- Patient can upload report file
+- Patient can add report note
+- Doctor can view submitted report
+- Doctor can review previous prescription
+- Doctor can update report response
+- Doctor can provide updated prescription, test, and advice
+
+---
+
+## Diagnostic Test Report Module
+
+Receptionists can create diagnostic test reports for patients.
+
+Test report features include:
+
+- Add patient name, age, gender, and contact number
+- Select one or multiple diagnostic tests
+- Search tests from custom multi-select dropdown
+- Calculate total cost automatically
+- Save selected test items
+- View test report details
+- Print report copy
+- Maintain report records
+
+---
+
+## MediBot Module
+
+MediBot is a basic patient support feature that provides initial health guidance.
+
+MediBot can help patients with:
+
+- Basic symptom-related guidance
+- General health suggestions
+- Initial support before consultation
+- Patient-friendly healthcare interaction
+
+> MediBot is not a replacement for professional medical advice. It is only a basic guidance feature.
+
+---
+
+## Technology Stack
+
+### Frontend
+
+- HTML
+- CSS
+- JavaScript
+- Bootstrap
+- Bootstrap Icons
+- Django Templates
+
+### Backend
+
+- Python
+- Django
+
+### Database
+
+- SQLite for local development
+- PostgreSQL recommended for deployment
+
+### Tools and Version Control
+
+- Git
+- GitHub
+- VS Code
+- Render for deployment
+
+---
+
 ## Security Features
 
-- Role-Based Access Control (RBAC)
+SmartCare HMS includes multiple security features provided by Django and custom role-based logic.
+
+Security features:
+
+- Role-Based Access Control
 - Django authentication system
 - Password hashing
 - CSRF protection
 - Session management
-- Client-side and server-side validation
+- Login-required protected pages
+- User permission checking
+- Doctor approval validation
+- Form validation
 - Controlled error messages
-- Doctor approval guard
+- Separate dashboard access for each role
 
 ---
 
 ## System Architecture
 
-The system follows a **5-layer architecture**:
+The system follows a layered architecture:
 
-- **Presentation Layer** – dashboards and user interfaces
-- **Application Layer** – Django views, URLs, forms, and validation
-- **Business Module Layer** – appointments, prescriptions, reports, MediBot, approval workflow
-- **Data Layer** – Django ORM and SQLite database
-- **Security Layer** – authentication, CSRF protection, password security, and role-based access
+### 1. Presentation Layer
+
+This layer contains the user interface of the system.
+
+Examples:
+
+- Home page
+- Login page
+- Registration page
+- Patient dashboard
+- Doctor dashboard
+- Receptionist dashboard
+- Admin dashboard
+- Appointment pages
+- Prescription pages
+- Report pages
+
+### 2. Application Layer
+
+This layer handles request and response logic using Django.
+
+Examples:
+
+- Django views
+- URL routing
+- Forms
+- Authentication logic
+- Validation logic
+
+### 3. Business Logic Layer
+
+This layer contains the main hospital workflow logic.
+
+Examples:
+
+- Appointment booking
+- Prescription creation
+- Doctor approval
+- Report review
+- Test report generation
+- Receptionist appointment handling
+- MediBot support
+
+### 4. Data Layer
+
+This layer manages database operations.
+
+Examples:
+
+- Django models
+- Django ORM
+- SQLite database
+- PostgreSQL for production
+
+### 5. Security Layer
+
+This layer protects the system from unauthorized access.
+
+Examples:
+
+- Login validation
+- Role checking
+- CSRF protection
+- Password hashing
+- Session-based access
 
 ---
 
 ## Project Objectives
 
-- To transform hospital management into a digital and organized system
-- To create role-based dashboards for all major users
-- To unify online and offline appointment workflows
-- To simplify prescription and report follow-up
-- To strengthen authentication and access control
-- To provide patient-friendly initial health guidance through MediBot
+The main objectives of this project are:
+
+- To transform manual hospital management into a digital system
+- To create separate dashboards for patients, doctors, receptionists, and admins
+- To simplify appointment booking and appointment handling
+- To improve doctor-patient communication
+- To manage prescriptions digitally
+- To support follow-up report submission and review
+- To help receptionists manage walk-in patients and test reports
+- To provide basic health guidance using MediBot
+- To improve security using role-based access control
+- To make hospital workflow faster, cleaner, and more organized
 
 ---
 
-## Future Improvements
+## Installation and Setup
 
-- Online payment integration
-- SMS or email notifications
-- Pharmacy integration
-- Lab automation
-- AI-powered advanced triage
-- Multilingual chatbot support
-- Mobile application
-- Analytics dashboard
+Follow these steps to run the project locally.
 
----
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/SmartCare-HMS.git
 
 ## Screenshots
 
@@ -144,10 +385,9 @@ Add your real project screenshots inside a `screenshots/` folder.
 
 Example:
 
-```markdown
 ## Screenshots
 
-### Home Page
+###Home Page
 ![Home Page](screenshots/home.png)
 
 ### About Page
