@@ -381,12 +381,6 @@ git clone https://github.com/your-username/SmartCare-HMS.git
 
 ## Screenshots
 
-Add your real project screenshots inside a `screenshots/` folder.
-
-Example:
-
-## Screenshots
-
 ###Home Page
 ![Home Page](screenshots/home.png)
 
